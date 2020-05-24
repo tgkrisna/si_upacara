@@ -116,40 +116,41 @@
         </div>
 	</div>
 	@endforeach
-		<!-- Mungkin disini endforeach untuk accordion, gpp warna sama yg penting dia bisa menampilkan data puncak awal akhir -->
-		<!-- else untuk if count data ketika data NULL -->
-<!-- 		<div style="padding: 32px; background: rgba(0,0,0,0.1)" class="text-center">
-			<h4>
-				<em>Tidak ada prosesi pada upacara ini.</em>
-			</h4>
-		</div> -->
-		<!-- endif untuk if count -->
-		<hr>
-		<div class="row">
-			<!-- Mulai foreach untuk data tag, kecuali prosesi upacara -->
-			<div class="col-lg-4">
-				<h3>Nama Tag Tari</h3>
+	<hr>
+	@foreach ($drop_t as $drops)
+	<div class="row">
+		<!-- Mulai foreach untuk data tag, kecuali prosesi upacara -->
+		<div class="col-lg-4">
+			<h3>{{$drops->nama_tag}}</h3>
+			@if (!empty($drops->det_tag))
+				@foreach ($drops->det_tag as $item)
+				@if ($drops->id_tag == $item->id_tag && $drops->nama_tag != "Prosesi Upacara")
 				<div class="row" style="margin-bottom: 16px">
 					<!-- Mulai foreach untuk select data sesuai dengan nama tag -->
 					<div class="col-lg-4" style="margin-top: 16px">
 						<div class="card" style="background-image: ">
 							<div class="card-body">
-								Nama Post Tari
+								{{$item->nama_post}}
+								{{$item->id_post}}
+								{{$item->id_det_post}}
 							</div>
 							<!-- Pakai if untuk deleteable -->
-                            <a data-id="#" class="btn btn-delete btn-sm btn-danger btn-card">Hapus</a>
-                            <!-- Pakai endif deleteable -->
+							<a data-id="#" class="btn btn-delete btn-sm btn-danger btn-card">Hapus</a>
+							<!-- Pakai endif deleteable -->
 						</div>
 					</div>
 					<!-- endforeach untuk nama tag tari -->
 					<div class="col-lg-4" style="margin-top: 16px">
-                        <a class="card" data-toggle="modal" href="#detail-modal" data-type="tari"><i class="fa fa-plus fa-4x"></i></a>
-                    </div>
+						<a class="card" data-toggle="modal" href="#detail-modal" data-type="tari"><i class="fa fa-plus fa-4x"></i></a>
+					</div>
 				</div>
-			</div>
-			<!-- endforeach data tag -->
+			@endif	
+				@endforeach
+				@endif
 		</div>
-	</div>
+		<!-- endforeach data tag -->
+	</div>	
+	@endforeach
 </div>
 <script src="{{asset('/assets/select2/select2.min.js')}}"></script>
 <script>

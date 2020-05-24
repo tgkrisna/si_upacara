@@ -159,8 +159,11 @@ class Kategori extends Controller
     {
         $kategori_post = M_Post::where('tb_post.id_post',$id_post)->first();
         $data = M_Status::all();
+        $data_tag = M_Tag::select('id_tag','nama_tag')->get();
         $drop_d=[];
         $new_det=[];
+        $drop_t=[];
+        $new_tag=[];
         foreach ($data as $kategori) {
             $id_status = $kategori->id_status;
             $nama_status = $kategori->nama_status;
@@ -186,6 +189,30 @@ class Kategori extends Controller
                 'det_pos' => $new_det,
             );
         }
-        return view('admin/kategori/detil_post_kategori',compact('kategori_post','drop_d'));
+        foreach ($data_tag as $tag) {
+            $id_tag = $tag->id_tag;
+            $nama_tag = $tag->nama_tag;
+            $det_tag = M_Det_Post::where('tb_detil_post.id_post',$id_post)
+            ->where('tb_detil_post.spesial',$id_post)
+            ->leftJoin('tb_post','tb_detil_post.id_parent_post','=','tb_post.id_post')
+            ->leftJoin('tb_tag','tb_detil_post.id_tag','=','tb_tag.id_tag')
+            ->select('tb_detil_post.id_post', 'tb_detil_post.id_det_post', 'tb_detil_post.id_tag', 'tb_post.nama_post', 'tb_tag.nama_tag')
+            ->get();
+            foreach ($det_tag as $dt) {
+                $new_tag[]=(object) array(
+                    'id_post' => $dt->id_post,
+                    'id_det_post' => $dt->id_det_post,
+                    'id_tag' => $dt->id_tag,
+                    'nama_post' => $dt->nama_post,
+                    'nama_tag' => $dt->nama_tag,
+                );
+            }
+            $drop_t[]=(object) array(
+                'id_tag' => $id_tag,
+                'nama_tag' => $nama_tag,
+                'det_tag' => $new_tag,
+            );
+        }
+        return view('admin/kategori/detil_post_kategori',compact('kategori_post','drop_d','drop_t'));
     }
 }
