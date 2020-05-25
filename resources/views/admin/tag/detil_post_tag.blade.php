@@ -64,27 +64,25 @@
 			<div class="panel-body">
 				<div class="row isi{{$drop->id_tag}}">
 					<!-- Katanya Pake Foreach lagi -->
-					<div class="col-lg-12">
+					<div class="col-lg-2">
 					@if (!empty($drop->det_pos))
 						@foreach ($drop->det_pos as $item)
 						@if ($drop->id_tag == $item->id_tag)
-							<div class="panel panel-default" style="border: 1px solid #efeef4">
-								<img src="/gambarku/{{$item->gambar}}" width="10%" />
-								<div class="panel-body">
-									<p class="prosesi-title">{{$item->nama_post}}</p>
-									{{$item->nama_tag}}
-									{{$item->id_post}}
+						<div class="col-4 mb-3">
+							<div class="card">
+								<img src="/gambarku/{{$item->gambar}}" alt="" width="100%">
+								<div class="card-body">
+									{{$item->nama_post}}
+									{{-- {{$item->nama_tag}}
+									{{$item->id_post}} --}}
 								</div>
-								<a data-id="#" class="btn btn-delete btn-sm btn-danger btn-card">
-									Delete
-								</a>
 							</div>
+						</div>
 							@endif
 						@endforeach
 					@else
 						{{-- tidak ada data --}}
 					@endif
-					
 					</div>
 					<!-- Katanya Pake EndForeach lagi -->
 					<div class="col-lg-2">

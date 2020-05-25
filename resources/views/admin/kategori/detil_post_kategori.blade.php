@@ -123,27 +123,26 @@
 		<div class="col-lg-4">
 			<h3>{{$drops->nama_tag}}</h3>
 			@if (!empty($drops->det_tag))
+			<div class="row">
 				@foreach ($drops->det_tag as $item)
-				@if ($drops->id_tag == $item->id_tag && $drops->nama_tag != "Prosesi Upacara")
-				<div class="row" style="margin-bottom: 16px">
-					<!-- Mulai foreach untuk select data sesuai dengan nama tag -->
-					<div class="col-lg-4" style="margin-top: 16px">
-						<div class="card" style="background-image: ">
-							<div class="card-body">
-								{{$item->nama_post}}
-								{{$item->id_post}}
-								{{$item->id_det_post}}
-							</div>
-							<!-- Pakai if untuk deleteable -->
-							<a data-id="#" class="btn btn-delete btn-sm btn-danger btn-card">Hapus</a>
-							<!-- Pakai endif deleteable -->
+				@if ($drops->id_tag == $item->id_tag && $item->nama_tag != "Prosesi Upacara")
+				<div class="col-4 mb-3">
+				<div class="card" style="background-image: /gambarku/{{$item->gambar}}">
+						<div class="card-body">
+							{{$item->nama_post}}
+							{{$item->id_post}}
+							{{$item->id_det_post}}
 						</div>
+						<!-- Pakai if untuk deleteable -->
+						<a data-id="#" class="btn btn-delete btn-sm btn-danger btn-card">Hapus</a>
+						<!-- Pakai endif deleteable -->
 					</div>
+				</div>
 					<!-- endforeach untuk nama tag tari -->
 					<div class="col-lg-4" style="margin-top: 16px">
 						<a class="card" data-toggle="modal" href="#detail-modal" data-type="tari"><i class="fa fa-plus fa-4x"></i></a>
 					</div>
-				</div>
+			</div>
 			@endif	
 				@endforeach
 				@endif

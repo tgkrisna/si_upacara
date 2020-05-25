@@ -196,7 +196,7 @@ class Kategori extends Controller
             ->where('tb_detil_post.spesial',$id_post)
             ->leftJoin('tb_post','tb_detil_post.id_parent_post','=','tb_post.id_post')
             ->leftJoin('tb_tag','tb_detil_post.id_tag','=','tb_tag.id_tag')
-            ->select('tb_detil_post.id_post', 'tb_detil_post.id_det_post', 'tb_detil_post.id_tag', 'tb_post.nama_post', 'tb_tag.nama_tag')
+            ->select('tb_detil_post.id_post', 'tb_detil_post.id_det_post', 'tb_detil_post.id_tag', 'tb_post.nama_post', 'tb_post.gambar' ,'tb_tag.nama_tag')
             ->get();
             foreach ($det_tag as $dt) {
                 $new_tag[]=(object) array(
@@ -204,6 +204,7 @@ class Kategori extends Controller
                     'id_det_post' => $dt->id_det_post,
                     'id_tag' => $dt->id_tag,
                     'nama_post' => $dt->nama_post,
+                    'gambar' => $dt->gambar,
                     'nama_tag' => $dt->nama_tag,
                 );
             }
