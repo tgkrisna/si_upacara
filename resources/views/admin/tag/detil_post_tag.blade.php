@@ -63,27 +63,25 @@
 		<div id="collapse{{$drop->id_tag}}" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingFive">
 			<div class="panel-body">
 				<div class="row isi{{$drop->id_tag}}">
-					<!-- Katanya Pake Foreach lagi -->
-					<div class="col-lg-2">
 					@if (!empty($drop->det_pos))
 						@foreach ($drop->det_pos as $item)
-						@if ($drop->id_tag == $item->id_tag)
-						<div class="col-4 mb-3">
-							<div class="card">
-								<img src="/gambarku/{{$item->gambar}}" alt="" width="100%">
-								<div class="card-body">
-									{{$item->nama_post}}
-									{{-- {{$item->nama_tag}}
-									{{$item->id_post}} --}}
-								</div>
+							@if ($drop->id_tag == $item->id_tag)
+					<!-- Katanya Pake Foreach lagi -->
+					<div class="col-lg-2">
+						<div class="card" style="background-image: url(/gambarku/{{$item->gambar}})">
+							<div class="card-body">
+								{{$item->nama_post}}
+								{{-- {{$item->nama_tag}}
+								{{$item->id_post}} --}}
 							</div>
+							<a data-id="{{$item->id_post}}" class="btn btn-delete btn-sm btn-danger btn-card">Hapus</a>
 						</div>
+					</div>
 							@endif
 						@endforeach
 					@else
 						{{-- tidak ada data --}}
 					@endif
-					</div>
 					<!-- Katanya Pake EndForeach lagi -->
 					<div class="col-lg-2">
 						<a class="card" data-toggle="modal" href="#detail-modal" data-type="detil_post"><i class="fa fa-plus fa-4x"></i></a>

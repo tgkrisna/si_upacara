@@ -90,11 +90,11 @@
         	<div class="panel-body">
         		<div class="row">
         			<!-- Memulai foreach untuk data post prosesi -->
-        			<!-- Pakai if untuk melakukan foreach dengan status awal -->
-        			<div class="col-lg-2">
-        			@if (!empty($drop->det_pos))
+					<!-- Pakai if untuk melakukan foreach dengan status awal -->
+					@if (!empty($drop->det_pos))
 						@foreach ($drop->det_pos as $item)
-						@if ($drop->id_status == $item->id_status)
+							@if ($drop->id_status == $item->id_status)
+        			<div class="col-lg-2">
                         <div class="panel panel-default" style="border: 1px solid #efeef4; margin-bottom: 1em">
                             <img src="/gambarku/{{$item->gambar}}" width="100%" />
                             <div class="panel-body">
@@ -104,30 +104,30 @@
                                 <a href="#" class="btn btn-primary btn-sm">Lihat</a>
                                 <a href="#" class="btn btn-danger btn-delete btn-sm" data-id="#">Hapus</a>
                             </div>
-                        </div>
-                    @endif
+						</div>
+					</div>
+                    		@endif
 						@endforeach
 					@else
 						{{-- tidak ada data --}}
 					@endif
-        			</div>
         		</div>
         	</div>
         </div>
 	</div>
 	@endforeach
 	<hr>
-	@foreach ($drop_t as $drops)
 	<div class="row">
 		<!-- Mulai foreach untuk data tag, kecuali prosesi upacara -->
+		@foreach ($drop_t as $drops)
 		<div class="col-lg-4">
 			<h3>{{$drops->nama_tag}}</h3>
 			@if (!empty($drops->det_tag))
-			<div class="row">
+			<div class="row" style="margin-bottom: 16px">
 				@foreach ($drops->det_tag as $item)
-				@if ($drops->id_tag == $item->id_tag && $item->nama_tag != "Prosesi Upacara")
-				<div class="col-4 mb-3">
-				<div class="card" style="background-image: /gambarku/{{$item->gambar}}">
+					@if ($drops->id_tag == $item->id_tag && $item->nama_tag != "Prosesi Upacara")
+				<div class="col-lg-4" style="margin-top: 16px">
+					<div class="card" style="background-image: url(/gambarku/{{$item->gambar}})">
 						<div class="card-body">
 							{{$item->nama_post}}
 							{{$item->id_post}}
@@ -138,18 +138,18 @@
 						<!-- Pakai endif deleteable -->
 					</div>
 				</div>
-					<!-- endforeach untuk nama tag tari -->
-					<div class="col-lg-4" style="margin-top: 16px">
-						<a class="card" data-toggle="modal" href="#detail-modal" data-type="tari"><i class="fa fa-plus fa-4x"></i></a>
-					</div>
-			</div>
-			@endif	
+					@endif	
 				@endforeach
-				@endif
+					<!-- endforeach untuk nama tag tari -->
+				<div class="col-lg-4" style="margin-top: 16px">
+					<a class="card" data-toggle="modal" href="#detail-modal" data-type="tari"><i class="fa fa-plus fa-4x"></i></a>
+				</div>
+			</div>
+			@endif
 		</div>
+		@endforeach
 		<!-- endforeach data tag -->
 	</div>	
-	@endforeach
 </div>
 <script src="{{asset('/assets/select2/select2.min.js')}}"></script>
 <script>
