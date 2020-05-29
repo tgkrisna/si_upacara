@@ -10,6 +10,7 @@ use App\M_Tag;
 use App\M_Post;
 use App\M_Det_Post;
 use App\M_Kategori;
+use App\M_Tingkatan;
 use Response;
 class Tag extends Controller
 {
@@ -19,8 +20,12 @@ class Tag extends Controller
     	->leftJoin('tb_kategori','tb_post.id_kategori','=','tb_kategori.id_kategori')
     	->join('tb_tag','tb_post.id_tag','=','tb_tag.id_tag')
     	->select('tb_post.id_post','tb_post.nama_post','tb_kategori.nama_kategori','tb_post.deskripsi','tb_tag.id_tag', 'tb_tag.nama_tag')
-    	->paginate(10);
-    	return view('admin/tag/tag_detil', ['tag'=>$tag]);
+        ->paginate(10);
+        $tingkatan = M_Tingkatan::where('tb_tag.id_tag',$id_tag)
+        ->leftJoin('tb_tag','tb_tingkatan.id_tag','=','tb_tag.id_tag')
+        ->select('tb_tag.id_tag','tb_tag.nama_tag','tb_tingkatan.id_tingkatan','tb_tingkatan.nama_tingkatan','tb_tingkatan.deskripsi')
+        ->get();
+    	return view('admin/tag/tag_detil', compact('tag','tingkatan'));
     }
     public function tagku()
     {
@@ -170,6 +175,7 @@ class Tag extends Controller
         $pencarian = M_Post::where('tb_post.nama_post','LIKE',"%".$cari."%")->where('tb_post.id_tag',$id_tag)->paginate();
         return view('admin/tag/tag_detil',['tag'=>$pencarian]);
     }
+
     public function detil_post_t($id_post)
     {
         $tag_post = M_Post::where('tb_post.id_post',$id_post)->first();
