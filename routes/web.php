@@ -60,3 +60,5 @@ Route::get('/tag/delete_post_t/{id_post}','Tag@delete_post_t');
 Route::get('/tag/detil_post_t/{id_post}','Tag@detil_post_t');
 Route::get('/tag/drop_down_t/{id}','Tag@drop_down_tag');
 // Route::get('/tag/tambah_detil_post_t/{id_post}','Tag@tambah_detil_post_t');
+//Pengguna
+Route::get('/tag_pengguna','Tag_P@index_p');
