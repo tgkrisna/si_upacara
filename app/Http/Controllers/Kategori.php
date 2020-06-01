@@ -10,6 +10,7 @@ use App\M_Kategori;
 use App\M_Post;
 use App\M_Tag;
 use App\M_Status;
+use App\M_Tingkatan;
 use App\M_Det_Post;
 
 class Kategori extends Controller
@@ -196,12 +197,13 @@ class Kategori extends Controller
             ->where('tb_detil_post.spesial',$id_post)
             ->leftJoin('tb_post','tb_detil_post.id_parent_post','=','tb_post.id_post')
             ->leftJoin('tb_tag','tb_detil_post.id_tag','=','tb_tag.id_tag')
-            ->select('tb_detil_post.id_post', 'tb_detil_post.id_det_post', 'tb_detil_post.id_tag', 'tb_post.nama_post', 'tb_post.gambar' ,'tb_tag.nama_tag')
+            ->select('tb_detil_post.id_post', 'tb_detil_post.id_parent_post', 'tb_detil_post.id_tag', 
+                    'tb_post.nama_post', 'tb_post.gambar' ,'tb_tag.nama_tag')
             ->get();
             foreach ($det_tag as $dt) {
                 $new_tag[]=(object) array(
                     'id_post' => $dt->id_post,
-                    'id_det_post' => $dt->id_det_post,
+                    'id_parent_post' => $dt->id_parent_post,
                     'id_tag' => $dt->id_tag,
                     'nama_post' => $dt->nama_post,
                     'gambar' => $dt->gambar,
@@ -215,5 +217,70 @@ class Kategori extends Controller
             );
         }
         return view('admin/kategori/detil_post_kategori',compact('kategori_post','drop_d','drop_t'));
+    }
+    public function detil_post_kp($id_parent_post,$id_post)
+    {
+        $kategori_post = M_Post::where('tb_post.id_post',$id_parent_post)->first();
+        $data_tingkatan = M_Tingkatan::all();
+        $data_tag = M_Tag::select('id_tag','nama_tag')->get();
+        $drop_ting = [];
+        $new_ting = [];
+        $drop_tag = [];
+        $new_tag = [];
+
+        foreach ($data_tingkatan as $d_ting) {
+            $id_tingkatan = $d_ting->id_tingkatan;
+            $nama_tingkatan = $d_ting->nama_tingkatan;
+            $det_post = M_Post::where('tb_post.id_post',$id_parent_post)
+            ->where('tb_detil_post.spesial',$id_post)
+            ->leftJoin('tb_detil_post','tb_post.id_post','=','tb_detil_post.id_post')
+            ->leftJoin('tb_tag','tb_post.id_tag','=','tb_tag.id_tag')
+            ->leftJoin('tb_tingkatan','tb_detil_post.id_tingkatan','=','tb_tingkatan.id_tingkatan')
+            ->select('tb_post.nama_post','tb_post.gambar','tb_tag.nama_tag','tb_detil_post.id_tag'
+                    ,'tb_detil_post.id_tingkatan','tb_detil_post.id_parent_post')
+            ->get();
+            foreach ($det_post as $dt) {
+                $new_ting[]=(object)array(
+                    'id_post' => $dt->id_post,
+                    'nama_post' => $dt->nama_post,
+                    'gambar' => $dt->gambar,
+                    'id_tag' => $dt->id_tag,
+                    'nama_tag' => $dt->nama_tag,
+                    'id_tingkatan' => $dt->id_tingkatan,
+                    'id_parent_post' => $dt->id_parent_post,
+                ); 
+            }
+            $drop_ting[]=(object)array(
+                'id_tingkatan' => $id_tingkatan,
+                'nama_tingkatan' => $nama_tingkatan,
+                'det_post' => $new_ting,
+            );
+        }
+        foreach ($data_tag as $tag) {
+            $id_tag = $tag->id_tag;
+            $nama_tag = $tag->nama_tag;
+            $det_tag = M_Det_Post::where('tb_detil_post.id_post',$id_parent_post)
+            ->where('tb_detil_post.spesial',$id_post)
+            ->leftJoin('tb_post','tb_detil_post.id_parent_post','=','tb_post.id_post')
+            ->leftJoin('tb_tag','tb_detil_post.id_tag','=','tb_tag.id_tag')
+            ->select('tb_detil_post.id_post', 'tb_detil_post.id_parent_post', 
+            'tb_detil_post.id_tag', 'tb_post.nama_post', 'tb_post.gambar')
+            ->get();
+            foreach ($det_tag as $dt) {
+                $new_tag[]=(object) array(
+                    'id_post' => $dt->id_post,
+                    'id_parent_post' => $dt->id_parent_post,
+                    'id_tag' => $dt->id_tag,
+                    'nama_post' => $dt->nama_post,
+                    'gambar' => $dt->gambar,
+                );
+            }
+            $drop_tag[]=(object) array(
+                'id_tag' => $id_tag,
+                'nama_tag' => $nama_tag,
+                'det_tag' => $new_tag,
+            );
+        }
+        return view('admin/kategori/detil_post_kp',compact('kategori_post','drop_ting','drop_tag'));
     }
 }

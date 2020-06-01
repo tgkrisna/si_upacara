@@ -71,7 +71,7 @@
 	</div>
 	<div class="clearfix" style="margin-bottom: 16px">
 		<h3 style="margin: 0" class="pull-left">
-			Prosesi
+			Tingkatan Prosesi Upacara
 		</h3>
 		<a href="#" data-toggle="modal" data-target="#detail-modal" class="btn btn-sm btn-primary pull-right" data-type="post_prosesi"><i class="fa fa-plus">Tambah Prosesi</i></a>
 	</div>
@@ -79,11 +79,11 @@
 
 	<!-- Mulai Foreach untuk accordion sesuai dengan tb_status -->
 <div class="panel-group" id="accordion">
-	@foreach($drop_d as $drop)
+	@foreach($drop_ting as $drop)
 	<div class="panel panel-primary">
 		<div class="panel-heading" role="tab" id="headingOne">
             <a style="text-decoration: none; color: #ffffff;" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                {{$drop->nama_status}}
+                {{$drop->nama_tingkatan}}
             </a>
         </div>
         <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
@@ -93,16 +93,16 @@
 					<!-- Pakai if untuk melakukan foreach dengan status awal -->
 					@if (!empty($drop->det_pos))
 						@foreach ($drop->det_pos as $item)
-							@if ($drop->id_status == $item->id_status)
+							@if ($drop->id_tingkatan == $item->id_tingkatan)
         			<div class="col-lg-2">
                         <div class="panel panel-default" style="border: 1px solid #efeef4; margin-bottom: 1em">
                             <img src="/gambarku/{{$item->gambar}}" width="100%" />
                             <div class="panel-body">
                                 <p class="prosesi-title">{{$item->nama_post}}</p>
-                                {{-- {{$item->nama_status}} --}}
-								{{-- {{$item->id_post}} --}}
-								{{-- {{$item->id_parent_post}} --}}
-							<a href="/kategori/detil_post_kp/{{$item->id_parent_post}}/{{$item->id_post}}" class="btn btn-primary btn-sm">Lihat</a>
+                                {{$item->nama_tingkatan}}
+								{{$item->id_post}}
+								{{$item->id_parent_post}}
+							<a href="#" class="btn btn-primary btn-sm">Lihat</a>
                             	<a href="#" class="btn btn-danger btn-delete btn-sm" data-id="#">Hapus</a>
                             </div>
 						</div>
@@ -120,13 +120,13 @@
 	<hr>
 	<div class="row">
 		<!-- Mulai foreach untuk data tag, kecuali prosesi upacara -->
-		@foreach ($drop_t as $drops)
+		@foreach ($drop_tag as $drops)
 		<div class="col-lg-4">
 			<h3>{{$drops->nama_tag}}</h3>
 			@if (!empty($drops->det_tag))
 			<div class="row" style="margin-bottom: 16px">
 				@foreach ($drops->det_tag as $item)
-					@if ($drops->id_tag == $item->id_tag && $item->nama_tag != "Prosesi Upacara")
+					@if ($drops->id_tag == $item->id_tag)
 				<div class="col-lg-4" style="margin-top: 16px">
 					<div class="card" style="background-image: url(/gambarku/{{$item->gambar}})">
 						<div class="card-body">
