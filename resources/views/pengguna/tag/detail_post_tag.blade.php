@@ -1,7 +1,15 @@
 @extends('pengguna/layouts.app')
 
 @section('konten')
-
+<link rel="stylesheet" href="{{asset('/assets/select2/select2.min.css')}}">
+<style>
+	.prosesi-title {
+		white-space: nowrap;
+        overflow: hidden;
+        display: block;
+        text-overflow: ellipsis;
+	}
+</style>
 <div class="container py-5">
     <div class="row">
         <div class="col-3">
@@ -27,7 +35,31 @@
 
     </div>
     <hr>
+    <div class="row">
+        @foreach ($tag_all as $tg_al)
+        <div class="col-lg-4">
+            <h3>{{$tg_al->nama_tag}}</h3>
+            @if (!empty($tg_al->det_tag))
+            <div class="row" style="margin-bottom: 16px">
+                @foreach ($tg_al->det_tag as $item)
+                    @if ($tg_al->id_tag == $item->id_tag)
+                    <div class="col-lg-4" style="margin-top: 16px">
+                        <div class="card" style="background-image: url(/gambarku/{{$item->gambar}})">
+                            <div class="card-body">
+                                {{$item->nama_post}}
+                                {{$item->id_post}}
+                                {{$item->id_parent_post}}
+                            </div>
+                        </div>
+                    </div>
+                    @endif
+                @endforeach
+            </div>
+            @endif
+        </div>
+        @endforeach
 
+    </div>
 </div>
-
+<script src="{{asset('/assets/select2/select2.min.js')}}"></script>
 @endsection

@@ -47,7 +47,7 @@ class Tag_P extends Controller
             $tag_all[]=(object) array(
                 'id_tag' => $id_tag,
                 'nama_tag' => $nama_tag,
-                'det_pos' => $new_det,
+                'det_tag' => $new_det,
             );
         }
         return view ('pengguna/tag/detail_post_tag',compact('tag_post','tag_all'));
