@@ -17,6 +17,39 @@ class Tag_P extends Controller
         ->leftJoin('tb_tag','tb_post.id_tag','=','tb_tag.id_tag')
         ->select('tb_post.id_post','tb_post.nama_post','tb_post.gambar','tb_post.deskripsi','tb_tag.nama_tag','tb_post.id_tag')
         ->paginate(5);
-        return view('pengguna/tag/index_tag2',compact('tag'));
+        return view('pengguna/tag/index_tag',compact('tag'));
+    }
+    public function detail_post_t($id_post)
+    {
+        $tag_post = M_Post::where('tb_post.id_post',$id_post)->first();
+        $data = M_Tag::all();
+        $tag_all=[];
+        $new_det=[];
+        foreach ($data as $tag) {
+            $id_tag = $tag->id_tag;
+            $nama_tag  =$tag->nama_tag;
+            $det_post = M_Tag::where('tb_detil_post.id_post',$id_post)
+            ->where('tb_detil_post.id_tag',$id_tag)
+            ->leftJoin('tb_detil_post','tb_tag.id_tag','=','tb_detil_post.id_tag')
+            ->leftJoin('tb_post','tb_detil_post.id_parent_post','=','tb_post.id_post')
+            ->select('tb_tag.id_tag', 'tb_tag.nama_tag', 'tb_post.nama_post', 'tb_post.gambar','tb_detil_post.id_post', 'tb_detil_post.id_parent_post')
+            ->get();
+            foreach ($det_post as $dp) {
+                $new_det[]=(object) array(
+                    'id_tag' => $dp->id_tag,
+                    'nama_tag' => $dp->nama_tag,
+                    'nama_post' => $dp->nama_post,
+                    'gambar' => $dp->gambar,
+                    'id_post' => $dp->id_post,
+                    'id_parent_post' => $dp->id_parent_post,
+                );
+            }
+            $tag_all[]=(object) array(
+                'id_tag' => $id_tag,
+                'nama_tag' => $nama_tag,
+                'det_pos' => $new_det,
+            );
+        }
+        return view ('pengguna/tag/detail_post_tag',compact('tag_post','tag_all'));
     }
 }
