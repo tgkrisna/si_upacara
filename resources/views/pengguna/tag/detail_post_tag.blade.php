@@ -47,9 +47,10 @@
                         <div class="card" style="background-image: url(/gambarku/{{$item->gambar}})">
                             <div class="card-body">
                                 {{$item->nama_post}}
-                                {{$item->id_post}}
-                                {{$item->id_parent_post}}
+                                {{-- {{$item->id_post}}
+                                {{$item->id_parent_post}} --}}
                             </div>
+                            <a href="/tag_pengguna/detil/{{$item->id_parent_post}}/{{$item->id_tag}}" class="btn btn-primary btn-sm btn-primer btn-card">Lihat</a>
                         </div>
                     </div>
                     @endif
