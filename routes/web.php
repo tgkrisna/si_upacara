@@ -42,7 +42,7 @@ Route::put('/kategori/update_post_k/{id_post}','Kategori@update_post_k');
 Route::get('/kategori/cari_post_k','Kategori@cari_post_k');
 Route::get('/kategori/delete_post_k/{id_post}','Kategori@delete_post_k');
 Route::get('/kategori/detil_post_k/{id_post}','Kategori@detil_post_k');
-Route::get('/kategori/detil_post_kp/{id_parent_post}/{id_post}','Kategori@detil_post_kp');
+Route::get('/kategori/detil_post_kp/{id_parent_post}/{id_post}/{id_tag}','Kategori@detil_post_kp');
 //Tag
 Route::get('/tags/{id_tag}','Tag@detil_tag');
 Route::get('/tag/detil_tagku','Tag@tagku');

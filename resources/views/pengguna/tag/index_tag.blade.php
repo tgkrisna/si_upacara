@@ -20,7 +20,7 @@
                         @if ($tg['gambar']!='')
                             <img src="/gambarku/{{$tg->gambar}}" alt="{{$tg->nama_post}}" class="card-img-top">
                         @else
-                            <img src="assets/images/placeholder.png" alt="" class="card-img-top">
+                            <img src="/assets/images/placeholder.png" alt="" class="card-img-top">
                         @endif
                     </div>
                     <div class="card-body col-lg-9 pl-0">

@@ -16,7 +16,7 @@
             @if ($tag_post->gambar != '')
                 <img src="/gambarku/{{$tag_post->gambar}}" alt="..." class="card-img-top">
             @else
-            <img src="assets/images/placeholder.png" alt="..." class="card-img-top">
+                <img src="/assets/images/placeholder.png" alt="..." class="card-img-top">
             @endif
         </div>
         <div class="col-9">
@@ -44,13 +44,13 @@
                 @foreach ($tg_al->det_tag as $item)
                     @if ($tg_al->id_tag == $item->id_tag)
                     <div class="col-lg-4" style="margin-top: 16px">
-                        <div class="card" style="background-image: url(/gambarku/{{$item->gambar}})">
-                            <div class="card-body">
+                        <div class="cardmix" style="background-image: url(/gambarku/{{$item->gambar}})">
+                            <div class="cardmix-body">
                                 {{$item->nama_post}}
                                 {{-- {{$item->id_post}}
                                 {{$item->id_parent_post}} --}}
                             </div>
-                            <a href="/tag_pengguna/detil/{{$item->id_parent_post}}/{{$item->id_tag}}" class="btn btn-primary btn-sm btn-primer btn-card">Lihat</a>
+                            <a href="/tag_pengguna/detil/{{$item->id_parent_post}}/{{$item->id_tag}}" class="btn btn-primary btn-sm btn-primer btn-cardmix">Lihat</a>
                         </div>
                     </div>
                     @endif

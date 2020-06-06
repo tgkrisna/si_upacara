@@ -71,7 +71,7 @@
 	</div>
 	<div class="clearfix" style="margin-bottom: 16px">
 		<h3 style="margin: 0" class="pull-left">
-			Prosesi
+			Prosesi Upacara
 		</h3>
 		<a href="#" data-toggle="modal" data-target="#detail-modal" class="btn btn-sm btn-primary pull-right" data-type="post_prosesi"><i class="fa fa-plus">Tambah Prosesi</i></a>
 	</div>
@@ -102,7 +102,7 @@
                                 {{-- {{$item->nama_status}} --}}
 								{{-- {{$item->id_post}} --}}
 								{{-- {{$item->id_parent_post}} --}}
-							<a href="/kategori/detil_post_kp/{{$item->id_parent_post}}/{{$item->id_post}}" class="btn btn-primary btn-sm">Lihat</a>
+								<a href="/kategori/detil_post_kp/{{$item->id_parent_post}}/{{$item->id_post}}/{{$item->id_tag}}" class="btn btn-primary btn-sm">Lihat</a>
                             	<a href="#" class="btn btn-danger btn-delete btn-sm" data-id="#">Hapus</a>
                             </div>
 						</div>
@@ -126,7 +126,7 @@
 			@if (!empty($drops->det_tag))
 			<div class="row" style="margin-bottom: 16px">
 				@foreach ($drops->det_tag as $item)
-					@if ($drops->id_tag == $item->id_tag && $item->nama_tag != "Prosesi Upacara")
+					@if ($drops->id_tag == $item->id_tag)
 				<div class="col-lg-4" style="margin-top: 16px">
 					<div class="card" style="background-image: url(/gambarku/{{$item->gambar}})">
 						<div class="card-body">

@@ -158,9 +158,12 @@ class Kategori extends Controller
     }
     public function detil_post_k($id_post)
     {
+        $id_tag=3;
         $kategori_post = M_Post::where('tb_post.id_post',$id_post)->first();
         $data = M_Status::all();
-        $data_tag = M_Tag::select('id_tag','nama_tag')->get();
+        $data_tag = M_Tag::where('tb_tag.id_tag','!=',$id_tag)
+        ->select('id_tag','nama_tag')
+        ->get();
         $drop_d=[];
         $new_det=[];
         $drop_t=[];
@@ -172,7 +175,7 @@ class Kategori extends Controller
             ->where('tb_detil_post.id_status',$id_status)
             ->leftJoin('tb_detil_post','tb_status.id_status','=','tb_detil_post.id_status')
             ->leftJoin('tb_post','tb_detil_post.id_parent_post','=','tb_post.id_post')
-            ->select('tb_status.id_status', 'tb_status.nama_status', 'tb_post.nama_post', 'tb_post.gambar','tb_detil_post.id_post', 'tb_detil_post.id_parent_post')
+            ->select('tb_status.id_status', 'tb_status.nama_status', 'tb_post.nama_post', 'tb_post.gambar','tb_detil_post.id_post', 'tb_detil_post.id_parent_post', 'tb_detil_post.id_tag')
             ->get();
             foreach ($det_pos as $dp) {
                 $new_det[]=(object) array(
@@ -182,6 +185,7 @@ class Kategori extends Controller
                     'gambar' => $dp->gambar,
                     'id_post' => $dp->id_post,
                     'id_parent_post' => $dp->id_parent_post,
+                    'id_tag' => $dp->id_tag,
                 );
             }
             $drop_d[]=(object) array(
@@ -191,7 +195,7 @@ class Kategori extends Controller
             );
         }
         foreach ($data_tag as $tag) {
-            $id_tag = $tag->id_tag;
+            $id_tagku = $tag->id_tag;
             $nama_tag = $tag->nama_tag;
             $det_tag = M_Det_Post::where('tb_detil_post.id_post',$id_post)
             ->where('tb_detil_post.spesial',$id_post)
@@ -211,18 +215,20 @@ class Kategori extends Controller
                 );
             }
             $drop_t[]=(object) array(
-                'id_tag' => $id_tag,
+                'id_tag' => $id_tagku,
                 'nama_tag' => $nama_tag,
                 'det_tag' => $new_tag,
             );
         }
         return view('admin/kategori/detil_post_kategori',compact('kategori_post','drop_d','drop_t'));
     }
-    public function detil_post_kp($id_parent_post,$id_post)
+    public function detil_post_kp($id_parent_post,$id_post,$id_tag)
     {
         $kategori_post = M_Post::where('tb_post.id_post',$id_parent_post)->first();
         $data_tingkatan = M_Tingkatan::all();
-        $data_tag = M_Tag::select('id_tag','nama_tag')->get();
+        $data_tag = M_Tag::where('tb_tag.id_tag','!=',$id_tag)
+        ->select('id_tag','nama_tag')
+        ->get();
         $drop_ting = [];
         $new_ting = [];
         $drop_tag = [];
@@ -257,7 +263,7 @@ class Kategori extends Controller
             );
         }
         foreach ($data_tag as $tag) {
-            $id_tag = $tag->id_tag;
+            $id_tagku = $tag->id_tag;
             $nama_tag = $tag->nama_tag;
             $det_tag = M_Det_Post::where('tb_detil_post.id_post',$id_parent_post)
             ->where('tb_detil_post.spesial',$id_post)
@@ -276,7 +282,7 @@ class Kategori extends Controller
                 );
             }
             $drop_tag[]=(object) array(
-                'id_tag' => $id_tag,
+                'id_tag' => $id_tagku,
                 'nama_tag' => $nama_tag,
                 'det_tag' => $new_tag,
             );
