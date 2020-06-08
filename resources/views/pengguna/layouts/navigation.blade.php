@@ -12,19 +12,16 @@
                         Yadnya
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="#">Dewa Yadnya</a>
-                        <a class="dropdown-item" href="#">Pitra Yadnya</a>
+                        @foreach($data['kategori'] as $kat)
+                        <a class="dropdown-item" href="/kategori_pengguna/{{$kat->id_kategori}}">{{$kat->nama_kategori}}</a>
+                        @endforeach
                     </div>
                 </li>
+                @foreach($data['tag'] as $tg)
                 <li class="nav-item">
-                    <a href="#" class="nav-link">Tari</a>
+                    <a href="/tag_pengguna/{{$tg->id_tag}}" class="nav-link">{{$tg->nama_tag}}</a>
                 </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">Gamelan</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">Tabuh</a>
-                </li>
+                @endforeach
             </ul>
                 <form class="form-inline ml-auto" action="#">
                     <input class="form-control form-control-sm" type="search" name="query" value="#" placeholder="Cari sesuatu..." aria-label="Search">

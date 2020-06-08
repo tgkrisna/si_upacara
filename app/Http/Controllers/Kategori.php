@@ -225,6 +225,11 @@ class Kategori extends Controller
     public function detil_post_kp($id_parent_post,$id_post,$id_tag)
     {
         $kategori_post = M_Post::where('tb_post.id_post',$id_parent_post)->first();
+        // $data_tingkatanku = M_Post::where('tb_post.id_post',$id_parent_post)
+        // ->where('tb_detil_post.spesial',$id_post)
+        // ->leftJoin('tb_detil_post','tb_post.id_post','=','tb_detil_post.id_post')
+        // ->leftJoin('tb_tingkatan','tb_detil_post.id_tingkatan','=','tb_tingkatan.id_tingkatan')
+        // ->select()
         $data_tingkatan = M_Tingkatan::all();
         $data_tag = M_Tag::where('tb_tag.id_tag','!=',$id_tag)
         ->select('id_tag','nama_tag')
@@ -240,18 +245,15 @@ class Kategori extends Controller
             $det_post = M_Post::where('tb_post.id_post',$id_parent_post)
             ->where('tb_detil_post.spesial',$id_post)
             ->leftJoin('tb_detil_post','tb_post.id_post','=','tb_detil_post.id_post')
-            ->leftJoin('tb_tag','tb_post.id_tag','=','tb_tag.id_tag')
             ->leftJoin('tb_tingkatan','tb_detil_post.id_tingkatan','=','tb_tingkatan.id_tingkatan')
-            ->select('tb_post.nama_post','tb_post.gambar','tb_tag.nama_tag','tb_detil_post.id_tag'
-                    ,'tb_detil_post.id_tingkatan','tb_detil_post.id_parent_post')
+            ->select('tb_post.nama_post','tb_post.gambar'
+                    ,'tb_detil_post.id_tingkatan','tb_detil_post.id_post','tb_detil_post.id_parent_post')
             ->get();
             foreach ($det_post as $dt) {
                 $new_ting[]=(object)array(
                     'id_post' => $dt->id_post,
                     'nama_post' => $dt->nama_post,
                     'gambar' => $dt->gambar,
-                    'id_tag' => $dt->id_tag,
-                    'nama_tag' => $dt->nama_tag,
                     'id_tingkatan' => $dt->id_tingkatan,
                     'id_parent_post' => $dt->id_parent_post,
                 ); 

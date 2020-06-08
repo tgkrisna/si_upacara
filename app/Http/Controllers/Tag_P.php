@@ -11,8 +11,7 @@ use App\M_Tingkatan;
 
 class Tag_P extends Controller
 {
-    public function index_p(){
-        $id_tag = "1";
+    public function index_p($id_tag){
         $tag = M_Post::where('tb_post.id_tag',$id_tag)
         ->leftJoin('tb_tag','tb_post.id_tag','=','tb_tag.id_tag')
         ->select('tb_post.id_post','tb_post.nama_post','tb_post.gambar','tb_post.deskripsi','tb_tag.nama_tag','tb_post.id_tag')

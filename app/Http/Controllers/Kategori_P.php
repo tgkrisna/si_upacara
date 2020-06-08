@@ -11,9 +11,9 @@ use App\M_Tingkatan;
 
 class Kategori_P extends Controller
 {
-    public function index_k(){
-        $id_kategori = "3";
+    public function index_k($id_kategori){
         $kategori = M_Post::where('tb_post.id_kategori',$id_kategori)
+        ->where('tb_post.id_tag',NULL)
         ->leftJoin('tb_kategori','tb_post.id_kategori','=','tb_kategori.id_kategori')
         ->select('tb_post.id_post','tb_post.nama_post','tb_post.gambar','tb_post.deskripsi','tb_kategori.nama_kategori','tb_post.id_kategori')
         ->paginate(5);

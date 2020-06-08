@@ -9,7 +9,7 @@
     @endforeach
     @if (count($kategori) === 0)
     <div class="text-center">
-        <img src="assets/images/empty.svg" alt="" width="480">
+        <img src="/assets/images/empty.svg" alt="" width="480">
         <h5 class="my-5 text-muted">Tidak ada data.</h5>
     </div>
     @endif
@@ -20,12 +20,12 @@
                         @if ($kt['gambar']!='')
                             <img src="/gambarku/{{$kt->gambar}}" alt="{{$kt->nama_post}}" class="card-img-top">
                         @else
-                            <img src="assets/images/placeholder.png" alt="" class="card-img-top">
+                            <img src="/assets/images/placeholder.png" alt="" class="card-img-top">
                         @endif
                     </div>
                     <div class="card-body col-lg-9 pl-0">
                         <h4>
-                            <a href="#/{{$kt->id_post}}" class="card-link stretched-link"></a>
+                            <a href="#/{{$kt->id_post}}/{{$kt->id_kategori}}" class="card-link stretched-link"></a>
                             {{$kt->nama_post}}
                         </h4>
                         <div class="row">
