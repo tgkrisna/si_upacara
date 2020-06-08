@@ -11,9 +11,12 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
+
+Route::get('/', 'Kategori_P@homepage');
+// Route::get('/home','Kategori_P@homepage');
 
 Route::get('/admin','Admin@index');
 Route::get('/login','Admin@login');
@@ -62,6 +65,7 @@ Route::get('/tag/detil_post_t/{id_post}','Tag@detil_post_t');
 Route::get('/tag/drop_down_t/{id}','Tag@drop_down_tag');
 // Route::get('/tag/tambah_detil_post_t/{id_post}','Tag@tambah_detil_post_t');
 //Pengguna
+
 Route::get('/tag_pengguna/{id_tag}','Tag_P@index_p');
 Route::get('/tag_pengguna/detil/{id_post}/{id_tag}','Tag_P@detail_post_t');
 Route::get('/kategori_pengguna/{id_kategori}','Kategori_P@index_k');

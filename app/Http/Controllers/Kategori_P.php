@@ -19,4 +19,8 @@ class Kategori_P extends Controller
         ->paginate(5);
         return view('pengguna/kategori/index_kategori',compact('kategori'));
     }
+
+    public function homepage(){
+        return view('pengguna/homepage');
+    }
 }
