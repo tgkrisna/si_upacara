@@ -1,3 +1,6 @@
+<!DOCTYPE html>
+<html class="with-background">
+<body>
 @extends('pengguna/layouts.app')
 
 @section('konten')
@@ -20,7 +23,7 @@
                 <div class="card card-upacara gradient-1 text-center">
                     <div class="card-body">
                         <h1 class="card-title my-5">
-                            <a href="#" class="stretched-link">
+                            <a href="/kategori_pengguna/{{$kat->id_kategori}}" class="stretched-link">
                                 {{$kat->nama_kategori}}
                             </a>
                         </h1>
@@ -29,6 +32,8 @@
             </div>
             @endforeach
         </div>
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div>
     </div>
 </div>
 <script src="{{asset('/assets/swiper/dist/js/swiper.js')}}">
@@ -43,3 +48,5 @@ var mySwiper = new Swiper('#swiper-menu', {
     mySwiper.slideNext();
 </script>
 @endsection
+</body>
+</html>
