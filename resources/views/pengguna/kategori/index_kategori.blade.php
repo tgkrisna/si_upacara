@@ -25,7 +25,7 @@
                     </div>
                     <div class="card-body col-lg-9 pl-0">
                         <h4>
-                            <a href="#/{{$kt->id_post}}/{{$kt->id_kategori}}" class="card-link stretched-link"></a>
+                            <a href="/kategori_pengguna/detil/{{$kt->id_post}}/{{$kt->id_kategori}}" class="card-link stretched-link"></a>
                             {{$kt->nama_post}}
                         </h4>
                         <div class="row">
