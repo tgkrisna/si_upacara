@@ -51,6 +51,40 @@
 		</form>
 	</div>
 </div>
+
+<div class="modal fade" id="tag-modal" tabindex="-1" role="dialog">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Tutup">
+					<span aria-hidden="true">
+						&times;
+					</span>
+				</button>
+				<h4 class="modal-title">
+					Tambah
+					<span class="add-item-label"></span>
+				</h4>
+			</div>
+			<form class="form" action="#" method="POST">
+				<input type="hidden" name="type">
+				<div class="modal-body">
+					<div class="form-group">
+						<label class="control-label">
+							<span class="add-item-label"></span>
+						</label>
+						<select name="list-tag" style="width:100%;" class="list-tag" class="form-control" required></select>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
+					<button type="submit" class="btn btn-primary">Simpan</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+
 	<div class="row">
 		<div class="col-lg-3">
 			<img src="/gambarku/{{$kategori_post->gambar}}" width="100%">
@@ -127,23 +161,23 @@
 			<div class="row" style="margin-bottom: 16px">
 				@foreach ($drops->det_tag as $item)
 					@if ($drops->id_tag == $item->id_tag)
-				<div class="col-lg-4" style="margin-top: 16px">
-					<div class="card" style="background-image: url(/gambarku/{{$item->gambar}})">
-						<div class="card-body">
-							{{$item->nama_post}}
-							{{$item->id_post}}
-							{{$item->id_parent_post}}
+						<div class="col-lg-4" style="margin-top: 16px">
+							<div class="card" style="background-image: url(/gambarku/{{$item->gambar}})">
+								<div class="card-body">
+									{{$item->nama_post}}
+									{{$item->id_post}}
+									{{$item->id_parent_post}}
+								</div>
+								<!-- Pakai if untuk deleteable -->
+								<a data-id="#" class="btn btn-delete btn-sm btn-danger btn-card">Hapus</a>
+								<!-- Pakai endif deleteable -->
+							</div>
 						</div>
-						<!-- Pakai if untuk deleteable -->
-						<a data-id="#" class="btn btn-delete btn-sm btn-danger btn-card">Hapus</a>
-						<!-- Pakai endif deleteable -->
-					</div>
-				</div>
 					@endif	
 				@endforeach
 					<!-- endforeach untuk nama tag tari -->
 				<div class="col-lg-4" style="margin-top: 16px">
-					<a class="card" data-toggle="modal" href="#detail-modal" data-type="tari"><i class="fa fa-plus fa-4x"></i></a>
+					<a class="card tag-button" href="#" data-toggle="modal" data-target="#tag-modal" data-tag="{{ $drops->id_tag }}"><i class="fa fa-plus fa-4x"></i></a>
 				</div>
 			</div>
 			@endif
@@ -154,6 +188,32 @@
 </div>
 <script src="{{asset('/assets/select2/select2.min.js')}}"></script>
 <script>
-	
+	$('.list-tag').select2();
+	let id_kategori = {!! json_encode($kategori_post->id_kategori) !!};
+	let id_post = {!! json_encode($kategori_post->id_post) !!};
+	$('.tag-button').click(function(){
+		let tag = $(this).data('tag');
+		$.ajax({
+			url: "/kategori/list_tag",
+			type: "get",
+			dataType: "json",
+			data: {
+				id_kategori:id_kategori,
+				id_tag:tag
+			} ,
+			success: function (data) {
+				console.log(data)
+				let html = '<option value="">Pilih Jenis</option>'
+				for(var i=0;i < data.length; i++){
+					html+='<option value="'+data[i].id_post+'">'+data[i].nama_post+'</option>';
+				}
+
+				$('.list-tag').html(html);
+			},
+			error: function(jqXHR, textStatus, errorThrown) {
+				console.log(textStatus, errorThrown);
+			}
+		});
+	});
 </script>
 @endsection

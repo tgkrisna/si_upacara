@@ -160,6 +160,8 @@ class Kategori extends Controller
     {
         $id_tag=3;
         $kategori_post = M_Post::where('tb_post.id_post',$id_post)->first();
+        
+
         $data = M_Status::all();
         $data_tag = M_Tag::where('tb_tag.id_tag','!=',$id_tag)
         ->select('id_tag','nama_tag')
@@ -290,5 +292,13 @@ class Kategori extends Controller
             );
         }
         return view('admin/kategori/detil_post_kp',compact('kategori_post','drop_ting','drop_tag'));
+    }
+    public function list_tag(Request $request)
+    {
+        $data_tag = M_Post::where('tb_post.id_tag','=',$request->id_tag)
+        ->where('tb_post.id_kategori','=',$request->id_kategori)
+        ->get();
+
+        return $data_tag;
     }
 }
