@@ -2,28 +2,39 @@
 
 @section('konten')
 <meta name="csrf-token" content="{{ csrf_token() }}" />
-<div class="modal fade" id="detail-modal" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Tutup"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Tambah <span class="add-item-label"></span></h4>
-            </div>
-            <form class="form" action="#" method="POST">
-                <input type="hidden" name="type" />
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label class="control-label"><span class="add-item-label"></span></label>
-                        <select name="detail" class="form-control" required></select>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
-                    <button type="submit" class="btn btn-primary">Simpan</button>
-                </div>
-            </form>
-        </div>
-    </div>
+<div class="modal fade" id="tag-modal" tabindex="-1" role="dialog">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Tutup">
+					<span aria-hidden="true">
+						&times;
+					</span>
+				</button>
+				<h4 class="modal-title">
+					Tambah
+					<span class="add-item-label"></span>
+				</h4>
+			</div>
+			<form class="form" action="/kategori/input_list_tag" method="POST">
+				{{ csrf_field() }}
+				<div class="modal-body">
+					<div class="form-group">
+						<label class="control-label">
+							<span class="add-item-label"></span>
+						</label>
+						<select name="list-tag" style="width:100%;" class="list-tag" class="form-control" required></select>
+					</div>
+				</div>
+				{{-- <input type="text" name="id_post_up" value="{{$tag_post->id_post}}"> 
+				<input type="hidden" name="type"> --}}
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
+					<button type="submit" class="btn btn-primary">Simpan</button>
+				</div>
+			</div>
+		</form>
+	</div>
 </div>
 <br>
 <div class="row">
@@ -84,7 +95,7 @@
 					@endif
 					<!-- Katanya Pake EndForeach lagi -->
 					<div class="col-lg-2">
-						<a class="card" data-toggle="modal" href="#detail-modal" data-type="detil_post"><i class="fa fa-plus fa-4x"></i></a>
+						<a class="card" data-toggle="modal" href="#" data-target="#tag-modal" data-tag="{{ $drop->id_tag }}"><i class="fa fa-plus fa-4x"></i></a>
 					</div>
 				</div>
 			</div>
@@ -102,7 +113,7 @@
 	}
 
 </style>
-<script type="text/javascript">
+{{-- <script type="text/javascript">
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -160,6 +171,33 @@
 			    	console.log(response);
 			    }
    			});
+		});
+	});
+</script> --}}
+<script>
+	$('.list-tag').select2();
+	let id_tag = {!! json_encode($tag_post->id_kategori) !!};
+	let id_post = {!! json_encode($tag_post->id_post) !!};
+	$('.tag-button').click(function(){
+		let tag = $(this).data('tag');
+		$.ajax({
+			url: "/kategori/list_tag",
+			type: "get",
+			dataType: "json",
+			data: {
+				id_kategori:id_kategori,
+				id_tag:tag
+			} ,
+			success: function (data) {
+				console.log(data)
+				let html = '<option value="">Pilih Jenis</option>'
+				for(var i=0;i < data.length; i++){
+					html+='<option value="'+data[i].id_post+'">'+data[i].nama_post+'</option>';				}
+				$('.list-tag').html(html);
+			},
+			error: function(jqXHR, textStatus, errorThrown) {
+				console.log(textStatus, errorThrown);
+			}
 		});
 	});
 </script>
