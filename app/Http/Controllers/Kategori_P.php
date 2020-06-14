@@ -21,7 +21,7 @@ class Kategori_P extends Controller
     }
 
     public function homepage(){
-        return view('pengguna/homepage');
+        return view('pengguna/homepage2');
     }
 
     public function detail_post_k($id_post,$id_kategori)
