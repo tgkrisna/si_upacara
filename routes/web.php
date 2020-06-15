@@ -22,6 +22,7 @@ Route::get('/admin','Admin@index');
 Route::get('/login','Admin@login');
 Route::post('/login_auth','Admin@login_auth');
 Route::get('/logout','Admin@logout');
+Route::get('/index','Admin@index');
 //Operator Admin
 Route::get('/admin/operator','Admin@operator');
 Route::get('/admin/tambah_operator','Admin@tambah_operator');

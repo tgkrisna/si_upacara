@@ -159,11 +159,13 @@ class Kategori extends Controller
     public function detil_post_k($id_post)
     {
         $id_tag=3;
+        $id_tag2=5;
         $kategori_post = M_Post::where('tb_post.id_post',$id_post)->first();
         
 
         $data = M_Status::all();
         $data_tag = M_Tag::where('tb_tag.id_tag','!=',$id_tag)
+        ->where('tb_tag.id_tag','!=',$id_tag2)
         ->select('id_tag','nama_tag')
         ->get();
         $drop_d=[];

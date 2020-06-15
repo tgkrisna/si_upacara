@@ -21,14 +21,15 @@
     <div id="multi-item-example" class="carousel slide carousel-multi-item" data-ride="carousel">
     <!--Indicators-->
     <ol class="carousel-indicators">
-        @foreach($data['kategori'] as $kat)
+        @foreach($kategori as $kat)
       <li data-target="#multi-item-example" data-slide-to="{{ $loop->index }}" class="{{ $loop->first ? 'active' : '' }}"></li>
       @endforeach
     </ol>
+    
     <!--/.Indicators-->
         <!--Slides-->
         <div class="carousel-inner" role="listbox">
-        @foreach($data['kategori'] as $kat)
+        @foreach($kategori as $kat)
         <!--First slide-->
             <div class="carousel-item {{ $loop->first ? 'active' : '' }}">
                 <div class="col-md-3" style="float:left">
@@ -45,6 +46,7 @@
         @endforeach
         </div>
     <!--/.Slides-->
+    </div>
     <a class="carousel-control-prev" href="#multi-item-example" role="button" data-slide="prev">
         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
         <span class="sr-only">Previous</span>
@@ -53,7 +55,6 @@
         <span class="carousel-control-next-icon" aria-hidden="true"></span>
         <span class="sr-only">Next</span>
     </a>
-    </div>
 </div>
   <!--/.Carousel Wrapper-->
 

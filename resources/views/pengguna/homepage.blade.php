@@ -36,16 +36,24 @@
         <div class="swiper-button-next"></div>
     </div>
 </div>
-<script src="{{asset('/assets/swiper/dist/js/swiper.js')}}">
-var mySwiper = new Swiper('#swiper-menu', {
-    speed: 400,
-    spaceBetween: 100,
-    effect: 'slide',
-    slidesPerView: 'auto'
-});
-    var mySwiper = document.querySelector('#swiper-menu').swiper
+<script src="{{asset('/assets/swiper/dist/js/swiper.min.js')}}">
+// var mySwiper = new Swiper('#swiper-menu', {
+//     speed: 400,
+//     spaceBetween: 100,
+//     effect: 'slide',
+//     slidesPerView: 'auto'
+// });
+//     var mySwiper = document.querySelector('#swiper-menu').swiper
 
-    mySwiper.slideNext();
+//     mySwiper.slideNext();
+var swiper = new Swiper('.card-body', {
+      spaceBetween: 30,
+      centeredSlides: true,
+      autoplay: {
+        delay: 2500,
+        disableOnInteraction: false,
+      },
+    });
 </script>
 @endsection
 </body>

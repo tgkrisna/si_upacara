@@ -12,7 +12,7 @@
     <div class="divider"></div>
     <ul class="nav menu">
         <li>
-            <a href="#">
+            <a href="/index">
                 <i style="width: 24px" class="fa fa-home">&nbsp;</i>
                 <span>Beranda</span>
             </a>

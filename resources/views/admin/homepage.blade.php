@@ -13,7 +13,11 @@
         <div class="panel panel-teal">
             <div class="panel-body">
                 <span>{{$dash->nama_kategori}}</span>
-                <h1 class="text-center" style="margin: 1em 0 0.5em; color: white; font-weight: bold">{{$dash->id_post}}</h1>
+                @if ($dash->id_post != '')
+                    <h1 class="text-center" style="margin: 1em 0 0.5em; color: white; font-weight: bold">{{$dash->id_post}}</h1>
+                @else
+                    <h1 class="text-center" style="margin: 1em 0 0.5em; color: white; font-weight: bold">Tidak ada data</h1>
+                @endif
             </div>
         </div>
     </div>
