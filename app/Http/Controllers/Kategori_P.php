@@ -24,6 +24,15 @@ class Kategori_P extends Controller
         return view('pengguna/homepage');
     }
 
+    public function cari_p(Request $request){
+        $cari = $request->cari;
+        $pencarian = M_Post::where('tb_post.nama_post','LIKE',"%".$cari."%")
+        ->leftJoin('tb_kategori','tb_post.id_kategori','=','tb_kategori.id_kategori')
+        ->leftJoin('tb_tag','tb_post.id_tag','=','tb_tag.id_tag')
+        ->paginate(5);
+        return view('pengguna/searching',compact('pencarian'));
+    }
+
     public function detail_post_k($id_post,$id_kategori)
     {
         $kategori_post = M_Post::where('tb_post.id_post',$id_post)

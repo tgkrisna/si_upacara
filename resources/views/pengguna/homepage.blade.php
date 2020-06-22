@@ -6,7 +6,8 @@
 @section('konten')
 <div class="container py-5">
     <h1 class="text-center mb-5 text-white">E-Upacara</h1>
-    <form action="#" class="form mb-5">
+    <form action="/pengguna/searching" method="POST" class="form mb-5">
+        {{ csrf_field() }}
         <div class="input-group">
             <input class="form-control" placeholder="Cari..." name="cari">
             <span class="input-group-append">
