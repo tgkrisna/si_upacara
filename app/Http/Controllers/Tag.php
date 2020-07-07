@@ -246,4 +246,15 @@ class Tag extends Controller
         $list_tag = M_Post::where('id_tag', $request->id_tag)->get();
         return response()->json($list_tag);
     }
+
+    public function input_list_tagku(Request $request)
+    {
+        $data = new M_Det_Post();
+        $data->id_tag = $request->id_tag;
+        $data->id_post = $request->id_post;
+        $data->id_parent_post = $request->id_parent_post;
+        $data->save();
+        $id_postku = $request->id_post;
+        return redirect('/tag/detil_post_t/'.$id_postku);
+    }
 }

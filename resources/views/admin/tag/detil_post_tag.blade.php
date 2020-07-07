@@ -1,6 +1,7 @@
 @extends('admin/layouts.app',['data' => $data])
 
 @section('konten')
+<link rel="stylesheet" href="{{asset('/assets/select2/select2.min.css')}}">
 <meta name="csrf-token" content="{{ csrf_token() }}" />
 <div class="modal fade" id="tag-modal" tabindex="-1" role="dialog">
 	<div class="modal-dialog" role="document">
@@ -16,7 +17,7 @@
 					<span class="add-item-label"></span>
 				</h4>
 			</div>
-			<form class="form" action="/kategori/input_list_tag/" method="POST">
+			<form class="form" action="/tag/input_list_tagku/" method="POST">
 				{{ csrf_field() }}
 				<div class="modal-body">
 					<div class="form-group">
@@ -26,9 +27,8 @@
 						<select name="id_parent_post" style="width:100%;" class="list-tag" class="form-control" required></select>
 					</div>
 				</div>
-				<input type="text" name="id_post" value="{{$tag_post->id_post}}"/>
-				<input type="text" name="id_tag" class="id-tag" value=""/>
-				
+					<input type="hidden" name="id_post" value="{{$tag_post->id_post}}"/>
+					<input type="hidden" name="id_tag" class="id-tag" value=""/>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
 					<button type="submit" class="btn btn-primary">Simpan</button>
@@ -176,12 +176,11 @@
 	});
 </script> --}}
 <script>
-	// $('.list-tag').select2();
+	$('.list-tag').select2();
 	let id_tag = {!! json_encode($tag_post->id_kategori) !!};
 	let id_post = {!! json_encode($tag_post->id_post) !!};
 	$('.tag-button').click(function(){
 		let tag = $(this).data('tag');
-		
 		$.ajax({
 			url: "/tag/dropdown",
 			type: "get",
