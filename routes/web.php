@@ -65,7 +65,7 @@ Route::get('/tag/edit_post_t/{id_post}','Tag@edit_post_t');
 Route::put('/tag/update_post_t/{id_post}','Tag@update_post_t');
 Route::get('/tag/cari_post_t','Tag@cari_post_t');
 Route::get('/tag/delete_post_t/{id_post}','Tag@delete_post_t');
-Route::get('/tag/detil_post_t/{id_post}','Tag@detil_post_t');
+Route::get('/tag/detil_post_t/{id_tag}/{id_post}','Tag@detil_post_t');
 Route::get('/tag/drop_down_t/{id}','Tag@drop_down_tag');
 
 //yuda list tag

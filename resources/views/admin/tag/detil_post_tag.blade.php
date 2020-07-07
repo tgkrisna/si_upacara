@@ -29,6 +29,7 @@
 				</div>
 					<input type="hidden" name="id_post" value="{{$tag_post->id_post}}"/>
 					<input type="hidden" name="id_tag" class="id-tag" value=""/>
+					<input type="hidden" name="id_tagku" value="{{$tag_post->id_tag}}">
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
 					<button type="submit" class="btn btn-primary">Simpan</button>

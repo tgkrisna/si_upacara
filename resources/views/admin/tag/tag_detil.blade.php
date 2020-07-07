@@ -135,9 +135,8 @@
                                     @endif
                                 </td> --}}
                                 <td>
-                                    <input type="hidden" value="{{$t->id_tag}}">
                                     <a href="/tag/edit_post_t/{{$t->id_post}}" class="btn btn-primary btn-xs"><i class="fa fa-edit" style="margin-right: 4px"></i>Edit</a>
-                                    <a href="/tag/detil_post_t/{{$t->id_post}}" class="btn btn-info btn-xs"><i class="fa fa-eye" style="margin-right: 4px"></i>Tag</a>
+                                    <a href="/tag/detil_post_t/{{$t->id_tag}}/{{$t->id_post}}" class="btn btn-info btn-xs"><i class="fa fa-eye" style="margin-right: 4px"></i>Tag</a>
                                     <a href="/tag/delete_post_t/{{$t->id_post}}" onclick="return confirm('Delete ?')" class="btn btn-danger btn-xs"><i class="fa fa-remove" style="margin-right: 4px">Hapus</i></a>
                                 </td>
                             </tr>

@@ -176,19 +176,21 @@ class Tag extends Controller
         return view('admin/tag/tag_detil',['tag'=>$pencarian]);
     }
 
-    public function detil_post_t($id_post)
+    public function detil_post_t($id_tag, $id_post)
     {
         $tag_post = M_Post::where('tb_post.id_post',$id_post)->first();
         // $drop_d = M_Tag::all();
         // return view ('admin/tag/detil_post_tag',compact('tag','drop_d'));
-        $data = M_Tag::all();
+        $data = M_Tag::where('tb_tag.id_tag','!=',$id_tag)
+                    ->select('id_tag','nama_tag')
+                    ->get();
         $drop_d=[];
         $new_det=[];
         foreach ($data as $tag) {
-            $id_tag = $tag->id_tag;
-            $nama_tag  =$tag->nama_tag;
+            $id_tagku = $tag->id_tag;
+            $nama_tag = $tag->nama_tag;
             $det_pos = M_Tag::where('tb_detil_post.id_post',$id_post)
-            ->where('tb_detil_post.id_tag',$id_tag)
+            ->where('tb_detil_post.id_tag',$id_tagku)
             ->leftJoin('tb_detil_post','tb_tag.id_tag','=','tb_detil_post.id_tag')
             ->leftJoin('tb_post','tb_detil_post.id_parent_post','=','tb_post.id_post')
             ->select('tb_tag.id_tag', 'tb_tag.nama_tag', 'tb_post.nama_post', 'tb_post.gambar','tb_detil_post.id_post', 'tb_detil_post.id_parent_post')
@@ -205,7 +207,7 @@ class Tag extends Controller
             }
 
             $drop_d[]=(object) array(
-                'id_tag' => $id_tag,
+                'id_tag' => $id_tagku,
                 'nama_tag' => $nama_tag,
                 'det_pos' => $new_det,
             );
@@ -255,6 +257,7 @@ class Tag extends Controller
         $data->id_parent_post = $request->id_parent_post;
         $data->save();
         $id_postku = $request->id_post;
-        return redirect('/tag/detil_post_t/'.$id_postku);
+        $id_tagku = $request->id_tagku;
+        return redirect('/tag/detil_post_t/'.$id_tagku.'/'.$id_postku);
     }
 }
