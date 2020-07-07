@@ -66,18 +66,18 @@
 					<span class="add-item-label"></span>
 				</h4>
 			</div>
-			<form class="form" action="/kategori/input_list_tag" method="POST">
+			<form class="form" action="/kategori/input_list_kategoriku/" method="POST">
 				{{ csrf_field() }}
 				<div class="modal-body">
 					<div class="form-group">
 						<label class="control-label">
 							<span class="add-item-label"></span>
 						</label>
-						<select name="list-tag" style="width:100%;" class="list-tag" class="form-control" required></select>
+						<select name="id_parent_post" style="width:100%;" class="list-tag" class="form-control" required></select>
 					</div>
 				</div>
-				{{-- <input type="text" name="id_post_up" value="{{$kategori_post->id_post}}"> 
-				<input type="hidden" name="type"> --}}
+				<input type="hidden" name="id_post" value="{{$kategori_post->id_post}}"/>
+				<input type="hidden" name="id_tag" class="id-tag" value=""/>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
 					<button type="submit" class="btn btn-primary">Simpan</button>
@@ -181,6 +181,12 @@
 					<a class="card tag-button" href="#" data-toggle="modal" data-target="#tag-modal" data-tag="{{ $drops->id_tag }}"><i class="fa fa-plus fa-4x"></i></a>
 				</div>
 			</div>
+			@else
+			<div class="row" style="margin-bottom: 16px">
+				<div class="col-lg-4" style="margin-top: 16px">
+					<a class="card tag-button" href="#" data-toggle="modal" data-target="#tag-modal" data-tag="{{ $drops->id_tag }}"><i class="fa fa-plus fa-4x"></i></a>
+				</div>
+			</div>
 			@endif
 		</div>
 		@endforeach
@@ -210,6 +216,7 @@
 					html+='<option value="'+data[i].id_post+'">'+data[i].nama_post+'</option>';				
 				}
 				$('.list-tag').html(html);
+				$('.id-tag').val(tag);
 			},
 			error: function(jqXHR, textStatus, errorThrown) {
 				console.log(textStatus, errorThrown);

@@ -48,7 +48,8 @@ Route::get('/kategori/delete_post_k/{id_post}','Kategori@delete_post_k');
 Route::get('/kategori/detil_post_k/{id_post}','Kategori@detil_post_k');
 Route::get('/kategori/detil_post_kp/{id_parent_post}/{id_post}/{id_tag}','Kategori@detil_post_kp');
 Route::get('/kategori/list_tag','Kategori@list_tag');
-Route::post('/kategori/input_list_tag','Kategori@input_list_tag');
+Route::post('/kategori/input_list_kategoriku','Kategori@input_list_kategoriku');
+
 //Tag
 Route::get('/tags/{id_tag}','Tag@detil_tag');
 Route::get('/tag/detil_tagku','Tag@tagku');

@@ -302,10 +302,15 @@ class Kategori extends Controller
         ->get();
         return $data_tag;
     }
-    public function input_list_tag(Request $request)
+    public function input_list_kategoriku(Request $request)
     {
         $data = new M_Det_Post();
-        $id_post = $request->id_post_up;
-        $id_parent_post = $request->id_parent_post;
+        $data->id_tag = $request->id_tag;
+        $data->id_post = $request->id_post;
+        $data->id_parent_post = $request->id_parent_post;
+        $data->spesial = $request->id_post;
+        $data->save();
+        $id_postku = $request->id_post;
+        return redirect('/kategori/detil_post_k/'.$id_postku);
     }
 }
