@@ -300,7 +300,6 @@ class Kategori extends Controller
         $data_tag = M_Post::where('tb_post.id_tag','=',$request->id_tag)
         // ->where('tb_post.id_kategori','=',$request->id_kategori)
         ->get();
-
         return $data_tag;
     }
     public function input_list_tag(Request $request)

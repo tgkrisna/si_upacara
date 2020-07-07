@@ -210,6 +210,7 @@ class Tag extends Controller
                 'det_pos' => $new_det,
             );
 
+            
         }
         return view ('admin/tag/detil_post_tag',compact('tag_post','drop_d'));
     }
@@ -239,5 +240,10 @@ class Tag extends Controller
         }
         return Response::json($kt_t);
         exit;
+    }
+
+    public function list_tag(Request $request){
+        $list_tag = M_Post::where('id_tag', $request->id_tag)->get();
+        return response()->json($list_tag);
     }
 }

@@ -77,7 +77,7 @@
 					</div>
 				</div>
 				{{-- <input type="text" name="id_post_up" value="{{$kategori_post->id_post}}"> 
-				<input type="hidden" name="type">--}}
+				<input type="hidden" name="type"> --}}
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
 					<button type="submit" class="btn btn-primary">Simpan</button>

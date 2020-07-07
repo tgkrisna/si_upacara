@@ -66,6 +66,11 @@ Route::get('/tag/cari_post_t','Tag@cari_post_t');
 Route::get('/tag/delete_post_t/{id_post}','Tag@delete_post_t');
 Route::get('/tag/detil_post_t/{id_post}','Tag@detil_post_t');
 Route::get('/tag/drop_down_t/{id}','Tag@drop_down_tag');
+
+//yuda list tag
+Route::get('/tag/dropdown', 'Tag@list_tag');
+
+
 // Route::get('/tag/tambah_detil_post_t/{id_post}','Tag@tambah_detil_post_t');
 //Pengguna
 Route::post('/pengguna/searching','Kategori_P@cari_p');

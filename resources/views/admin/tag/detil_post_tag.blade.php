@@ -16,18 +16,19 @@
 					<span class="add-item-label"></span>
 				</h4>
 			</div>
-			<form class="form" action="/kategori/input_list_tag" method="POST">
+			<form class="form" action="/kategori/input_list_tag/" method="POST">
 				{{ csrf_field() }}
 				<div class="modal-body">
 					<div class="form-group">
 						<label class="control-label">
 							<span class="add-item-label"></span>
 						</label>
-						<select name="list-tag" style="width:100%;" class="list-tag" class="form-control" required></select>
+						<select name="id_parent_post" style="width:100%;" class="list-tag" class="form-control" required></select>
 					</div>
 				</div>
-				{{-- <input type="text" name="id_post_up" value="{{$tag_post->id_post}}"> 
-				<input type="hidden" name="type"> --}}
+				<input type="text" name="id_post" value="{{$tag_post->id_post}}"/>
+				<input type="text" name="id_tag" class="id-tag" value=""/>
+				
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
 					<button type="submit" class="btn btn-primary">Simpan</button>
@@ -95,7 +96,7 @@
 					@endif
 					<!-- Katanya Pake EndForeach lagi -->
 					<div class="col-lg-2">
-						<a class="card" data-toggle="modal" href="#" data-target="#tag-modal" data-tag="{{ $drop->id_tag }}"><i class="fa fa-plus fa-4x"></i></a>
+						<a class="card tag-button" data-toggle="modal" href="#" data-target="#tag-modal" data-tag="{{ $drop->id_tag }}"><i class="fa fa-plus fa-4x"></i></a>
 					</div>
 				</div>
 			</div>
@@ -175,25 +176,25 @@
 	});
 </script> --}}
 <script>
-	$('.list-tag').select2();
+	// $('.list-tag').select2();
 	let id_tag = {!! json_encode($tag_post->id_kategori) !!};
 	let id_post = {!! json_encode($tag_post->id_post) !!};
 	$('.tag-button').click(function(){
 		let tag = $(this).data('tag');
+		
 		$.ajax({
-			url: "/kategori/list_tag",
+			url: "/tag/dropdown",
 			type: "get",
 			dataType: "json",
 			data: {
-				id_kategori:id_kategori,
 				id_tag:tag
-			} ,
+			},
 			success: function (data) {
-				console.log(data)
-				let html = '<option value="">Pilih Jenis</option>'
+				let html = '<option value="">Pilih Jenis</option>';
 				for(var i=0;i < data.length; i++){
 					html+='<option value="'+data[i].id_post+'">'+data[i].nama_post+'</option>';				}
 				$('.list-tag').html(html);
+				$('.id-tag').val(tag);
 			},
 			error: function(jqXHR, textStatus, errorThrown) {
 				console.log(textStatus, errorThrown);
