@@ -282,16 +282,6 @@ class Tag extends Controller
     }
     public function delete_list_tagku($id_det_post)
     {
-        // $tag = M_Det_Post::find($id_det_post);
-        // $tag->delete();
-
-        // $after_save = [
-        //     'alert' => 'success',
-        //     'title' => 'Berhasil!',
-        //     'text-1' => 'Selamat',
-        //     'text-2' => 'Data berhasil ditambah.'
-        // ];
-
         try {
             $tag = M_Det_Post::find($id_det_post);
             $tag->delete();

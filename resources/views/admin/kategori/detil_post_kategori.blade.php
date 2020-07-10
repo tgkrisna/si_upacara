@@ -155,6 +155,16 @@
 	</div>
 	@endforeach
 	<hr>
+	@if (Session::has('after_save'))
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="alert alert-{{ Session::get('after_save.alert') }} alert-dismissible" role="alert">
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<strong>{{ Session::get('after_save.title') }}</strong> {{ Session::get('after_save.text-1') }}, {{ Session::get('after_save.text-2') }}
+			</div>
+		</div>
+	</div>
+	@endif
 	<div class="row">
 		<!-- Mulai foreach untuk data tag, kecuali prosesi upacara -->
 		@foreach ($drop_t as $drops)
@@ -168,11 +178,11 @@
 							<div class="card" style="background-image: url(/gambarku/{{$item->gambar}})">
 								<div class="card-body">
 									{{$item->nama_post}}
-									{{$item->id_post}}
-									{{$item->id_parent_post}}
+									{{-- {{$item->id_post}}
+									{{$item->id_parent_post}} --}}
 								</div>
 								<!-- Pakai if untuk deleteable -->
-								<a data-id="#" class="btn btn-delete btn-sm btn-danger btn-card">Hapus</a>
+								<a data-id="#" href="/kategori/delete_list_kategoriku/{{$item->id_det_post}}" class="btn btn-delete btn-sm btn-danger btn-card">Hapus</a>
 								<!-- Pakai endif deleteable -->
 							</div>
 						</div>
