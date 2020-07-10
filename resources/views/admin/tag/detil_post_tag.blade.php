@@ -65,6 +65,18 @@
 	</div>
 </div>
 <hr>
+@if (Session::has('after_save'))
+<div class="row">
+	<div class="col-lg-12">
+		
+		<div class="alert alert-{{ Session::get('after_save.alert') }} alert-dismissible" role="alert">
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			<strong>{{ Session::get('after_save.title') }}</strong> {{ Session::get('after_save.text-1') }}, {{ Session::get('after_save.text-2') }}
+		</div>
+
+	</div>
+</div>
+@endif
 <div class="panel-group" id="accordion">
 	@foreach($drop_d as $drop)
 	<div class="panel panel-primary">
@@ -87,7 +99,30 @@
 								{{-- {{$item->nama_tag}}
 								{{$item->id_post}} --}}
 							</div>
-							<a data-id="{{$item->id_post}}" class="btn btn-delete btn-sm btn-danger btn-card">Hapus</a>
+							<button type="button" class="btn btn-delete btn-sm btn-danger btn-card" data-toggle="modal" data-target="#exampleModal{{$item->id_det_post}}">
+								Hapus
+							</button>
+
+							<div class="modal fade" id="exampleModal{{$item->id_det_post}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+								<div class="modal-dialog" role="document">
+									<div class="modal-content">
+									<div class="modal-header">
+										<h5 class="modal-title" id="exampleModalLabel">Peringatan</h5>
+										<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+										<span aria-hidden="true">&times;</span>
+										</button>
+									</div>
+									<div class="modal-body">
+										Apakah anda yakin ingin menghapus data ini ?
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-secondary" data-dismiss="modal">Kembali</button>
+										<a data-id="#/{{$item->id_post}}" href="/tag/delete_list_tagku/{{$item->id_det_post}}" type="button" class="btn btn-primary">Hapus</a>
+									</div>
+									</div>
+								</div>
+							</div>
+							{{-- <a data-id="#/{{$item->id_post}}" href="/tag/delete_list_tagku/{{$item->id_det_post}}" class="btn btn-delete btn-sm btn-danger btn-card">Hapus</a> --}}
 						</div>
 					</div>
 							@endif

@@ -302,6 +302,12 @@ class Kategori extends Controller
         ->get();
         return $data_tag;
     }
+    public function list_prosesi(Request $request)
+    {
+        $data_tag = M_Post::where('tb_post.id_tag','=',$request->id_tag)
+        ->get();
+        return $data_prosesi;
+    }
     public function input_list_kategoriku(Request $request)
     {
         $data = new M_Det_Post();

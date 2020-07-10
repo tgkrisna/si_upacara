@@ -32,17 +32,19 @@
 						<label class="control-label">
 							<span class="add-item-label"></span>
 						</label>
-						<select name="detail" class="form-control" required></select>
+						<select name="id_parent_post" style="width:100%;" class="list-prosesi" class="form-control" required></select>
 					</div>
 					<div class="form-group category-form">
 						<label class="control-label">Kategori Prosesi</label>
 						<select name="tb_status" class="form-control" disabled>
-							<option value="id_status 1">Awal</option>
-							<option value="id_status 2">Puncak</option>
-							<option value="id_status 3">Akhir</option>
+							<option value="1">Awal</option>
+							<option value="2">Puncak</option>
+							<option value="3">Akhir</option>
 						</select>
 					</div>
 				</div>
+				<input type="hidden" name="id_post" value="{{$kategori_post->id_post}}"/>
+				<input type="hidden" name="id_tag" class="id-tag-prosesi" value=""/>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
 					<button type="submit" class="btn btn-primary">Simpan</button>
@@ -108,7 +110,7 @@
 		<h3 style="margin: 0" class="pull-left">
 			Prosesi Upacara
 		</h3>
-		<a href="#" data-toggle="modal" data-target="#detail-modal" class="btn btn-sm btn-primary pull-right" data-type="post_prosesi"><i class="fa fa-plus">Tambah Prosesi</i></a>
+		<a href="#" data-toggle="modal" data-target="#detail-modal" id="prosesi-button" class="btn btn-sm btn-primary pull-right"><i class="fa fa-plus">Tambah Prosesi</i></a>
 	</div>
 	<!-- Pake If count data post prosesi ketika 0/NULL -->
 
@@ -217,6 +219,35 @@
 				}
 				$('.list-tag').html(html);
 				$('.id-tag').val(tag);
+			},
+			error: function(jqXHR, textStatus, errorThrown) {
+				console.log(textStatus, errorThrown);
+			}
+		});
+	});
+</script>
+<script>
+	$('.list-prosesi').select2();
+	let id_kategori = {!! json_encode($kategori_post->id_kategori) !!};
+	let id_post = {!! json_encode($kategori_post->id_post) !!};
+	$('#prosesi-button').click(function(){
+		let prosesi = $(this).data('prosesi');
+		$.ajax({
+			url: "/kategori/list_prosesi",
+			type: "get",
+			dataType: "json",
+			data: {
+				id_kategori:id_kategori,
+				id_tag:tag
+			} ,
+			success: function (data) {
+				console.log(data)
+				let html = '<option value="">Pilih Prosesi</option>'
+				for(var i=0;i < data.length; i++){
+					html+='<option value="'+data[i].id_post+'">'+data[i].nama_post+'</option>';				
+				}
+				$('.list-prosesi').html(html);
+				$('.id-tag-prosesi').val(tag);
 			},
 			error: function(jqXHR, textStatus, errorThrown) {
 				console.log(textStatus, errorThrown);
