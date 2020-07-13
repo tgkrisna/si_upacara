@@ -1,12 +1,12 @@
 @extends('admin/layouts.app',['data' => $data])
 
 @section('konten')
-<div class="row">
-    <div class="col-lg-12">
-        {{-- $seg = {{Request::segment(2)}}; --}}
+{{-- <div class="row">
+    <div class="col-lg-12">   --}}
         @php 
         $seg = Request::segment(2);
         @endphp
+{{--
         @if ($seg == 5)
            @foreach ($tingkatan as $ting)
                 @if ($loop->first)
@@ -25,6 +25,13 @@
            @endforeach 
         @endif
 	</div>
+</div> --}}
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">
+            {{$namas->nama_tag}}
+        </h1>
+	</div>
 </div>
 <div class="row">
     <div class="col-lg-12">
@@ -41,21 +48,16 @@
                                 @endif
                             @endforeach
                         @else
-                            @foreach($tag as $t)
-                                @if ($loop->first)
-                                <a href="/tag/tambah_post_tag/{{$t->id_tag}}" class="btn btn-warning btn-block">
-                                    <i class="fa fa-plus" style="margin-right:8px"></i>Tambah
-                                </a>
-                                @endif
-                            @endforeach
+                            <a href="/tag/tambah_post_tag/{{$namas->id_tag}}" class="btn btn-warning btn-block">
+                                <i class="fa fa-plus" style="margin-right:8px"></i>Tambah
+                            </a>
                         @endif
                     </div>
                     <div class="col-md-4 col-md-offset-6">
                         <form class="form" action="/tag/cari_post_t" method="GET">
-                            {{ csrf_field() }}
                             <div class="row">
                                 <div class="col-lg-8" style="padding-right: 0px">
-                                    <input type="text" class="form-control" style="height: inherit" placeholder="Cari..." name="cari" value="{{ old('cari') }}">
+                                    <input type="text" class="form-control" style="height: inherit" placeholder="Cari..." name="cari">
                                 </div>
                                 <div class="col-lg-4">
                                     @if ($seg == 5)
@@ -65,11 +67,7 @@
                                             @endif
                                         @endforeach
                                     @else
-                                        @foreach($tag as $t)
-                                            @if ($loop->first)
-                                            <input type="hidden" name="id_tag" value="{{$t->id_tag}}">
-                                            @endif
-                                        @endforeach
+                                        <input type="hidden" name="id_tag" value="{{$namas->id_tag}}">
                                     @endif
                                     <button type="submit" class="btn btn-success btn-block"><i class="fa fa-search" style="margin-right: 8px"></i>Cari</button>
                                 </div>

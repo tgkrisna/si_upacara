@@ -16,6 +16,7 @@ class Tag extends Controller
 {
     public function detil_tag($id_tag)
     {
+        $namas = M_Tag::where('tb_tag.id_tag',$id_tag)->first();
     	$tag = M_Post::where('tb_tag.id_tag',$id_tag)
     	->leftJoin('tb_kategori','tb_post.id_kategori','=','tb_kategori.id_kategori')
     	->join('tb_tag','tb_post.id_tag','=','tb_tag.id_tag')
@@ -25,7 +26,7 @@ class Tag extends Controller
         ->leftJoin('tb_tag','tb_tingkatan.id_tag','=','tb_tag.id_tag')
         ->select('tb_tag.id_tag','tb_tag.nama_tag','tb_tingkatan.id_tingkatan','tb_tingkatan.nama_tingkatan','tb_tingkatan.deskripsi')
         ->get();
-    	return view('admin/tag/tag_detil', compact('tag','tingkatan'));
+    	return view('admin/tag/tag_detil', compact('tag','tingkatan','namas'));
     }
     public function tagku()
     {
@@ -172,8 +173,9 @@ class Tag extends Controller
     {
         $cari = $request->cari;
         $id_tag = $request->id_tag;
-        $pencarian = M_Post::where('tb_post.nama_post','LIKE',"%".$cari."%")->where('tb_post.id_tag',$id_tag)->paginate();
-        return view('admin/tag/tag_detil',['tag'=>$pencarian]);
+        $namas = M_Tag::where('tb_tag.id_tag',$id_tag)->first();
+        $tag = M_Post::where('tb_post.nama_post','LIKE',"%".$cari."%")->where('tb_post.id_tag',$id_tag)->paginate();
+        return view('admin/tag/tag_detil',compact('namas','tag'));
     }
 
     public function detil_post_t($id_tag, $id_post)

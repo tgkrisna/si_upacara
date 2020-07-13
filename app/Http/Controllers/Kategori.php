@@ -23,12 +23,11 @@ class Kategori extends Controller
 
     public function detil_kategori($id_kategori)
     {
+        $namas = M_Kategori::where('tb_kategori.id_kategori',$id_kategori)->first();
     	$kategori = M_Post::where('tb_post.id_kategori',$id_kategori)->where('tb_post.id_tag',NULL)
     	->leftJoin('tb_kategori','tb_post.id_kategori', '=', 'tb_kategori.id_kategori')
     	->select('tb_post.id_post','tb_kategori.nama_kategori', 'tb_post.nama_post', 'tb_post.deskripsi', 'tb_kategori.id_kategori')->paginate(10);
-    	// dd($kategori);
-    	// return response()->json(['data'=>$kategori]);
-    	return view('admin/kategori/kategori_detil', ['kategori' => $kategori]);
+    	return view('admin/kategori/kategori_detil', compact('namas','kategori'));
     }
     public function tambah_kategori()
     {
@@ -153,8 +152,10 @@ class Kategori extends Controller
     {
         $cari = $request->cari;
         $id_kategori = $request->id_kategori;
-        $pencarian = M_Post::where('tb_post.nama_post','LIKE',"%".$cari."%")->where('tb_post.id_kategori',$id_kategori)->paginate();
-        return view('admin/kategori/kategori_detil',['kategori'=>$pencarian]);
+        $namas = M_Kategori::where('tb_kategori.id_kategori',$id_kategori)->first();
+        $kategori = M_Post::where('tb_post.nama_post','LIKE',"%".$cari."%")->where('tb_post.id_kategori',$id_kategori)->paginate();
+        return view('admin/kategori/kategori_detil',compact('namas','kategori'));
+        //Error logic menggunakan 1 view, apakah harus 2 view?
     }
     public function detil_post_k($id_post)
     {
