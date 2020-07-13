@@ -277,7 +277,7 @@ class Kategori extends Controller
             ->leftJoin('tb_post','tb_detil_post.id_parent_post','=','tb_post.id_post')
             ->leftJoin('tb_tag','tb_detil_post.id_tag','=','tb_tag.id_tag')
             ->select('tb_detil_post.id_post', 'tb_detil_post.id_parent_post', 
-            'tb_detil_post.id_tag', 'tb_post.nama_post', 'tb_post.gambar')
+            'tb_detil_post.id_tag', 'tb_post.nama_post', 'tb_post.gambar', 'tb_detil_post.id_det_post')
             ->get();
             foreach ($det_tag as $dt) {
                 $new_tag[]=(object) array(
@@ -286,6 +286,7 @@ class Kategori extends Controller
                     'id_tag' => $dt->id_tag,
                     'nama_post' => $dt->nama_post,
                     'gambar' => $dt->gambar,
+                    'id_det_post' => $dt->id_det_post,
                 );
             }
             $drop_tag[]=(object) array(
@@ -320,7 +321,6 @@ class Kategori extends Controller
                 $data->id_parent_post = $request->id_parent_post;
                 $data->spesial = $request->id_post;
                 $data->save();
-                $id_postku = $request->id_post;
 
                 $after_save = [
                     'alert' => 'success',
@@ -329,7 +329,7 @@ class Kategori extends Controller
                     'text-2' => 'Data berhasil ditambah.'
                 ];
 
-                return redirect('/kategori/detil_post_k/'.$id_postku)->with(compact('after_save'));
+                return redirect()->back()->with(compact('after_save'));
             }else{
                 $after_save = [
                     'alert' => 'danger',
@@ -341,6 +341,59 @@ class Kategori extends Controller
             }
     }
     public function delete_list_kategoriku($id_det_post)
+    {
+        try {
+            $kategori = M_Det_Post::find($id_det_post);
+            $kategori->delete();
+    
+            $after_save = [
+                'alert' => 'success',
+                'title' => 'Berhasil!',
+                'text-1' => 'Selamat',
+                'text-2' => 'Data berhasil dihapus.'
+            ];
+            return redirect()->back()->with(compact('after_save'));
+        } catch (\exception $e) {
+            $after_save = [
+                'alert' => 'danger',
+                'title' => 'Peringatan!',
+                'text-1' => 'Ada kesalahan',
+                'text-2' => 'Silahkan periksa kembali.'
+            ];
+            return redirect()->back()->with(compact('after_save'));
+        }
+    }
+    public function input_list_kp(Request $request)
+    {
+        $cek = M_Det_Post::where('id_parent_post', $request->id_parent_post)->where('id_post', $request->id_post)
+        ->where('spesial', $request->spesial)->count();
+        if ($cek < 1) {
+            $data = new M_Det_Post();
+            $data->id_tag = $request->id_tag;
+            $data->id_post = $request->id_post;
+            $data->id_parent_post = $request->id_parent_post;
+            $data->spesial = $request->spesial;
+            $data->save();
+
+            $after_save = [
+                'alert' => 'success',
+                'title' => 'Berhasil!',
+                'text-1' => 'Selamat',
+                'text-2' => 'Data berhasil ditambah.'
+            ];
+
+            return redirect()->back()->with(compact('after_save'));
+        } else {
+            $after_save = [
+                'alert' => 'danger',
+                'title' => 'Peringatan!',
+                'text-1' => 'Ada kesalahan',
+                'text-2' => 'Data sudah ada.'
+            ];
+            return redirect()->back()->with(compact('after_save'));
+        }
+    }
+    public function delete_list_kp($id_det_post)
     {
         try {
             $kategori = M_Det_Post::find($id_det_post);

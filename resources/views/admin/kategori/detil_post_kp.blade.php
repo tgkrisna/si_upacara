@@ -3,6 +3,7 @@
 @section('konten')
 
 <link rel="stylesheet" href="{{asset('/assets/select2/select2.min.css')}}">
+<meta name="csrf-token" content="{{ csrf_token() }}" />
 <style>
 	.prosesi-title {
 		white-space: nowrap;
@@ -11,7 +12,7 @@
         text-overflow: ellipsis;
 	}
 </style>
-<div class="modal fade" id="detail-modal" tabindex="-1" role="dialog">
+<div class="modal fade" id="tag-modal" tabindex="-1" role="dialog">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -25,24 +26,19 @@
 					<span class="add-item-label"></span>
 				</h4>
 			</div>
-			<form class="form" action="#" method="POST">
-				<input type="hidden" name="type">
+			<form class="form" action="/kategori/input_list_kp/" method="POST">
+				{{ csrf_field() }}
 				<div class="modal-body">
 					<div class="form-group">
 						<label class="control-label">
 							<span class="add-item-label"></span>
 						</label>
-						<select name="detail" class="form-control" required></select>
-					</div>
-					<div class="form-group category-form">
-						<label class="control-label">Kategori Prosesi</label>
-						<select name="tb_status" class="form-control" disabled>
-							<option value="id_status 1">Awal</option>
-							<option value="id_status 2">Puncak</option>
-							<option value="id_status 3">Akhir</option>
-						</select>
+						<select name="id_parent_post" style="width:100%;" class="list-tag" class="form-control" required></select>
 					</div>
 				</div>
+					<input type="hidden" name="id_post" value="{{$kategori_post->id_post}}"/>
+					<input type="hidden" name="id_tag" class="id-tag" value=""/>
+					<input type="hidden" name="spesial" value="{{Request::segment(4)}}">
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
 					<button type="submit" class="btn btn-primary">Simpan</button>
@@ -51,30 +47,30 @@
 		</form>
 	</div>
 </div>
-	<div class="row">
-		<div class="col-lg-3">
-			<img src="/gambarku/{{$kategori_post->gambar}}" width="100%">
-		</div>
-		<div class="col-lg-9">
-			<h1 class="page-header" style="margin: 0">
-				{{$kategori_post->nama_post}}
-			</h1>
-			<h4 style="margin: 0">
-				{{$kategori_post->nama_kategori}}
-			</h4>
-			<br>
-			<div>{!!$kategori_post->deskripsi!!}</div>
-			<div class="container_youtube">
-				<iframe width="640" height="360" src="https://www.youtube.com/embed/{{ $kategori_post->video }}" class="video" allowfullscreen></iframe>
-			</div>
+<div class="row">
+	<div class="col-lg-3">
+		<img src="/gambarku/{{$kategori_post->gambar}}" width="100%">
+	</div>
+	<div class="col-lg-9">
+		<h1 class="page-header" style="margin: 0">
+			{{$kategori_post->nama_post}}
+		</h1>
+		<h4 style="margin: 0">
+			{{$kategori_post->nama_kategori}}
+		</h4>
+		<br>
+		<div>{!!$kategori_post->deskripsi!!}</div>
+		<div class="container_youtube">
+			<iframe width="640" height="360" src="https://www.youtube.com/embed/{{ $kategori_post->video }}" class="video" allowfullscreen></iframe>
 		</div>
 	</div>
-	<div class="clearfix" style="margin-bottom: 16px">
-		<h3 style="margin: 0" class="pull-left">
-			Tingkatan Prosesi Upacara
-		</h3>
-		<a href="#" data-toggle="modal" data-target="#detail-modal" class="btn btn-sm btn-primary pull-right" data-type="post_prosesi"><i class="fa fa-plus">Tambah Prosesi</i></a>
-	</div>
+</div>
+<div class="clearfix" style="margin-bottom: 16px">
+	<h3 style="margin: 0" class="pull-left">
+		Tingkatan Prosesi Upacara
+	</h3>
+	<a href="#" data-toggle="modal" data-target="#detail-modal" class="btn btn-sm btn-primary pull-right" data-type="post_prosesi"><i class="fa fa-plus">Tambah Prosesi</i></a>
+</div>
 	<!-- Pake If count data post prosesi ketika 0/NULL -->
 
 	<!-- Mulai Foreach untuk accordion sesuai dengan tb_status -->
@@ -118,6 +114,16 @@
 	</div>
 	@endforeach
 	<hr>
+	@if (Session::has('after_save'))
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="alert alert-{{ Session::get('after_save.alert') }} alert-dismissible" role="alert">
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<strong>{{ Session::get('after_save.title') }}</strong> {{ Session::get('after_save.text-1') }}, {{ Session::get('after_save.text-2') }}
+			</div>
+		</div>
+	</div>
+	@endif
 	<div class="row">
 		<!-- Mulai foreach untuk data tag, kecuali prosesi upacara -->
 		@foreach ($drop_tag as $drops)
@@ -131,11 +137,30 @@
 					<div class="card" style="background-image: url(/gambarku/{{$item->gambar}})">
 						<div class="card-body">
 							{{$item->nama_post}}
-							{{$item->id_post}}
-							{{$item->id_parent_post}}
+							{{-- {{$item->id_post}}
+							{{$item->id_parent_post}} --}}
 						</div>
 						<!-- Pakai if untuk deleteable -->
-						<a data-id="#" class="btn btn-delete btn-sm btn-danger btn-card">Hapus</a>
+						<button data-id="#" class="btn btn-delete btn-sm btn-danger btn-card" data-toggle="modal" data-target="#exampleModal{{$item->id_det_post}}">Hapus</button>
+						<div class="modal fade" id="exampleModal{{$item->id_det_post}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+							<div class="modal-dialog" role="document">
+								<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title" id="exampleModalLabel">Peringatan</h5>
+									<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+									</button>
+								</div>
+								<div class="modal-body">
+									Apakah anda yakin ingin menghapus data ini ?
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-secondary" data-dismiss="modal">Kembali</button>
+									<a data-id="#/{{$item->id_post}}" href="/kategori/delete_list_kp/{{$item->id_det_post}}" type="button" class="btn btn-primary">Hapus</a>
+								</div>
+								</div>
+							</div>
+						</div>
 						<!-- Pakai endif deleteable -->
 					</div>
 				</div>
@@ -143,7 +168,7 @@
 				@endforeach
 					<!-- endforeach untuk nama tag tari -->
 				<div class="col-lg-4" style="margin-top: 16px">
-					<a class="card" data-toggle="modal" href="#detail-modal" data-type="tari"><i class="fa fa-plus fa-4x"></i></a>
+					<a class="card tag-button" data-toggle="modal" href="#" data-target="#tag-modal" data-tag="{{ $drops->id_tag }}"><i class="fa fa-plus fa-4x"></i></a>
 				</div>
 			</div>
 			@endif
@@ -154,6 +179,31 @@
 </div>
 <script src="{{asset('/assets/select2/select2.min.js')}}"></script>
 <script>
-	
+$('.list-tag').select2();
+let id_kategori = {!! json_encode($kategori_post->id_kategori) !!};
+let id_post = {!! json_encode($kategori_post->id_post) !!};
+$('.tag-button').click(function(){
+	let tag = $(this).data('tag');
+	$.ajax({
+		url: "/tag/dropdown",
+		type: "get",
+		dataType: "json",
+		data: {
+			id_tag:tag
+		} ,
+		success: function (data) {
+			console.log(data)
+			let html = '<option value="">Pilih Jenis</option>'
+			for(var i=0;i < data.length; i++){
+				html+='<option value="'+data[i].id_post+'">'+data[i].nama_post+'</option>';				
+			}
+			$('.list-tag').html(html);
+			$('.id-tag').val(tag);
+		},
+		error: function(jqXHR, textStatus, errorThrown) {
+			console.log(textStatus, errorThrown);
+		}
+	});
+});
 </script>
 @endsection
