@@ -32,7 +32,28 @@
                 <iframe width="640" height="360" src="https://www.youtube.com/embed/{{ $kategori_post->video }}" class="video" allowfullscreen></iframe>
             </div>
         </div>
-
+        <div class="col-lg-4">
+        <!-- If count data ada atau tidak -->
+        @foreach ($prosesi_all as $pr_al)
+            <h4 class="mb-3">{{$pr_al->nama_status}}</h4>
+            @if (!empty($pr_al->det_prosesi))
+                @foreach ($pr_al->det_prosesi as $item)
+                    @if ($pr_al->id_status == $item->id_status)
+                        <ul class="timeline mb-5">
+                            <li>
+                                <a href="#/{{$item->id_post}}/{{$item->id_parent_post}}">{{$item->nama_post}}</a>
+                            </li>
+                        </ul>
+                    @endif
+                @endforeach
+            @else
+                <div class="text-muted mb-5">
+                    <em>Tidak ada prosesi.</em>
+                </div>
+            @endif
+            <!-- Else count kosong -->
+        @endforeach
+        </div>
     </div>
     <hr>
     <div class="row">
@@ -59,7 +80,6 @@
             @endif
         </div>
         @endforeach
-
     </div>
 </div>
 <script src="{{asset('/assets/select2/select2.min.js')}}"></script>

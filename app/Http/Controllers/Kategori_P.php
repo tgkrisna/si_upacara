@@ -8,6 +8,7 @@ use App\M_Post;
 use App\M_Det_Post;
 use App\M_Kategori;
 use App\M_Tingkatan;
+use App\M_Status;
 
 class Kategori_P extends Controller
 {
@@ -41,8 +42,12 @@ class Kategori_P extends Controller
         ->first();
         $data = M_Tag::select('tb_tag.id_tag','tb_tag.nama_tag')
         ->get();
+        $prosesi = M_Status::select('tb_status.id_status', 'tb_status.nama_status')
+        ->get();
         $kategori_all = [];
+        $prosesi_all = [];
         $new_det = [];
+        $new_pros = [];
         foreach ($data as $kategori) {
             $id_tag = $kategori->id_tag;
             $nama_tag = $kategori->nama_tag;
@@ -67,6 +72,31 @@ class Kategori_P extends Controller
                 'det_kategori' => $new_det, 
             );
         }
-        return view('/pengguna/kategori/detail_post_kategori',compact('kategori_post','kategori_all'));
+        foreach ($prosesi as $prosesi_up) {
+            $id_status = $prosesi_up->id_status;
+            $nama_status = $prosesi_up->nama_status;
+            $det_pros = M_Status::where('tb_detil_post.id_post',$id_post)
+            ->where('tb_detil_post.id_status',$id_status)
+            ->leftJoin('tb_detil_post','tb_status.id_status','=','tb_detil_post.id_status')
+            ->leftJoin('tb_post','tb_detil_post.id_parent_post','=','tb_post.id_post')
+            ->select('tb_status.id_status', 'tb_status.nama_status', 'tb_post.nama_post', 'tb_detil_post.id_post', 'tb_detil_post.id_parent_post', 'tb_detil_post.id_tag')
+            ->get();
+            foreach ($det_pros as $d_pros) {
+                $new_pros[] = (object) array(
+                    'id_status' => $d_pros->id_status,
+                    'nama_status' => $d_pros->nama_status,
+                    'nama_post' => $d_pros->nama_post,
+                    'id_post' => $d_pros->id_post,
+                    'id_parent_post' => $d_pros->id_parent_post,
+                    'id_tag' => $dp->id_tag,
+                );
+            }
+            $prosesi_all[] = (object) array(
+                'id_status' => $id_status,
+                'nama_status' => $nama_status,
+                'det_prosesi' => $new_pros,
+            );
+        }
+        return view('/pengguna/kategori/detail_post_kategori',compact('kategori_post','kategori_all','prosesi_all'));
     }
 }
