@@ -65,17 +65,17 @@
 		</div>
 	</div>
 </div>
-<div class="clearfix" style="margin-bottom: 16px">
+{{-- <div class="clearfix" style="margin-bottom: 16px">
 	<h3 style="margin: 0" class="pull-left">
 		Tingkatan Prosesi Upacara
 	</h3>
 	<a href="#" data-toggle="modal" data-target="#detail-modal" class="btn btn-sm btn-primary pull-right" data-type="post_prosesi"><i class="fa fa-plus">Tambah Prosesi</i></a>
-</div>
+</div> --}}
 	<!-- Pake If count data post prosesi ketika 0/NULL -->
 
 	<!-- Mulai Foreach untuk accordion sesuai dengan tb_status -->
 <div class="panel-group" id="accordion">
-	@foreach($drop_ting as $drop)
+	{{-- @foreach($drop_ting as $drop)
 	<div class="panel panel-primary">
 		<div class="panel-heading" role="tab" id="headingOne">
             <a style="text-decoration: none; color: #ffffff;" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
@@ -84,10 +84,10 @@
         </div>
         <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
         	<div class="panel-body">
-        		<div class="row">
+        		<div class="row"> --}}
         			<!-- Memulai foreach untuk data post prosesi -->
 					<!-- Pakai if untuk melakukan foreach dengan status awal -->
-					@if (!empty($drop->det_pos))
+					{{-- @if (!empty($drop->det_pos))
 						@foreach ($drop->det_pos as $item)
 							@if ($drop->id_tingkatan == $item->id_tingkatan)
         			<div class="col-lg-2">
@@ -105,14 +105,14 @@
 					</div>
                     		@endif
 						@endforeach
-					@else
+					@else --}}
 						{{-- tidak ada data --}}
-					@endif
+					{{-- @endif
         		</div>
         	</div>
         </div>
 	</div>
-	@endforeach
+	@endforeach --}}
 	<hr>
 	@if (Session::has('after_save'))
 	<div class="row">

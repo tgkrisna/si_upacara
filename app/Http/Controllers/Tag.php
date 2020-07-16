@@ -180,9 +180,11 @@ class Tag extends Controller
 
     public function detil_post_t($id_tag, $id_post)
     {
-        $tag_post = M_Post::where('tb_post.id_post',$id_post)->first();
-        // $drop_d = M_Tag::all();
-        // return view ('admin/tag/detil_post_tag',compact('tag','drop_d'));
+        $tag_post = M_Post::where('tb_post.id_post',$id_post)
+                            ->leftJoin('tb_tag','tb_post.id_tag','=','tb_tag.id_tag')
+                            ->select('tb_post.id_post','tb_post.nama_post','tb_post.deskripsi','tb_post.gambar','tb_post.video','tb_tag.id_tag','tb_tag.nama_tag')    
+                            ->first();
+
         $data = M_Tag::where('tb_tag.id_tag','!=',$id_tag)
                     ->select('id_tag','nama_tag')
                     ->get();
@@ -217,7 +219,24 @@ class Tag extends Controller
 
             
         }
-        return view ('admin/tag/detil_post_tag',compact('tag_post','drop_d'));
+        if ($tag_post->nama_tag == "Gamelan Bali") {
+            return view ('admin/tag/det_tag/detil_post_tag_gamelan',compact('tag_post','drop_d'));
+        } 
+        elseif ($tag_post->nama_tag == "Prosesi Upacara") {
+            return view ('admin/tag/det_tag/detil_post_tag_prosesi',compact('tag_post','drop_d'));
+        }
+        elseif ($tag_post->nama_tag == "Tari Bali") {
+            return view ('admin/tag/det_tag/detil_post_tag_tari',compact('tag_post','drop_d'));
+        }
+        elseif ($tag_post->nama_tag == "Kidung") {
+            return view ('admin/tag/det_tag/detil_post_tag_kidung',compact('tag_post','drop_d'));
+        }
+        elseif ($tag_post->nama_tag == "Tabuh"){
+            return view ('admin/tag/det_tag/detil_post_tag_tabuh',compact('tag_post','drop_d'));
+        }
+        else{
+            return view ('admin/tag/det_tag/detil_post_tag',compact('tag_post','drop_d'));
+        } 
     }
 
     public function drop_down_tag($id)
