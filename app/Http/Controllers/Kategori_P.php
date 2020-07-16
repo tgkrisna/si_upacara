@@ -36,12 +36,14 @@ class Kategori_P extends Controller
 
     public function detail_post_k($id_post,$id_kategori)
     {
+        $id_tag = 3;
         $kategori_post = M_Post::where('tb_post.id_post',$id_post)
         ->leftJoin('tb_kategori','tb_post.id_kategori','=','tb_kategori.id_kategori')
         ->select('tb_post.id_post','tb_post.nama_post','tb_post.video','tb_post.gambar','tb_post.deskripsi','tb_kategori.nama_kategori')
         ->first();
-        $data = M_Tag::select('tb_tag.id_tag','tb_tag.nama_tag')
-        ->get();
+        $data = M_Tag::where('tb_tag.id_tag','!=',$id_tag)
+                        ->select('tb_tag.id_tag','tb_tag.nama_tag')
+                        ->get();
         $prosesi = M_Status::select('tb_status.id_status', 'tb_status.nama_status')
         ->get();
         $kategori_all = [];
@@ -49,7 +51,7 @@ class Kategori_P extends Controller
         $new_det = [];
         $new_pros = [];
         foreach ($data as $kategori) {
-            $id_tag = $kategori->id_tag;
+            $id_tagku = $kategori->id_tag;
             $nama_tag = $kategori->nama_tag;
             $det_post = M_Det_Post::where('tb_detil_post.id_post',$id_post)
             ->where('tb_detil_post.spesial',$id_post)
@@ -67,7 +69,7 @@ class Kategori_P extends Controller
                 );
             }
             $kategori_all[] = (object) array(
-                'id_tag' => $id_tag,
+                'id_tag' => $id_tagku,
                 'nama_tag' => $nama_tag,
                 'det_kategori' => $new_det, 
             );
