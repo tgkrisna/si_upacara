@@ -39,7 +39,7 @@
             <div class="panel-heading">
                 <div class="row">
                     <div class="col-md-2">
-                        @if ($seg == 6)
+                        @if ($seg == 7)
                             @foreach($tingkatan as $ting)
                                 @if ($loop->first)
                                 <a href="/tag/tambah_post_tag/{{$ting->id_tag}}" class="btn btn-warning btn-block">
@@ -60,7 +60,7 @@
                                     <input type="text" class="form-control" style="height: inherit" placeholder="Cari..." name="cari">
                                 </div>
                                 <div class="col-lg-4">
-                                    @if ($seg == 6)
+                                    @if ($seg == 9)
                                         @foreach($tingkatan as $ting)
                                             @if ($loop->first)
                                             <input type="hidden" name="id_tag" value="{{$ting->id_tag}}">
@@ -78,7 +78,7 @@
                 </div>
             </div>
             <table class="table">
-                @if ($seg == 6)
+                @if ($seg == 9)
                 <thead>
                     <tr>
                         <th>Nama Post</th>
@@ -98,7 +98,7 @@
                 </thead>
                 @endif
                 <tbody>
-                    @if ($seg == 6)
+                    @if ($seg == 9)
                         @foreach($tingkatan as $ting)
                             <tr>
                                 <td>

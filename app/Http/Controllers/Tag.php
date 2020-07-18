@@ -235,7 +235,7 @@ class Tag extends Controller
             return view ('admin/tag/det_tag/detil_post_tag_tabuh',compact('tag_post','drop_d'));
         }
         else{
-            return view ('admin/tag/det_tag/detil_post_tag',compact('tag_post','drop_d'));
+            return view ('admin/tag/det_tag/detil_post_tags',compact('tag_post','drop_d'));
         } 
     }
 

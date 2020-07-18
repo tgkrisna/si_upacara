@@ -14,10 +14,9 @@
             <div class="panel-heading">
                 <div class="row">
                     <div class="col-md-2">
-                        <a href="/kategori/tambah_post_kategori/{{$namas->id_kategori}}">
-                            <i class="btn btn-warning btn-block">
-                                <i class="fa fa-plus" style="margin-right:8px"></i>Tambah
-                        </a></i>
+                        <a href="/tag/tambah_post_tag/{{$namas->id_kategori}}" class="btn btn-warning btn-block">
+                            <i class="fa fa-plus" style="margin-right:8px"></i>Tambah
+                        </a>
                     </div>
                     <div class="col-md-4 col-md-offset-6">
                         <form class="form" action="/kategori/cari_post_k" method="GET">
