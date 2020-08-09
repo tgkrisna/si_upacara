@@ -162,7 +162,7 @@ class Kategori extends Controller
         $id_tag=3;
         $id_tag2=5;
         $kategori_post = M_Post::where('tb_post.id_post',$id_post)->first();
-        
+        // dd($kategori_post);
 
         $data = M_Status::all();
         $data_tag = M_Tag::where('tb_tag.id_tag','!=',$id_tag)
@@ -180,10 +180,11 @@ class Kategori extends Controller
             ->where('tb_detil_post.id_status',$id_status)
             ->leftJoin('tb_detil_post','tb_status.id_status','=','tb_detil_post.id_status')
             ->leftJoin('tb_post','tb_detil_post.id_parent_post','=','tb_post.id_post')
-            ->select('tb_status.id_status', 'tb_status.nama_status', 'tb_post.nama_post', 'tb_post.gambar','tb_detil_post.id_post', 'tb_detil_post.id_parent_post', 'tb_detil_post.id_tag')
+            ->select('tb_detil_post.id_det_post','tb_status.id_status', 'tb_status.nama_status', 'tb_post.nama_post', 'tb_post.gambar','tb_detil_post.id_post', 'tb_detil_post.id_parent_post', 'tb_detil_post.id_tag')
             ->get();
             foreach ($det_pos as $dp) {
                 $new_det[]=(object) array(
+                    'id_det_post' => $dp->id_det_post,
                     'id_status' => $dp->id_status,
                     'nama_status' => $dp->nama_status,
                     'nama_post' => $dp->nama_post,
@@ -236,40 +237,40 @@ class Kategori extends Controller
         // ->leftJoin('tb_detil_post','tb_post.id_post','=','tb_detil_post.id_post')
         // ->leftJoin('tb_tingkatan','tb_detil_post.id_tingkatan','=','tb_tingkatan.id_tingkatan')
         // ->select()
-        $data_tingkatan = M_Tingkatan::all();
+        // $data_tingkatan = M_Tingkatan::all();
         $data_tag = M_Tag::where('tb_tag.id_tag','!=',$id_tag)
         ->select('id_tag','nama_tag')
         ->get();
-        $drop_ting = [];
-        $new_ting = [];
+        // $drop_ting = [];
+        // $new_ting = [];
         $drop_tag = [];
         $new_tag = [];
 
-        foreach ($data_tingkatan as $d_ting) {
-            $id_tingkatan = $d_ting->id_tingkatan;
-            $nama_tingkatan = $d_ting->nama_tingkatan;
-            $det_post = M_Post::where('tb_post.id_post',$id_parent_post)
-            ->where('tb_detil_post.spesial',$id_post)
-            ->leftJoin('tb_detil_post','tb_post.id_post','=','tb_detil_post.id_post')
-            ->leftJoin('tb_tingkatan','tb_detil_post.id_tingkatan','=','tb_tingkatan.id_tingkatan')
-            ->select('tb_post.nama_post','tb_post.gambar'
-                    ,'tb_detil_post.id_tingkatan','tb_detil_post.id_post','tb_detil_post.id_parent_post')
-            ->get();
-            foreach ($det_post as $dt) {
-                $new_ting[]=(object)array(
-                    'id_post' => $dt->id_post,
-                    'nama_post' => $dt->nama_post,
-                    'gambar' => $dt->gambar,
-                    'id_tingkatan' => $dt->id_tingkatan,
-                    'id_parent_post' => $dt->id_parent_post,
-                ); 
-            }
-            $drop_ting[]=(object)array(
-                'id_tingkatan' => $id_tingkatan,
-                'nama_tingkatan' => $nama_tingkatan,
-                'det_post' => $new_ting,
-            );
-        }
+        // foreach ($data_tingkatan as $d_ting) {
+        //     $id_tingkatan = $d_ting->id_tingkatan;
+        //     $nama_tingkatan = $d_ting->nama_tingkatan;
+        //     $det_post = M_Post::where('tb_post.id_post',$id_parent_post)
+        //     ->where('tb_detil_post.spesial',$id_post)
+        //     ->leftJoin('tb_detil_post','tb_post.id_post','=','tb_detil_post.id_post')
+        //     ->leftJoin('tb_tingkatan','tb_detil_post.id_tingkatan','=','tb_tingkatan.id_tingkatan')
+        //     ->select('tb_post.nama_post','tb_post.gambar'
+        //             ,'tb_detil_post.id_tingkatan','tb_detil_post.id_post','tb_detil_post.id_parent_post')
+        //     ->get();
+        //     foreach ($det_post as $dt) {
+        //         $new_ting[]=(object)array(
+        //             'id_post' => $dt->id_post,
+        //             'nama_post' => $dt->nama_post,
+        //             'gambar' => $dt->gambar,
+        //             'id_tingkatan' => $dt->id_tingkatan,
+        //             'id_parent_post' => $dt->id_parent_post,
+        //         ); 
+        //     }
+        //     $drop_ting[]=(object)array(
+        //         'id_tingkatan' => $id_tingkatan,
+        //         'nama_tingkatan' => $nama_tingkatan,
+        //         'det_post' => $new_ting,
+        //     );
+        // }
         foreach ($data_tag as $tag) {
             $id_tagku = $tag->id_tag;
             $nama_tag = $tag->nama_tag;
@@ -296,7 +297,7 @@ class Kategori extends Controller
                 'det_tag' => $new_tag,
             );
         }
-        return view('admin/kategori/detil_post_kp',compact('kategori_post','drop_ting','drop_tag'));
+        return view('admin/kategori/detil_post_kp',compact('kategori_post','drop_tag'));
     }
     public function list_tag(Request $request)
     {
@@ -307,7 +308,9 @@ class Kategori extends Controller
     }
     public function list_prosesi(Request $request)
     {
-        $data_tag = M_Post::where('tb_post.id_tag','=',$request->id_tag)
+        // dd($request->all());
+        $id_tag = 3;
+        $data_prosesi = M_Post::where('tb_post.id_tag','=',$id_tag)
         ->get();
         return $data_prosesi;
     }
@@ -341,6 +344,51 @@ class Kategori extends Controller
                 return redirect()->back()->with(compact('after_save'));
             }
     }
+    public function input_list_prosesiku(Request $request)
+    {
+        $cek = M_Det_Post::where('id_parent_post', $request->id_parent_post)->where('id_post', $request->id_post)
+        ->where('spesial', $request->id_post)->count();
+            if($cek < 1){
+                $kategori = M_Det_Post::where('id_post', $request->id_parent_post)->where('spesial',NULL)->get();
+
+                //Data sudah bisa masuk pada post kp, bagaimana cara membentuk data seperti itu?
+                $data = new M_Det_Post();
+                $data->id_tag = $request->id_tag;
+                $data->id_post = $request->id_post;
+                $data->id_parent_post = $request->id_parent_post;
+                $data->id_status = $request->id_status;
+                $data->spesial = $request->id_post;
+                $data->save();
+
+                if ($data->save()) {
+                    foreach ($kategori as $kat) {
+                        $kats = new M_Det_Post();
+                        $kats->id_tag = $kat->id_tag;
+                        $kats->id_post = $request->id_parent_post;
+                        $kats->id_parent_post = $kat->id_parent_post;
+                        $kats->spesial = $request->id_post;
+                        $kats->save();
+                    }
+                } 
+                $after_save_pros = [
+                    'alert' => 'success',
+                    'title' => 'Berhasil!',
+                    'text-1' => 'Selamat',
+                    'text-2' => 'Data berhasil ditambah.'
+                ];
+
+                return redirect()->back()->with(compact('after_save_pros'));
+            }else{
+                $after_save_pros = [
+                    'alert' => 'danger',
+                    'title' => 'Peringatan!',
+                    'text-1' => 'Ada kesalahan',
+                    'text-2' => 'Data sudah ada.'
+                ];
+                return redirect()->back()->with(compact('after_save_pros'));
+            }
+
+    }
     public function delete_list_kategoriku($id_det_post)
     {
         try {
@@ -362,6 +410,29 @@ class Kategori extends Controller
                 'text-2' => 'Silahkan periksa kembali.'
             ];
             return redirect()->back()->with(compact('after_save'));
+        }
+    }
+    public function delete_list_prosesiku($id_det_post)
+    {
+        try {
+            $kategori = M_Det_Post::find($id_det_post);
+            $kategori->delete();
+            
+            $after_save_pros = [
+                'alert' => 'success',
+                'title' => 'Berhasil!',
+                'text-1' => 'Selamat',
+                'text-2' => 'Data berhasil dihapus.'
+            ];
+            return redirect()->back()->with(compact('after_save_pros'));
+        } catch (\execption $e) {
+            $after_save_pros = [
+                'alert' => 'danger',
+                'title' => 'Peringatan!',
+                'text-1' => 'Ada kesalahan',
+                'text-2' => 'Silahkan periksa kembali.'
+            ];
+            return redirect()->back()->with(compact('after_save_pros'));
         }
     }
     public function input_list_kp(Request $request)

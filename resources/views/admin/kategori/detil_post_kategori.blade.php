@@ -25,7 +25,8 @@
 					<span class="add-item-label"></span>
 				</h4>
 			</div>
-			<form class="form" action="#" method="POST">
+			<form class="form" action="/kategori/input_list_prosesiku/" method="POST">
+				{{ csrf_field() }}
 				<input type="hidden" name="type">
 				<div class="modal-body">
 					<div class="form-group">
@@ -36,15 +37,15 @@
 					</div>
 					<div class="form-group category-form">
 						<label class="control-label">Kategori Prosesi</label>
-						<select name="tb_status" class="form-control" disabled>
+						<select name="id_status" class="form-control">
 							<option value="1">Awal</option>
 							<option value="2">Puncak</option>
 							<option value="3">Akhir</option>
 						</select>
 					</div>
 				</div>
-				<input type="hidden" name="id_post" value="{{$kategori_post->id_post}}"/>
-				<input type="hidden" name="id_tag" class="id-tag-prosesi" value=""/>
+				<input type="text" name="id_post" value="{{$kategori_post->id_post}}"/>
+				<input type="text" name="id_tag" value="3"/>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
 					<button type="submit" class="btn btn-primary">Simpan</button>
@@ -106,6 +107,16 @@
 			</div>
 		</div>
 	</div>
+	@if (Session::has('after_save_pros'))
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="alert alert-{{ Session::get('after_save_pros.alert') }} alert-dismissible" role="alert">
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<strong>{{ Session::get('after_save_pros.title') }}</strong> {{ Session::get('after_save_pros.text-1') }}, {{ Session::get('after_save_pros.text-2') }}
+			</div>
+		</div>
+	</div>
+	@endif
 	<div class="clearfix" style="margin-bottom: 16px">
 		<h3 style="margin: 0" class="pull-left">
 			Prosesi Upacara
@@ -138,9 +149,9 @@
                                 <p class="prosesi-title">{{$item->nama_post}}</p>
                                 {{-- {{$item->nama_status}} --}}
 								{{-- {{$item->id_post}} --}}
-								{{-- {{$item->id_parent_post}} --}}
+								{{-- {{$item->id_det_post}} --}}
 								<a href="/kategori/detil_post_kp/{{$item->id_parent_post}}/{{$item->id_post}}/{{$item->id_tag}}" class="btn btn-primary btn-sm">Lihat</a>
-                            	<a href="#" class="btn btn-danger btn-delete btn-sm" data-id="#">Hapus</a>
+								<a href="/kategori/delete_list_prosesiku/{{$item->id_det_post}}" onclick="return confirm('Delete ?')" class="btn btn-danger btn-delete btn-sm" data-id="#">Hapus</a>
                             </div>
 						</div>
 					</div>
@@ -182,7 +193,7 @@
 									{{$item->id_parent_post}} --}}
 								</div>
 								<!-- Pakai if untuk deleteable -->
-								<a data-id="#" href="/kategori/delete_list_kategoriku/{{$item->id_det_post}}" class="btn btn-delete btn-sm btn-danger btn-card">Hapus</a>
+								<a data-id="#" href="/kategori/delete_list_kategoriku/{{$item->id_det_post}}" onclick="return confirm('Delete ?')" class="btn btn-delete btn-sm btn-danger btn-card">Hapus</a>
 								<!-- Pakai endif deleteable -->
 							</div>
 						</div>
@@ -238,8 +249,8 @@
 </script>
 <script>
 	$('.list-prosesi').select2();
-	let id_kategori = {!! json_encode($kategori_post->id_kategori) !!};
-	let id_post = {!! json_encode($kategori_post->id_post) !!};
+	let id_kategoriku = {!! json_encode($kategori_post->id_kategori) !!};
+	let id_post1 = {!! json_encode($kategori_post->id_post) !!};
 	$('#prosesi-button').click(function(){
 		let prosesi = $(this).data('prosesi');
 		$.ajax({
@@ -247,8 +258,8 @@
 			type: "get",
 			dataType: "json",
 			data: {
-				id_kategori:id_kategori,
-				id_tag:tag
+				id_kategoriku:id_kategoriku,
+				id_post1:id_post1
 			} ,
 			success: function (data) {
 				console.log(data)

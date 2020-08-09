@@ -171,6 +171,10 @@
 					<a class="card tag-button" data-toggle="modal" href="#" data-target="#tag-modal" data-tag="{{ $drops->id_tag }}"><i class="fa fa-plus fa-4x"></i></a>
 				</div>
 			</div>
+			@else
+				<div class="col-lg-4" style="margin-top: 16px">
+					<a class="card tag-button" data-toggle="modal" href="#" data-target="#tag-modal" data-tag="{{ $drops->id_tag }}"><i class="fa fa-plus fa-4x"></i></a>
+				</div>
 			@endif
 		</div>
 		@endforeach
