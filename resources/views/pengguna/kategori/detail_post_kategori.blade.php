@@ -10,28 +10,35 @@
         text-overflow: ellipsis;
 	}
 </style>
+@if ($kategori_post->gambar != '')
+<div class="hero" style="background-image: url(/gambarku/{{$kategori_post->gambar}})">
+    <div class="container">
+        <h1 class="mb-3">{{$kategori_post->nama_post}}</h1>
+    </div>
+</div>
+@else
+<div class="hero" style="background-image: url(/assets/images/placeholder.png)">
+    <div class="container">
+        <h1 class="mb-3">{{$kategori_post->nama_post}}</h1>
+    </div>
+</div>
+@endif
 <div class="container py-5">
     <div class="row">
-        <div class="col-3">
-            @if ($kategori_post->gambar != '')
-                <img src="/gambarku/{{$kategori_post->gambar}}" alt="..." class="card-img-top">
-            @else
-                <img src="/assets/images/placeholder.png" alt="..." class="card-img-top">
-            @endif
-        </div>
-        <div class="col-9">
-            <h1 class="mb-3">{{$kategori_post->nama_post}}</h1>
-            <table width="100%" class="mb-3">
-                <tr>
-                    <td width="100"><strong>Jenis</strong></td>
-                    <td>{{$kategori_post->nama_kategori}}</td>
-                </tr>
-            </table>
-            <p>{!!$kategori_post->deskripsi!!}</p>
-            <div class="container_youtube">
-                <iframe width="640" height="360" src="https://www.youtube.com/embed/{{ $kategori_post->video }}" class="video" allowfullscreen></iframe>
+        <div class="col-lg-8">
+            <div class="clearfix">
+                @if ($kategori_post->gambar != '')
+                    <img src="/gambarku/{{$kategori_post->gambar}}" alt="..." width="240" class="mb-3 mr-3" style="float: left">
+                @else
+                    <img src="/assets/images/placeholder.png" alt="..." width="240" class="mb-3 mr-3" style="float: left">
+                @endif
+                {!!$kategori_post->deskripsi!!}
             </div>
-
+            <div class="mb-3">
+                <div class="container_youtube">
+                    <iframe width="640" height="360" src="https://www.youtube.com/embed/{{ $kategori_post->video }}" class="video" allowfullscreen></iframe>
+                </div>
+            </div>
         </div>
         <div class="col-4">
             <!-- If count data ada atau tidak -->

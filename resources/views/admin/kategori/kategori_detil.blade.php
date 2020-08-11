@@ -14,7 +14,7 @@
             <div class="panel-heading">
                 <div class="row">
                     <div class="col-md-2">
-                        <a href="/tag/tambah_post_tag/{{$namas->id_kategori}}" class="btn btn-warning btn-block">
+                        <a href="/kategori/tambah_post_kategori/{{$namas->id_kategori}}" class="btn btn-warning btn-block">
                             <i class="fa fa-plus" style="margin-right:8px"></i>Tambah
                         </a>
                     </div>
