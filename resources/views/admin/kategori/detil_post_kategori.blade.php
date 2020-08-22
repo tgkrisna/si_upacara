@@ -3,6 +3,7 @@
 @section('konten')
 
 <link rel="stylesheet" href="{{asset('/assets/select2/select2.min.css')}}">
+<link rel="stylesheet" href="{{asset('/assets/js/sortable.js')}}">
 <style>
 	.prosesi-title {
 		white-space: nowrap;
@@ -44,14 +45,47 @@
 						</select>
 					</div>
 				</div>
-				<input type="text" name="id_post" value="{{$kategori_post->id_post}}"/>
-				<input type="text" name="id_tag" value="3"/>
+				<input type="hidden" name="id_post" value="{{$kategori_post->id_post}}"/>
+				<input type="hidden" name="id_tag" value="3"/>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
 					<button type="submit" class="btn btn-primary">Simpan</button>
 				</div>
 			</div>
 		</form>
+	</div>
+</div>
+
+<div class="modal fade" id="reorder-modal" tabindex="-1" role="dialog">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Tutup"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title">Pengaturan Tahapan Upacara</h4>
+			</div>
+			<form class="form" action="/kategori/input_reposisi_prosesiku" method="POST">
+				{{ csrf_field() }}
+				<div class="modal-body">
+					<div class="form-group">
+						<input type="hidden" id="idpost" name="id_post" value="{{$kategori_post->id_post}}">
+						<label class="control-label">Kategori</label>
+						<select name="id_status" class="form-control" id="id_status" required>
+							<option value="">Pilih kategori...</option>
+							<option value="1">Awal</option>
+							<option value="2">Puncak</option>
+							<option value="3">Akhir</option>
+						</select>
+						<button type="button" class="btn btn-default" id="tampil">Show</button>
+					</div>
+					<div id="reorder-input"></div>
+					<div class="list-group" id="prosesi-sortable" style="cursor: move"></div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+					<button type="submit" class="btn btn-primary">Simpan</button>
+				</div>
+			</form>
+		</div>
 	</div>
 </div>
 
@@ -85,28 +119,28 @@
 					<button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
 					<button type="submit" class="btn btn-primary">Simpan</button>
 				</div>
-			</div>
-		</form>
+			</form>
+		</div>
 	</div>
 </div>
-	<div class="row">
-		<div class="col-lg-3">
-			<img src="/gambarku/{{$kategori_post->gambar}}" width="100%">
-		</div>
-		<div class="col-lg-9">
-			<h1 class="page-header" style="margin: 0">
-				{{$kategori_post->nama_post}}
-			</h1>
-			<h4 style="margin: 0">
-				{{$kategori_post->nama_kategori}}
-			</h4>
-			<br>
-			<div>{!!$kategori_post->deskripsi!!}</div>
-			<div class="container_youtube">
-				<iframe width="640" height="360" src="https://www.youtube.com/embed/{{ $kategori_post->video }}" class="video" allowfullscreen></iframe>
-			</div>
+<div class="row">
+	<div class="col-lg-3">
+		<img src="/gambarku/{{$kategori_post->gambar}}" width="100%">
+	</div>
+	<div class="col-lg-9">
+		<h1 class="page-header" style="margin: 0">
+			{{$kategori_post->nama_post}}
+		</h1>
+		<h4 style="margin: 0">
+			{{$kategori_post->nama_kategori}}
+		</h4>
+		<br>
+		<div>{!!$kategori_post->deskripsi!!}</div>
+		<div class="container_youtube">
+			<iframe width="640" height="360" src="https://www.youtube.com/embed/{{ $kategori_post->video }}" class="video" allowfullscreen></iframe>
 		</div>
 	</div>
+</div>
 	@if (Session::has('after_save_pros'))
 	<div class="row">
 		<div class="col-lg-12">
@@ -122,6 +156,7 @@
 			Prosesi Upacara
 		</h3>
 		<a href="#" data-toggle="modal" data-target="#detail-modal" id="prosesi-button" class="btn btn-sm btn-primary pull-right"><i class="fa fa-plus">Tambah Prosesi</i></a>
+		<a href="#" id="reorder" class="btn btn-sm btn-default pull-right" style="margin-right: 8px" data-idpost="{{$kategori_post->id_post}}"><i class="fa fa-refresh"></i> Reposition Prosesi Upacara</a>
 	</div>
 	<!-- Pake If count data post prosesi ketika 0/NULL -->
 
@@ -218,6 +253,7 @@
 </div>
 
 <script src="{{asset('/assets/select2/select2.min.js')}}"></script>
+<script src="{{asset('/assets/js/sortable.js')}}"></script>
 <script>
 	$('.list-tag').select2();
 	let id_kategori = {!! json_encode($kategori_post->id_kategori) !!};
@@ -274,6 +310,51 @@
 				console.log(textStatus, errorThrown);
 			}
 		});
+	});
+</script>
+<script>
+	$(document).ready(function(){
+
+		$("#reorder").click(function(){
+			$("#reorder-modal").modal('show');
+			
+		})
+		$("#tampil").click(function(){
+			let idpost = $("#idpost"). val();
+			let status = $("#id_status"). val();
+			let sortable;
+			let reorderInput = document.getElementById('reorder-input');
+			let $sortableElement = $('#prosesi-sortable');
+			$.get('/kategori/reposisi_prosesiku/'+idpost+'/'+status,function(data){
+				let contents = "";
+                let p = data;
+
+                p.forEach(u => {
+                    contents += `<div class="list-group-item" data-id="${u.id_det_post}"><i class="fa fa-unsorted" style="margin-right: 16px"></i>${u.nama_post}</div>`;
+                });
+
+                if (typeof sortable !== "undefined") {
+                    sortable.destroy();
+                }
+
+                $sortableElement.html(contents);
+				sortable = new Sortable(document.getElementById('prosesi-sortable'), {
+                    onSort: (e) => {
+                        let toArraySortable = sortable.toArray();
+                        let contents = ``;
+
+                        toArraySortable.forEach((u, i) => {
+                            contents += `<input type="text" name="reorder[${i}]" value="${u}" />`;
+                        });
+
+                        console.log(contents);
+
+                        reorderInput.innerHTML = contents;
+                    }
+                });
+			})
+			
+		})
 	});
 </script>
 @endsection

@@ -267,6 +267,7 @@ class Tag extends Controller
         exit;
     }
 
+
     public function list_tag(Request $request){
         $list_tag = M_Post::where('id_tag', $request->id_tag)->get();
         return response()->json($list_tag);

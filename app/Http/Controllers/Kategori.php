@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 use App\M_Kategori;
 use App\M_Post;
@@ -12,6 +13,7 @@ use App\M_Tag;
 use App\M_Status;
 use App\M_Tingkatan;
 use App\M_Det_Post;
+
 
 class Kategori extends Controller
 {
@@ -181,6 +183,7 @@ class Kategori extends Controller
             ->leftJoin('tb_detil_post','tb_status.id_status','=','tb_detil_post.id_status')
             ->leftJoin('tb_post','tb_detil_post.id_parent_post','=','tb_post.id_post')
             ->select('tb_detil_post.id_det_post','tb_status.id_status', 'tb_status.nama_status', 'tb_post.nama_post', 'tb_post.gambar','tb_detil_post.id_post', 'tb_detil_post.id_parent_post', 'tb_detil_post.id_tag')
+            ->orderBy('tb_detil_post.posisi', 'ASC')
             ->get();
             foreach ($det_pos as $dp) {
                 $new_det[]=(object) array(
@@ -221,12 +224,15 @@ class Kategori extends Controller
                     'id_det_post' => $dt->id_det_post,
                 );
             }
+            
             $drop_t[]=(object) array(
                 'id_tag' => $id_tagku,
                 'nama_tag' => $nama_tag,
                 'det_tag' => $new_tag,
             );
+            $new_tag=[];
         }
+        // dd($drop_t);
         return view('admin/kategori/detil_post_kategori',compact('kategori_post','drop_d','drop_t'));
     }
     public function detil_post_kp($id_parent_post,$id_post,$id_tag)
@@ -314,6 +320,32 @@ class Kategori extends Controller
         ->get();
         return $data_prosesi;
     }
+    public function drop_down_prosesi($id_post,$id_status)
+    {
+        $kategori = M_Det_Post::where('tb_detil_post.id_post',$id_post)
+        ->where('tb_detil_post.id_status',$id_status)
+        ->where('tb_detil_post.spesial',$id_post)
+        ->leftJoin('tb_post','tb_detil_post.id_parent_post','=','tb_post.id_post')
+        ->select('tb_detil_post.id_det_post','tb_detil_post.id_post','tb_detil_post.id_parent_post','tb_detil_post.id_status','tb_detil_post.posisi', 'tb_post.nama_post')
+        ->orderBy('tb_detil_post.posisi', 'ASC')
+        ->get();
+        
+        return $kategori;
+    }
+    public function input_drop_prosesi(Request $request)
+    {
+        // dd($request->all());
+        $id_post = $request->id_post;
+        $reorder = $request->reorder;
+        // dd($reorder);
+        foreach ($reorder as $key => $value) {
+            DB::table('tb_detil_post')
+            ->where('id_det_post',$value)
+            ->update(['posisi' => $key + 1]);
+        }
+        return redirect()->back();
+    }
+
     public function input_list_kategoriku(Request $request)
     {
         $cek = M_Det_Post::where('id_parent_post', $request->id_parent_post)->where('id_post', $request->id_post)
