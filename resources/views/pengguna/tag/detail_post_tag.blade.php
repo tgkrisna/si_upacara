@@ -37,6 +37,8 @@
     <hr>
     <div class="row">
         @foreach ($tag_all as $tg_al)
+        <!-- Buat View Satu" -->
+        @if (($tg_al->nama_tag == "Tabuh") & ($tag_post->nama_post == "Gamelan Bali"))
         <div class="col-lg-4">
             <h3>{{$tg_al->nama_tag}}</h3>
             @if (!empty($tg_al->det_tag))
@@ -58,8 +60,11 @@
             </div>
             @endif
         </div>
-        @endforeach
+        @else
+            
+        @endif
 
+        @endforeach
     </div>
 </div>
 <script src="{{asset('/assets/select2/select2.min.js')}}"></script>

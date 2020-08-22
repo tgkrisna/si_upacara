@@ -73,6 +73,7 @@ class Kategori_P extends Controller
                 'nama_tag' => $nama_tag,
                 'det_kategori' => $new_det, 
             );
+            $new_det=[];
         }
         foreach ($prosesi as $prosesi_up) {
             $id_status = $prosesi_up->id_status;

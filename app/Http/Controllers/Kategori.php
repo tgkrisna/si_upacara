@@ -11,7 +11,6 @@ use App\M_Kategori;
 use App\M_Post;
 use App\M_Tag;
 use App\M_Status;
-use App\M_Tingkatan;
 use App\M_Det_Post;
 
 
@@ -302,6 +301,7 @@ class Kategori extends Controller
                 'nama_tag' => $nama_tag,
                 'det_tag' => $new_tag,
             );
+            $new_tag=[];
         }
         return view('admin/kategori/detil_post_kp',compact('kategori_post','drop_tag'));
     }
