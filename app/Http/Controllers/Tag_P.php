@@ -50,8 +50,23 @@ class Tag_P extends Controller
                 'nama_tag' => $nama_tag,
                 'det_tag' => $new_det,
             );
+            $new_det=[];
         }
-        // dd($tag_post,$tag_all);
-        return view ('pengguna/tag/detail_post_tag',compact('tag_post','tag_all'));
+        if ($tag_post->nama_tag == "Gamelan Bali") {
+            return view ('/pengguna/tag/detail_tag/detail_post_a',compact('tag_post','tag_all'));
+        } 
+        elseif ($tag_post->nama_tag == "Tari Bali") {
+            return view ('/pengguna/tag/detail_tag/detail_post_a',compact('tag_post','tag_all'));
+        }
+        elseif ($tag_post->nama_tag == "Prosesi Upacara") {
+            return view ('/pengguna/tag/detail_post_tag',compact('tag_post','tag_all'));
+        }
+        elseif ($tag_post->nama_tag == "Kidung") {
+            return view ('/pengguna/tag/detail_tag/detail_post_a',compact('tag_post','tag_all'));
+        }
+        else {
+            return view ('/pengguna/tag/detail_tag/detail_post_b',compact('tag_post','tag_all'));
+        }
+        // return view ('pengguna/tag/detail_post_tag',compact('tag_post','tag_all'));   
     }
 }

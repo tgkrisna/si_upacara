@@ -211,14 +211,11 @@ class Tag extends Controller
                     'id_det_post' => $dp->id_det_post,
                 );
             }
-
             $drop_d[]=(object) array(
                 'id_tag' => $id_tagku,
                 'nama_tag' => $nama_tag,
                 'det_pos' => $new_det,
             );
-
-            
         }
         if ($tag_post->nama_tag == "Gamelan Bali") {
             return view ('admin/tag/det_tag/detil_post_tag_gamelan',compact('tag_post','drop_d'));

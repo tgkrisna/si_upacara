@@ -22,8 +22,9 @@
                 </li>
                 @endforeach
             </ul>
-                <form class="form-inline ml-auto" action="#">
-                    <input class="form-control form-control-sm" type="search" name="query" value="#" placeholder="Cari sesuatu..." aria-label="Search">
+                <form class="form-inline ml-auto" action="/pengguna/searching" method="POST">
+                    {{ csrf_field() }}
+                    <input class="form-control form-control-sm" type="search" name="cari" placeholder="Cari sesuatu..." aria-label="Search">
                 </form>
         </div>
     </div>

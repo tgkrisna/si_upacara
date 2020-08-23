@@ -32,35 +32,8 @@
                 <iframe width="640" height="360" src="https://www.youtube.com/embed/{{ $tag_post->video }}" class="video" allowfullscreen></iframe>
             </div>
         </div>
-
     </div>
     <hr>
-    <div class="row">
-        @foreach ($tag_all as $tg_al)
-        <!-- Buat View Satu" -->
-        <div class="col-lg-4">
-            <h3>{{$tg_al->nama_tag}}</h3>
-            @if (!empty($tg_al->det_tag))
-            <div class="row" style="margin-bottom: 16px">
-                @foreach ($tg_al->det_tag as $item)
-                    @if ($tg_al->id_tag == $item->id_tag)
-                    <div class="col-lg-4" style="margin-top: 16px">
-                        <div class="cardmix" style="background-image: url(/gambarku/{{$item->gambar}})">
-                            <div class="cardmix-body">
-                                {{$item->nama_post}}
-                                {{-- {{$item->id_post}}
-                                {{$item->id_parent_post}} --}}
-                            </div>
-                            <a href="/tag_pengguna/detil/{{$item->id_parent_post}}/{{$item->id_tag}}" class="btn btn-primary btn-sm btn-primer btn-cardmix">Lihat</a>
-                        </div>
-                    </div>
-                    @endif
-                @endforeach
-            </div>
-            @endif
-        </div>
-        @endforeach
-    </div>
 </div>
-<script src="{{asset('/assets/front/jquery.min.js')}}"></script>
+<script src="{{asset('/assets/select2/select2.min.js')}}"></script>
 @endsection
