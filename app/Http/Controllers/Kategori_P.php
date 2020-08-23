@@ -83,6 +83,7 @@ class Kategori_P extends Controller
             ->leftJoin('tb_detil_post','tb_status.id_status','=','tb_detil_post.id_status')
             ->leftJoin('tb_post','tb_detil_post.id_parent_post','=','tb_post.id_post')
             ->select('tb_status.id_status', 'tb_status.nama_status', 'tb_post.nama_post', 'tb_detil_post.id_post', 'tb_detil_post.id_parent_post', 'tb_detil_post.id_tag')
+            ->orderBy('tb_detil_post.posisi', 'ASC')
             ->get();
             foreach ($det_pros as $d_pros) {
                 $new_pros[] = (object) array(
@@ -101,5 +102,45 @@ class Kategori_P extends Controller
             );
         }
         return view('/pengguna/kategori/detail_post_kategori',compact('kategori_post','kategori_all','prosesi_all'));
+    }
+    public function detail_prosesi_k($id_post,$id_parent_post)
+    {
+        $id_tag = 3;
+
+        $tag_post = M_Post::where('tb_post.id_post',$id_parent_post)->first();
+
+        $data = M_Tag::where('tb_tag.id_tag','!=',$id_tag)
+        ->select('tb_tag.id_tag','tb_tag.nama_tag')
+        ->get();
+
+        $tag_all = [];
+        $new_det = [];
+
+        foreach ($data as $kategori) {
+            $id_tagku = $kategori->id_tag;
+            $nama_tag = $kategori->nama_tag;
+            $det_post = M_Det_Post::where('tb_detil_post.id_post',$id_parent_post)
+            ->where('tb_detil_post.spesial',$id_post)
+            ->leftJoin('tb_post','tb_detil_post.id_parent_post','=','tb_post.id_post')
+            ->leftJoin('tb_tag','tb_detil_post.id_tag','=','tb_tag.id_tag')
+            ->select('tb_detil_post.id_post','tb_detil_post.id_parent_post','tb_detil_post.id_tag','tb_post.nama_post','tb_post.gambar')
+            ->get();
+            foreach ($det_post as $dp) {
+                $new_det[]=(object) array(
+                    'id_post' => $dp->id_post,
+                    'id_parent_post' => $dp->id_parent_post,
+                    'id_tag' => $dp->id_tag,
+                    'nama_post' => $dp->nama_post,
+                    'gambar' => $dp->gambar,
+                );
+            }
+            $tag_all[] = (object) array(
+                'id_tag' => $id_tagku,
+                'nama_tag' => $nama_tag,
+                'det_tag' => $new_det, 
+            );
+            $new_det = [];
+        }
+        return view('pengguna/kategori/detail_post_prosesi',compact('tag_post','tag_all'));
     }
 }

@@ -49,7 +49,7 @@
                         @if ($pr_al->id_status == $item->id_status)
                             <ul class="timeline mb-5">
                                 <li>
-                                    <a href="#/{{$item->id_post}}/{{$item->id_parent_post}}">{{$item->nama_post}}</a>
+                                    <a href="/kategori_pengguna/prosesi/{{$item->id_post}}/{{$item->id_parent_post}}">{{$item->nama_post}}</a>
                                 </li>
                             </ul>
                         @endif

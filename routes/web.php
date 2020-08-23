@@ -89,3 +89,4 @@ Route::get('/tag_pengguna/{id_tag}','Tag_P@index_p');
 Route::get('/tag_pengguna/detil/{id_post}/{id_tag}','Tag_P@detail_post_t');
 Route::get('/kategori_pengguna/{id_kategori}','Kategori_P@index_k');
 Route::get('/kategori_pengguna/detil/{id_post}/{id_kategori}','Kategori_P@detail_post_k');
+Route::get('/kategori_pengguna/prosesi/{id_post}/{id_parent_post}','Kategori_P@detail_prosesi_k');
