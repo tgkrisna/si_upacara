@@ -20,7 +20,9 @@ class Tag_P extends Controller
     }
     public function detail_post_t($id_post,$id_tag)
     {
-        $tag_post = M_Post::where('tb_post.id_post',$id_post)->first();
+        $tag_post = M_Post::where('tb_post.id_post',$id_post)
+        ->leftJoin('tb_tag','tb_post.id_tag','=','tb_tag.id_tag')
+        ->first();
         $data = M_Tag::where('tb_tag.id_tag','!=',$id_tag)
         ->select('tb_tag.id_tag','tb_tag.nama_tag')
         ->get();
@@ -31,6 +33,7 @@ class Tag_P extends Controller
             $nama_tag  =$tag->nama_tag;
             $det_post = M_Tag::where('tb_detil_post.id_post',$id_post)
             ->where('tb_detil_post.id_tag',$id_tagku)
+            ->where('tb_detil_post.spesial',NULL)
             ->leftJoin('tb_detil_post','tb_tag.id_tag','=','tb_detil_post.id_tag')
             ->leftJoin('tb_post','tb_detil_post.id_parent_post','=','tb_post.id_post')
             ->select('tb_tag.id_tag', 'tb_tag.nama_tag', 'tb_post.nama_post', 'tb_post.gambar','tb_detil_post.id_post', 'tb_detil_post.id_parent_post')
