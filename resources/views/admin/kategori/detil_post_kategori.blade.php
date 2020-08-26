@@ -251,7 +251,7 @@
 		<!-- endforeach data tag -->
 	</div>	
 </div>
-
+<!-- Bagaimana caranya agar melakukan pemilihan Prosesi berdasarkan Yadnya ATAU Yadnya yg bernilai Null -->
 <script src="{{asset('/assets/select2/select2.min.js')}}"></script>
 <script src="{{asset('/assets/js/sortable.js')}}"></script>
 <script>
