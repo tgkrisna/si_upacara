@@ -20,6 +20,7 @@ class Admin extends Controller
     	}
     	else{
             $dashboard = M_Post::groupBy('tb_kategori.nama_kategori')
+            ->where('tb_post.id_tag',NULL)
             ->leftJoin('tb_kategori','tb_post.id_kategori','=','tb_kategori.id_kategori')
             ->selectRaw("tb_kategori.nama_kategori, count('tb_post.id_post') as id_post")
             ->get();

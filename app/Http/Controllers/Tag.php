@@ -274,11 +274,24 @@ class Tag extends Controller
     {
     $cek = M_Det_Post::where('id_parent_post', $request->id_parent_post)->where('id_post', $request->id_post)->count();
         if($cek < 1){
+            $tag = M_Det_Post::where('id_post',$request->id_parent_post)->where('spesial',NULL)->get();
+
             $data = new M_Det_Post();
             $data->id_tag = $request->id_tag;
             $data->id_post = $request->id_post;
             $data->id_parent_post = $request->id_parent_post;
             $data->save();
+            if ($data->save()) {
+                foreach ($tag as $tg){
+                    if ($tg != '') {
+                        $tags = new M_Det_Post();
+                        $tags->id_tag = $tg->id_tag;
+                        $tags->id_post = $request->id_post;
+                        $tags->id_parent_post = $tg->id_parent_post;
+                        $tags->save();
+                    }
+                }
+            }
             $id_postku = $request->id_post;
             $id_tagku = $request->id_tagku;
 
