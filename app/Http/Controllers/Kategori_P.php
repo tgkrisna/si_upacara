@@ -37,11 +37,15 @@ class Kategori_P extends Controller
     public function detail_post_k($id_post,$id_kategori)
     {
         $id_tag = 3;
+        $id_tag2=5;
+        $id_tag3=6;
         $kategori_post = M_Post::where('tb_post.id_post',$id_post)
         ->leftJoin('tb_kategori','tb_post.id_kategori','=','tb_kategori.id_kategori')
         ->select('tb_post.id_post','tb_post.nama_post','tb_post.video','tb_post.gambar','tb_post.deskripsi','tb_kategori.nama_kategori')
         ->first();
         $data = M_Tag::where('tb_tag.id_tag','!=',$id_tag)
+                        ->where('tb_tag.id_tag','!=',$id_tag2)
+                        ->where('tb_tag.id_tag','!=',$id_tag3)
                         ->select('tb_tag.id_tag','tb_tag.nama_tag')
                         ->get();
         $prosesi = M_Status::select('tb_status.id_status', 'tb_status.nama_status')
