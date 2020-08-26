@@ -134,7 +134,7 @@
 				@foreach ($drops->det_tag as $item)
 					@if ($drops->id_tag == $item->id_tag)
 				<div class="col-lg-4" style="margin-top: 16px">
-					<div class="card" style="background-image: url(/gambarku/{{$item->gambar}})">
+					<div class="card" style="background-image: url('/gambarku/{{$item->gambar}}')">
 						<div class="card-body">
 							{{$item->nama_post}}
 							{{-- {{$item->id_post}}
