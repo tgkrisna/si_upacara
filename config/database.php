@@ -43,7 +43,7 @@ return [
             'driver' => 'mysql',
             'host' => env('DB_HOST', '127.0.0.1'),
             'port' => env('DB_PORT', '3306'),
-            'database' => env('db_gamelanku', 'db_gamelanku'),
+            'database' => env('db_forestku', 'db_forestku'),
             'username' => env('root', 'root'),
             'password' => env('', ''),
             'unix_socket' => env('DB_SOCKET', ''),

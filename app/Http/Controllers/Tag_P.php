@@ -22,6 +22,7 @@ class Tag_P extends Controller
     {
         $tag_post = M_Post::where('tb_post.id_post',$id_post)
         ->leftJoin('tb_tag','tb_post.id_tag','=','tb_tag.id_tag')
+        ->select('tb_post.id_post','tb_post.nama_post','tb_post.deskripsi','tb_post.gambar','tb_post.video','tb_tag.id_tag','tb_tag.nama_tag')
         ->first();
         $data = M_Tag::where('tb_tag.id_tag','!=',$id_tag)
         ->select('tb_tag.id_tag','tb_tag.nama_tag')
