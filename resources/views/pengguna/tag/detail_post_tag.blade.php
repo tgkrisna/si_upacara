@@ -45,7 +45,7 @@
                 @foreach ($tg_al->det_tag as $item)
                     @if ($tg_al->id_tag == $item->id_tag)
                     <div class="col-lg-4" style="margin-top: 16px">
-                        <div class="cardmix" style="background-image: url(/gambarku/{{$item->gambar}})">
+                        <div class="cardmix" style="background-image: url('/gambarku/{{$item->gambar}}')">
                             <div class="cardmix-body">
                                 {{$item->nama_post}}
                                 {{-- {{$item->id_post}}

@@ -92,7 +92,7 @@
                                 @if ($drop->id_tag == $item->id_tag)
                         <!-- Katanya Pake Foreach lagi -->
                         <div class="col-lg-2">
-                            <div class="card" style="background-image: url(/gambarku/{{$item->gambar}})">
+                            <div class="card" style="background-image: url('/gambarku/{{$item->gambar}}')">
                                 <div class="card-body">
                                     {{$item->nama_post}}
                                     {{-- {{$item->nama_tag}}

@@ -11,7 +11,7 @@
 	}
 </style>
 @if ($kategori_post->gambar != '')
-<div class="hero" style="background-image: url(/gambarku/{{$kategori_post->gambar}})">
+<div class="hero" style="background-image: url('/gambarku/{{$kategori_post->gambar}}')">
     <div class="container">
         <h1 class="mb-3">{{$kategori_post->nama_post}}</h1>
     </div>
@@ -73,7 +73,7 @@
                 @foreach ($kt_al->det_kategori as $item)
                     @if ($kt_al->id_tag == $item->id_tag)
                     <div class="col-lg-4" style="margin-top: 16px">
-                        <div class="cardmix" style="background-image: url(/gambarku/{{$item->gambar}})">
+                        <div class="cardmix" style="background-image: url('/gambarku/{{$item->gambar}}')">
                             <div class="cardmix-body">
                                 {{$item->nama_post}}
                                 {{-- {{$item->id_post}}
