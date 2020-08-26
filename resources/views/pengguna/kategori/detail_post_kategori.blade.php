@@ -39,6 +39,32 @@
                     <iframe width="640" height="360" src="https://www.youtube.com/embed/{{ $kategori_post->video }}" class="video" allowfullscreen></iframe>
                 </div>
             </div>
+            <hr>
+            <div class="row">
+                @foreach ($kategori_all as $kt_al)
+                <div class="col-lg-6">
+                    <h3>{{$kt_al->nama_tag}}</h3>
+                    @if (!empty($kt_al->det_kategori))
+                    <div class="row" style="margin-bottom: 16px">
+                        @foreach ($kt_al->det_kategori as $item)
+                            @if ($kt_al->id_tag == $item->id_tag)
+                            <div class="col-lg-4" style="margin-top: 16px">
+                                <div class="cardmix" style="background-image: url('/gambarku/{{$item->gambar}}')">
+                                    <div class="cardmix-body">
+                                        {{$item->nama_post}}
+                                        {{-- {{$item->id_post}}
+                                        {{$item->id_parent_post}} --}}
+                                    </div>
+                                    <a href="/tag_pengguna/detil/{{$item->id_parent_post}}/{{$item->id_tag}}" class="btn btn-primary btn-sm btn-primer btn-cardmix">Lihat</a>
+                                </div>
+                            </div>
+                            @endif
+                        @endforeach
+                    </div>
+                    @endif
+                </div>
+                @endforeach
+            </div>
         </div>
         <div class="col-4">
             <!-- If count data ada atau tidak -->
@@ -62,32 +88,6 @@
                 <!-- Else count kosong -->
             @endforeach
         </div>
-    </div>
-    <hr>
-    <div class="row">
-        @foreach ($kategori_all as $kt_al)
-        <div class="col-lg-4">
-            <h3>{{$kt_al->nama_tag}}</h3>
-            @if (!empty($kt_al->det_kategori))
-            <div class="row" style="margin-bottom: 16px">
-                @foreach ($kt_al->det_kategori as $item)
-                    @if ($kt_al->id_tag == $item->id_tag)
-                    <div class="col-lg-4" style="margin-top: 16px">
-                        <div class="cardmix" style="background-image: url('/gambarku/{{$item->gambar}}')">
-                            <div class="cardmix-body">
-                                {{$item->nama_post}}
-                                {{-- {{$item->id_post}}
-                                {{$item->id_parent_post}} --}}
-                            </div>
-                            <a href="/tag_pengguna/detil/{{$item->id_parent_post}}/{{$item->id_tag}}" class="btn btn-primary btn-sm btn-primer btn-cardmix">Lihat</a>
-                        </div>
-                    </div>
-                    @endif
-                @endforeach
-            </div>
-            @endif
-        </div>
-        @endforeach
     </div>
 </div>
 <script src="{{asset('/assets/select2/select2.min.js')}}"></script>
