@@ -310,8 +310,6 @@ class Kategori extends Controller
     public function list_tag(Request $request)
     {
         $data_tag = M_Post::where('tb_post.id_tag','=',$request->id_tag)
-        ->where('tb_post.id_kategori','=',$request->id_kategori)
-        ->orWhere('tb_post.id_kategori',NULL)
         // ->where('tb_post.id_kategori','=',$request->id_kategori)
         ->get();
         return $data_tag;
@@ -321,6 +319,8 @@ class Kategori extends Controller
         // dd($request->all());
         $id_tag = 3;
         $data_prosesi = M_Post::where('tb_post.id_tag','=',$id_tag)
+        ->where('tb_post.id_kategori','=',$request->id_kategoriku)
+        ->orWhere('tb_post.id_kategori',NULL)
         ->get();
         return $data_prosesi;
     }
