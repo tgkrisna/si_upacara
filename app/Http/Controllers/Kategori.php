@@ -329,11 +329,21 @@ class Kategori extends Controller
     public function list_prosesi(Request $request)
     {
         // dd($request->all());
-        $id_tag = 3;
-        $data_prosesi = M_Post::where('tb_post.id_tag','=',$id_tag)
-        ->where('tb_post.id_kategori','=',$request->id_kategoriku)
+        //Error Logic pakai orwhere bracket, ada di laraveldaily.com contohnya
+        $id_tags = 3;
+        $data_prosesi = M_Post::where('tb_post.id_kategori','=',$request->id_kategoriku)
         ->orWhere('tb_post.id_kategori',NULL)
+        ->where('tb_post.id_tag','=',$id_tags)
         ->get();
+        // $data_prosesi = M_Post::where(function($query){
+        //     $query->where('tb_post.id_tag',$id_tags)
+        //     ->where('tb_post.id_kategori',NULL);
+        // })->orWhere(function($query){
+        //     $query->where('tb_post.id_tag',$id_tags)
+        //     ->where('tb_post.id_kategori',$request->id_kategoriku);
+        // })
+        // ->get();
+        // dd($data_prosesi);
         return $data_prosesi;
     }
     public function drop_down_prosesi($id_post, $id_status)
