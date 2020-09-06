@@ -326,23 +326,16 @@ class Kategori extends Controller
         ->get();
         return $data_tag;
     }
-    public function list_prosesi(Request $request)
+    public function list_prosesi($id_kategoriku)
     {
-        // dd($request->all());
-        //Error Logic pakai orwhere bracket, ada di laraveldaily.com contohnya
-        $id_tags = 3;
-        $data_prosesi = M_Post::where('tb_post.id_kategori','=',$request->id_kategoriku)
-        ->orWhere('tb_post.id_kategori',NULL)
-        ->where('tb_post.id_tag','=',$id_tags)
+        $data_prosesi = M_Post::where(function($query){
+            $query->where('tb_post.id_tag',3)
+            ->where('tb_post.id_kategori',NULL);
+        })->orWhere(function($query) use($id_kategoriku) {
+            $query->where('tb_post.id_tag',3)
+            ->where('tb_post.id_kategori','=',$id_kategoriku);
+        })
         ->get();
-        // $data_prosesi = M_Post::where(function($query){
-        //     $query->where('tb_post.id_tag',$id_tags)
-        //     ->where('tb_post.id_kategori',NULL);
-        // })->orWhere(function($query){
-        //     $query->where('tb_post.id_tag',$id_tags)
-        //     ->where('tb_post.id_kategori',$request->id_kategoriku);
-        // })
-        // ->get();
         // dd($data_prosesi);
         return $data_prosesi;
     }

@@ -290,13 +290,9 @@
 	$('#prosesi-button').click(function(){
 		let prosesi = $(this).data('prosesi');
 		$.ajax({
-			url: "/kategori/list_prosesi",
+			url: "/kategori/list_prosesi/"+id_kategoriku,
 			type: "get",
 			dataType: "json",
-			data: {
-				id_kategoriku:id_kategoriku,
-				id_post1:id_post1
-			} ,
 			success: function (data) {
 				console.log(data)
 				let html = '<option value="">Pilih Prosesi</option>'
@@ -344,7 +340,7 @@
                         let contents = ``;
 
                         toArraySortable.forEach((u, i) => {
-                            contents += `<input type="text" name="reorder[${i}]" value="${u}" />`;
+                            contents += `<input type="hidden" name="reorder[${i}]" value="${u}" />`;
                         });
 
                         console.log(contents);

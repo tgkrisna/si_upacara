@@ -48,7 +48,7 @@ Route::get('/kategori/delete_post_k/{id_post}','Kategori@delete_post_k');
 Route::get('/kategori/detil_post_k/{id_post}','Kategori@detil_post_k');
 Route::get('/kategori/detil_post_kp/{id_parent_post}/{id_post}/{id_tag}','Kategori@detil_post_kp');
 Route::get('/kategori/list_tag','Kategori@list_tag');
-Route::get('/kategori/list_prosesi','Kategori@list_prosesi');
+Route::get('/kategori/list_prosesi/{id_kategoriku}','Kategori@list_prosesi');
 Route::post('/kategori/input_list_kategoriku','Kategori@input_list_kategoriku');
 Route::post('/kategori/input_list_prosesiku','Kategori@input_list_prosesiku');
 Route::get('/kategori/delete_list_kategoriku/{id_det_post}','Kategori@delete_list_kategoriku');
