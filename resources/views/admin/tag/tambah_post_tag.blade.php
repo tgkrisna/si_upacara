@@ -25,7 +25,7 @@
 								</div>
 								@endif
 							</div>
-							<div class="form-group">
+							{{-- <div class="form-group">
 								<label class="control-label">Kategori Yadnya<span class="text-danger">*</span></label>
 								<select type="text" name="id_kategori" class="form-control">
 									@foreach($kategori as $kat)
@@ -33,7 +33,7 @@
 									@endforeach
 									<option value="">Umum</option>
 								</select>
-							</div>
+							</div> --}}
 							<div class="form-group">
 								<label class="control-label">Link Video</label>
 								<input type="text" name="video" class="form-control" required>

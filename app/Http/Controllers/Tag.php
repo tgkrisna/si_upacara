@@ -112,7 +112,6 @@ class Tag extends Controller
         $tujuan_upload = 'gambarku';
         $file->move($tujuan_upload,$nama_file);
         $new_key = preg_replace("#.*youtube\.com/watch\?v=#", "", $youtube);
-        $data->id_kategori = $request->id_kategori;
         $data->id_tag = $request->id_tag;
         $data->nama_post = $request->nama_post;
         $data->deskripsi = $request->deskripsi;
