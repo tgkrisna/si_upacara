@@ -92,10 +92,12 @@ class Tag extends Controller
          return Response::json($output);
          exit;
     }
-    public function tambah_post_tag()
+    public function tambah_post_tag($id_tag)
     {
-        $kategori = M_Kategori::select('id_kategori','nama_kategori')->get();
-        return view('admin/tag/tambah_post_tag', ['kategori'=>$kategori]);
+        $tag = M_Tag::select('id_tag','nama_tag')
+        ->where('tb_tag.id_tag',$id_tag)
+        ->first();
+        return view('admin/tag/tambah_post_tag', compact('tag'));
     }
     public function input_post_tag(Request $request)
     {

@@ -5,19 +5,19 @@
 <div class="row">
 	<div class="col-lg-12">
 		<h1 class="page-header">
-			Tambah Post Yadnya
+			Tambah {{$kategori->nama_kategori}}
 		</h1>
 	</div>
 <!-- 	<div class="col-lg-6"> -->
 		<div class="panel panel-default">
 			<form class="form" action="/kategori/input_post_kategori" method="POST" enctype="multipart/form-data">
 				{{ csrf_field() }}
-				<input type="hidden" name="id_kategori" value="{{Request::segment(3)}}">
+				<input type="hidden" name="id_kategori" value="{{$kategori->id_kategori}}">
 				<div class="panel-body">
 					<div class="row">
 						<div class="col-lg-6">
 							<div class="form-group">
-								<label class="control-label">Nama Post Yadnya<span class="text-danger">*</span></label>
+								<label class="control-label">Nama Upacara Yadnya<span class="text-danger">*</span></label>
 								<input type="text" name="nama_post" class="form-control" required>
 								@if($errors->has('nama_post'))
 								<div class="text-danger">

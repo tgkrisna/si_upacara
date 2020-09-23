@@ -49,7 +49,7 @@
                             <a href="/kategori/detil_post_k/{{$kat->id_post}}">{{$kat->nama_post}}</a>
                         </td>
                         <td>
-                            {!! substr($kat['deskripsi'],3,15) !!}
+                            {!! substr($kat['deskripsi'],0,10) !!}...
                         </td>
                         <td>
                             <a href="/kategori/edit_post_k/{{$kat->id_post}}" class="btn btn-primary btn-xs"><i class="fa fa-edit" style="margin-right: 4px"></i>Edit</a>

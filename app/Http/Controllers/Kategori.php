@@ -74,9 +74,12 @@ class Kategori extends Controller
         $kategori->delete();
         return redirect('kategori/detil_kategoriku');
     }
-    public function tambah_post_kategori()
+    public function tambah_post_kategori($id_kategori)
     {
-        return view('admin/kategori/tambah_post_kategori');
+        $kategori = M_Kategori::select('id_kategori','nama_kategori')
+        ->where('tb_kategori.id_kategori',$id_kategori)
+        ->first();
+        return view('admin/kategori/tambah_post_kategori',compact('kategori'));
     }
     public function input_post_kategori(Request $request)
     {
