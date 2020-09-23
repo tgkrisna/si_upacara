@@ -5,7 +5,7 @@
 <div class="row">
 	<div class="col-lg-12">
 		<h1 class="page-header">
-			Edit Post Yadnya
+			Edit Upacara {{$kategori->nama_post}}
 		</h1>
 	</div>
 <!-- 	<div class="col-lg-6"> -->
@@ -13,12 +13,12 @@
 			<form class="form" action="/kategori/update_post_k/{{$kategori->id_post}}" method="POST" enctype="multipart/form-data">
 				{{ csrf_field() }}
 				{{ method_field('PUT') }}
-				<input type="hidden" name="id_kategori" value="{{Request::segment(3)}}">
+				{{-- <input type="hidden" name="id_kategori" value="{{Request::segment(3)}}"> --}}
 				<div class="panel-body">
 					<div class="row">
 						<div class="col-lg-6">
 							<div class="form-group">
-								<label class="control-label">Nama Post Yadnya<span class="text-danger">*</span></label>
+								<label class="control-label">Nama Upacara Yadnya<span class="text-danger">*</span></label>
 								<input type="text" name="nama_post" class="form-control" value="{{ $kategori->nama_post }}" required>
 								@if($errors->has('nama_post'))
 								<div class="text-danger">

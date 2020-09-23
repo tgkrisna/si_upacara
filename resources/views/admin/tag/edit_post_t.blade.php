@@ -5,7 +5,7 @@
 <div class="row">
 	<div class="col-lg-12">
 		<h1 class="page-header">
-			Edit Post
+			Edit {{$tag->nama_post}}
 		</h1>
 	</div>
 <!-- 	<div class="col-lg-6"> -->
@@ -13,7 +13,7 @@
 			<form class="form" action="/tag/update_post_t/{{$tag->id_post}}" method="POST" enctype="multipart/form-data">
 				{{ csrf_field() }}
 				{{ method_field('PUT') }}
-				<input type="hidden" name="id_kategori" value="{{Request::segment(3)}}">
+				{{-- <input type="hidden" name="id_kategori" value="{{Request::segment(3)}}"> --}}
 				<div class="panel-body">
 					<div class="row">
 						<div class="col-lg-6">
@@ -26,7 +26,7 @@
 								</div>
 								@endif
 							</div>
-							<div class="form-group">
+							{{-- <div class="form-group">
 								<label class="control-label">Kategori Yadnya<span class="text-danger">*</span></label>
 								<select type="text" name="id_kategori" class="form-control">
 									@foreach($kategori as $kat)
@@ -34,7 +34,7 @@
 									@endforeach
 									<option value="">Umum</option>
 								</select>
-							</div>
+							</div> --}}
 							@if(strlen($tag['video']) != 0)
 							<div class="form-group">
 								<label class="control-label">Video Terdahulu</label>

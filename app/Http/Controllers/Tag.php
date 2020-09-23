@@ -137,7 +137,7 @@ class Tag extends Controller
         ]);
         $data = M_Post::where('tb_post.id_post',$id_post)->first();
         $data->nama_post = $request->nama_post;
-        $data->id_kategori = $request->id_kategori;
+        // $data->id_kategori = $request->id_kategori;
         $data->deskripsi = $request->deskripsi;
         if ($request->has('video')) {
             $youtube = $request->video;
