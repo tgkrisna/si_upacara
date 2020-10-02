@@ -16,6 +16,7 @@
                         @if ($p['gambar']!='')
                             <img src="/gambarku/{{$p->gambar}}" alt="{{$p->nama_post}}" class="card-img-top">
                         @else
+                            
                             <img src="/assets/images/placeholder.png" alt="" class="card-img-top">
                         @endif
                     </div>

@@ -7,7 +7,7 @@ use App\M_Tag;
 use App\M_Post;
 use App\M_Det_Post;
 use App\M_Kategori;
-use App\M_Tingkatan;
+// use App\M_Tingkatan;
 use App\M_Status;
 
 class Kategori_P extends Controller
@@ -30,6 +30,7 @@ class Kategori_P extends Controller
         $pencarian = M_Post::where('tb_post.nama_post','LIKE',"%".$cari."%")
         ->leftJoin('tb_kategori','tb_post.id_kategori','=','tb_kategori.id_kategori')
         ->leftJoin('tb_tag','tb_post.id_tag','=','tb_tag.id_tag')
+        ->select('tb_post.id_post','tb_post.nama_post','tb_post.gambar','tb_post.deskripsi','tb_post.id_kategori','tb_post.id_tag','tb_kategori.nama_kategori','tb_tag.nama_tag')
         ->paginate(5);
         return view('pengguna/searching',compact('pencarian'));
     }

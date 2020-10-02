@@ -10,7 +10,7 @@ use App\M_Tag;
 use App\M_Post;
 use App\M_Det_Post;
 use App\M_Kategori;
-use App\M_Tingkatan;
+// use App\M_Tingkatan;
 use Response;
 class Tag extends Controller
 {
@@ -22,11 +22,11 @@ class Tag extends Controller
     	->join('tb_tag','tb_post.id_tag','=','tb_tag.id_tag')
     	->select('tb_post.id_post','tb_post.nama_post','tb_kategori.nama_kategori','tb_post.deskripsi','tb_tag.id_tag', 'tb_tag.nama_tag')
         ->paginate(10);
-        $tingkatan = M_Tingkatan::where('tb_tag.id_tag',$id_tag)
-        ->leftJoin('tb_tag','tb_tingkatan.id_tag','=','tb_tag.id_tag')
-        ->select('tb_tag.id_tag','tb_tag.nama_tag','tb_tingkatan.id_tingkatan','tb_tingkatan.nama_tingkatan','tb_tingkatan.deskripsi')
-        ->get();
-    	return view('admin/tag/tag_detil', compact('tag','tingkatan','namas'));
+        // $tingkatan = M_Tingkatan::where('tb_tag.id_tag',$id_tag)
+        // ->leftJoin('tb_tag','tb_tingkatan.id_tag','=','tb_tag.id_tag')
+        // ->select('tb_tag.id_tag','tb_tag.nama_tag','tb_tingkatan.id_tingkatan','tb_tingkatan.nama_tingkatan','tb_tingkatan.deskripsi')
+        // ->get();
+    	return view('admin/tag/tag_detil', compact('tag','namas'));
     }
     public function tagku()
     {

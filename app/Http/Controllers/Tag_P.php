@@ -7,7 +7,7 @@ use App\M_Tag;
 use App\M_Post;
 use App\M_Det_Post;
 use App\M_Kategori;
-use App\M_Tingkatan;
+// use App\M_Tingkatan;
 
 class Tag_P extends Controller
 {
