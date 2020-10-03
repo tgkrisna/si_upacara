@@ -39,6 +39,42 @@
 	</div>
 </div>
 <br>
+<div class="modal fade" id="tag-modal-tabuh" tabindex="-1" role="dialog">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Tutup">
+					<span aria-hidden="true">
+						&times;
+					</span>
+				</button>
+				<h4 class="modal-title">
+					Tambah
+					<span class="add-item-label"></span>
+				</h4>
+			</div>
+			<form class="form" action="/tag/input_list_tagku/" method="POST">
+				{{ csrf_field() }}
+				<div class="modal-body">
+					<div class="form-group">
+						<label class="control-label">
+							<span class="add-item-label"></span>
+						</label>
+						<select name="id_parent_post" id="list-tag-tabuh" style="width:100%;" class="list-tag-tabuh" class="form-control" required></select>
+					</div>
+				</div>
+					<input type="hidden" name="id_post" value="{{$tag_post->id_post}}"/>
+					<input type="hidden" name="id_tag" class="id-tag" value=""/>
+					<input type="hidden" name="id_tagku" value="{{$tag_post->id_tag}}">
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
+					<button type="submit" class="btn btn-primary">Simpan</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+<br>
 <div class="row">
 	<div class="col-lg-3">
 		@if($tag_post->gambar != '')
@@ -94,7 +130,12 @@
 						<div class="card" style="background-image: url('/gambarku/{{$item->gambar}}')">
 							<!-- Bagaimana caranya mengetahui bahwa tabuh A kepemilikan Gamelan A -->
 							<div class="card-body">
-								{{$item->nama_post}}
+								@if ($item->nama_post2 !='')
+									{{$item->nama_post}}
+									({{$item->nama_post2}})
+								@else
+									{{$item->nama_post}}
+								@endif
 								{{-- {{$item->nama_tag}}
 								{{$item->id_post}} --}}
 							</div>
@@ -131,7 +172,19 @@
 					@endif
 					<!-- Katanya Pake EndForeach lagi -->
 					<div class="col-lg-2">
+					@if ($item->nama_post2 !='')
+							@foreach ($drop->det_pos as $item2)
+								@php
+									$result[] = $item2->id_root_post;
+								@endphp
+							@endforeach
+							@php
+								$DAT=implode(',', array_unique($result));
+							@endphp
+						<a class="card tag-button-tabuh" data-toggle="modal" href="#" data-target="#tag-modal-tabuh" data-tag="{{ $drop->id_tag }}" data-gmbl="{{$DAT}}"><i class="fa fa-plus fa-4x"></i></a>
+					@else
 						<a class="card tag-button" data-toggle="modal" href="#" data-target="#tag-modal" data-tag="{{ $drop->id_tag }}"><i class="fa fa-plus fa-4x"></i></a>
+					@endif
 					</div>
 				</div>
 			</div>
@@ -211,6 +264,12 @@
 	});
 </script> --}}
 <script>
+	$.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
 	$('.list-tag').select2();
 	let id_tag = {!! json_encode($tag_post->id_kategori) !!};
 	let id_post = {!! json_encode($tag_post->id_post) !!};
@@ -228,6 +287,33 @@
 				for(var i=0;i < data.length; i++){
 					html+='<option value="'+data[i].id_post+'">'+data[i].nama_post+'</option>';				}
 				$('.list-tag').html(html);
+				$('.id-tag').val(tag);
+			},
+			error: function(jqXHR, textStatus, errorThrown) {
+				console.log(textStatus, errorThrown);
+			}
+		});
+	});
+	$('.list-tag-tabuh').select2();
+	let id_tag = {!! json_encode($tag_post->id_kategori) !!};
+	let id_post = {!! json_encode($tag_post->id_post) !!};
+	$('.tag-button-tabuh').click(function(){
+		let gmbl = $(this).data('gmbl');
+		let tag = $(this).data('tag');
+		$.ajax({
+			url: "/tag/dropdown_tabuh",
+			type: "get",
+			dataType: "json",
+			data: {
+				id_tag:tag,
+				id_gambelan:gmbl
+			},
+			success: function (data) {
+				console.log(data);
+				let html = '<option value="">Pilih Jenis</option>';
+				for(var i=0;i < data.length; i++){
+					html+='<option value="'+data[i].id_post+'">'+data[i].nama_post+'</option>';				}
+				$('#list-tag-tabuh').html(html);
 				$('.id-tag').val(tag);
 			},
 			error: function(jqXHR, textStatus, errorThrown) {

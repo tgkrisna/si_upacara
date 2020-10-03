@@ -48,6 +48,7 @@
                         <div class="cardmix" style="background-image: url('/gambarku/{{$item->gambar}}')">
                             <div class="cardmix-body">
                                 {{$item->nama_post}}
+                                
                                 {{-- {{$item->id_post}}
                                 {{$item->id_parent_post}} --}}
                             </div>

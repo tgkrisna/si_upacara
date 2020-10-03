@@ -185,10 +185,11 @@ class Tag extends Controller
                             ->leftJoin('tb_tag','tb_post.id_tag','=','tb_tag.id_tag')
                             ->select('tb_post.id_post','tb_post.nama_post','tb_post.deskripsi','tb_post.gambar','tb_post.video','tb_tag.id_tag','tb_tag.nama_tag')    
                             ->first();
-
+        // dd($tag_post);
         $data = M_Tag::where('tb_tag.id_tag','!=',$id_tag)
                     ->select('id_tag','nama_tag')
                     ->get();
+
         $drop_d=[];
         $new_det=[];
         foreach ($data as $tag) {
@@ -199,9 +200,22 @@ class Tag extends Controller
             ->where('tb_detil_post.spesial',NULL)
             ->leftJoin('tb_detil_post','tb_tag.id_tag','=','tb_detil_post.id_tag')
             ->leftJoin('tb_post','tb_detil_post.id_parent_post','=','tb_post.id_post')
-            ->select('tb_tag.id_tag', 'tb_tag.nama_tag', 'tb_post.nama_post', 'tb_post.gambar','tb_detil_post.id_post', 'tb_detil_post.id_parent_post','tb_detil_post.id_det_post')
+            // ->leftJoin('tb_post as tb_post2','tb_detil_post.id_parent_post','=','tb_detil_post.id_root_post')
+            ->select('tb_tag.id_tag', 'tb_tag.nama_tag', 'tb_post.nama_post', 'tb_post.gambar','tb_detil_post.id_post', 
+            'tb_detil_post.id_parent_post','tb_detil_post.id_det_post','tb_detil_post.id_root_post')
             ->get();
+            // dd($det_pos);
             foreach ($det_pos as $dp) {
+                if ($dp->id_root_post!="") {
+                    $nama_post2 = M_Post::where('tb_post.id_post', $dp->id_root_post)
+                            ->select('nama_post')    
+                            ->first();
+                    $nama_post2= $nama_post2->nama_post;
+                }else{
+                    $nama_post2="";
+                }
+                
+               
                 $new_det[]=(object) array(
                     'id_tag' => $dp->id_tag,
                     'nama_tag' => $dp->nama_tag,
@@ -210,6 +224,8 @@ class Tag extends Controller
                     'id_post' => $dp->id_post,
                     'id_parent_post' => $dp->id_parent_post,
                     'id_det_post' => $dp->id_det_post,
+                    'id_root_post' => $dp->id_root_post,
+                    'nama_post2'=> $nama_post2,
                 );
             }
             $drop_d[]=(object) array(
@@ -218,6 +234,7 @@ class Tag extends Controller
                 'det_pos' => $new_det,
             );
         }
+        // dd($drop_d);
         if ($tag_post->nama_tag == "Gamelan Bali") {
             return view ('admin/tag/det_tag/detil_post_tag_gamelan',compact('tag_post','drop_d'));
         } 
@@ -268,6 +285,24 @@ class Tag extends Controller
 
     public function list_tag(Request $request){
         $list_tag = M_Post::where('id_tag', $request->id_tag)->get();
+        return response()->json($list_tag);
+    }
+
+    public function list_tag_tabuh(Request $request){
+        $id_tag = $request->id_tag;
+        $a = $request->id_gambelan;
+        // dd($id_tag);
+        $idnya=explode(',', $a);
+        
+        // $list_tag = M_Post::whereIn('id_post', $idnya)
+        // ->get();
+        $list_tag = M_Tag::whereIn('tb_detil_post.id_post',$idnya)
+        ->where('tb_detil_post.id_tag',$id_tag)
+        ->leftJoin('tb_detil_post','tb_tag.id_tag','=','tb_detil_post.id_tag')
+        ->leftJoin('tb_post','tb_detil_post.id_parent_post','=','tb_post.id_post')
+        ->select('tb_tag.id_tag', 'tb_tag.nama_tag', 'tb_post.nama_post','tb_detil_post.id_post', 'tb_detil_post.id_parent_post')
+        ->get();
+        // dd($list_tag);
         return response()->json($list_tag);
     }
 

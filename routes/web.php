@@ -78,6 +78,7 @@ Route::get('/tag/drop_down_t/{id}','Tag@drop_down_tag');
 
 //yuda list tag
 Route::get('/tag/dropdown', 'Tag@list_tag');
+Route::get('/tag/dropdown_tabuh', 'Tag@list_tag_tabuh');
 Route::post('/tag/input_list_tagku','Tag@input_list_tagku');
 Route::get('/tag/delete_list_tagku/{id_det_post}','Tag@delete_list_tagku');
 
