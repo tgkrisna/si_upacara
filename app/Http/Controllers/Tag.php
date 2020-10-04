@@ -293,17 +293,30 @@ class Tag extends Controller
         $a = $request->id_gambelan;
         // dd($id_tag);
         $idnya=explode(',', $a);
-        
+        // $arrayid = [];
+        // for($i=1;count($idnya);$i++){
+        //     $arrayid[] = $idnya;
+        // }
         // $list_tag = M_Post::whereIn('id_post', $idnya)
         // ->get();
-        $list_tag = M_Tag::whereIn('tb_detil_post.id_post',$idnya)
+        $det_pos = M_Tag::whereIn('tb_detil_post.id_post',$idnya)
         ->where('tb_detil_post.id_tag',$id_tag)
+        ->where('tb_detil_post.spesial',NULL)
         ->leftJoin('tb_detil_post','tb_tag.id_tag','=','tb_detil_post.id_tag')
         ->leftJoin('tb_post','tb_detil_post.id_parent_post','=','tb_post.id_post')
-        ->select('tb_tag.id_tag', 'tb_tag.nama_tag', 'tb_post.nama_post','tb_detil_post.id_post', 'tb_detil_post.id_parent_post')
+        ->select('tb_tag.id_tag', 'tb_tag.nama_tag', 'tb_post.nama_post', 'tb_post.gambar','tb_detil_post.id_post', 
+        'tb_detil_post.id_parent_post','tb_detil_post.id_det_post','tb_detil_post.id_root_post')
         ->get();
-        // dd($list_tag);
-        return response()->json($list_tag);
+        // $list_tag = M_Det_Post::whereIn('tb_detil_post.id_post',[24,25])
+        // ->where('tb_detil_post.id_tag',5)
+        // ->leftJoin('tb_post','tb_detil_post.id_parent_post','=','tb_post.id_post')
+        // ->select('tb_post.nama_post','tb_detil_post.id_post', 'tb_detil_post.id_parent_post')
+        // ->where('tb_detil_post.id_tag',$id_tag)
+        // ->leftJoin('tb_detil_post','tb_tag.id_tag','=','tb_detil_post.id_tag')
+        // ->leftJoin('tb_post','tb_detil_post.id_parent_post','=','tb_post.id_post')
+        // ->select('tb_tag.id_tag', 'tb_tag.nama_tag', 'tb_post.nama_post','tb_detil_post.id_post', 'tb_detil_post.id_parent_post')
+        // ->get();
+        // return response()->json($list_tag);
     }
 
     public function input_list_tagku(Request $request)

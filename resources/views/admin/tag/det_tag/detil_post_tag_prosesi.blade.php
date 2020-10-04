@@ -49,7 +49,7 @@
 					</span>
 				</button>
 				<h4 class="modal-title">
-					Tambah
+					Tambah tabuhhhh
 					<span class="add-item-label"></span>
 				</h4>
 			</div>
@@ -64,7 +64,7 @@
 					</div>
 				</div>
 					<input type="hidden" name="id_post" value="{{$tag_post->id_post}}"/>
-					<input type="hidden" name="id_tag" class="id-tag" value=""/>
+					<input type="hidden" name="id_tag" class="id-tag-tabuh" value=""/>
 					<input type="hidden" name="id_tagku" value="{{$tag_post->id_tag}}">
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
@@ -172,7 +172,7 @@
 					@endif
 					<!-- Katanya Pake EndForeach lagi -->
 					<div class="col-lg-2">
-					@if ($item->nama_post2 !='')
+					@if ($drop->id_tag =='5')
 							@foreach ($drop->det_pos as $item2)
 								@php
 									$result[] = $item2->id_root_post;
@@ -181,7 +181,7 @@
 							@php
 								$DAT=implode(',', array_unique($result));
 							@endphp
-						<a class="card tag-button-tabuh" data-toggle="modal" href="#" data-target="#tag-modal-tabuh" data-tag="{{ $drop->id_tag }}" data-gmbl="{{$DAT}}"><i class="fa fa-plus fa-4x"></i></a>
+						<a class="card tag-button-tabuh" id="tag-button-tabuh" data-toggle="modal" href="#" data-target="#tag-modal-tabuh" data-tags="{{ $drop->id_tag }}" data-gmbl="{{$DAT}}"><i class="fa fa-plus fa-4x"></i></a>
 					@else
 						<a class="card tag-button" data-toggle="modal" href="#" data-target="#tag-modal" data-tag="{{ $drop->id_tag }}"><i class="fa fa-plus fa-4x"></i></a>
 					@endif
@@ -294,18 +294,20 @@
 			}
 		});
 	});
+</script>
+<script>
 	$('.list-tag-tabuh').select2();
-	let id_tag = {!! json_encode($tag_post->id_kategori) !!};
-	let id_post = {!! json_encode($tag_post->id_post) !!};
-	$('.tag-button-tabuh').click(function(){
+	let id_tags = {!! json_encode($tag_post->id_kategori) !!};
+	let id_posts = {!! json_encode($tag_post->id_post) !!};
+	$('#tag-button-tabuh').click(function(){
 		let gmbl = $(this).data('gmbl');
-		let tag = $(this).data('tag');
+		let tags = $(this).data('tags');
 		$.ajax({
 			url: "/tag/dropdown_tabuh",
 			type: "get",
 			dataType: "json",
 			data: {
-				id_tag:tag,
+				id_tags:tags,
 				id_gambelan:gmbl
 			},
 			success: function (data) {
@@ -314,7 +316,7 @@
 				for(var i=0;i < data.length; i++){
 					html+='<option value="'+data[i].id_post+'">'+data[i].nama_post+'</option>';				}
 				$('#list-tag-tabuh').html(html);
-				$('.id-tag').val(tag);
+				$('.id-tag-tabuh').val(tags);
 			},
 			error: function(jqXHR, textStatus, errorThrown) {
 				console.log(textStatus, errorThrown);
