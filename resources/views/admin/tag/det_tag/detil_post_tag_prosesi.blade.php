@@ -296,6 +296,11 @@
 	});
 </script>
 <script>
+	// 	$.ajaxSetup({
+    //     headers: {
+    //         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    //     }
+    // });
 	$('.list-tag-tabuh').select2();
 	let id_tags = {!! json_encode($tag_post->id_kategori) !!};
 	let id_posts = {!! json_encode($tag_post->id_post) !!};
