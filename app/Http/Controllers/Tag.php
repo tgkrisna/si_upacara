@@ -289,11 +289,18 @@ class Tag extends Controller
     }
 
     public function list_tag_gamelan(Request $request){
-        $list_tag = M_Tag::where('id_tag', $request->id_tags)
-        ->where('spesial',$request->id_posts)
+        $id_tag = $request->id_tags;
+        $spesial = $request->id_posts;
+        // $list_tag = M_Det_Post::where('tb_detil_post.id_tag',$id_tag)
+        // ->where('tb_detil_post.id_post',$spesial)
+        // ->where('tb_detil_post.spesial',$spesial)
+        // ->get();
+        $list_tag= M_Tag::where('tb_detil_post.id_tag',$id_tag)
+        ->where('tb_detil_post.id_post',$spesial)
+        ->where('tb_detil_post.spesial',$spesial)
         ->leftJoin('tb_detil_post','tb_tag.id_tag','=','tb_detil_post.id_tag')
         ->leftJoin('tb_post','tb_detil_post.id_parent_post','=','tb_post.id_post')
-        ->select('tb_tag.id_tag', 'tb_tag.nama_tag', 'tb_post.nama_post','tb_detil_post.id_post', 'tb_detil_post.id_parent_post', 'tb_detil_post.id_root_post')
+        ->select('tb_tag.id_tag', 'tb_tag.nama_tag', 'tb_post.nama_post','tb_detil_post.id_post', 'tb_detil_post.id_parent_post')
         ->get();
         return response()->json($list_tag);
     }

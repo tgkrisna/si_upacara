@@ -211,11 +211,11 @@
 				@endif
 				@if ($drops->id_tag =='1')
 					<div class="col-lg-4" style="margin-top: 16px">
-						<a class="card tag-button" data-toggle="modal" href="#" data-target="#tag-modal-gam" data-tag-gam="{{ $drops->id_tag }}"><i class="fa fa-plus fa-4x"></i></a>
+						<a class="card tag-button-gam" id="tag-button-gam" data-toggle="modal" href="#" data-target="#tag-modal-gam" data-tag-gam="{{ $drops->id_tag }}"" data-tag-posts="{{Request::segment(4)}}"><i class="fa fa-plus fa-4x"></i></a>
 					</div>
 				@elseif ($drops->id_tag =='5')
 					<div class="col-lg-4" style="margin-top: 16px">
-						<a class="card tag-button" data-toggle="modal" href="#" data-target="#tag-modal-tabuh" data-tag-tab="{{ $drops->id_tag }}"><i class="fa fa-plus fa-4x"></i></a>
+						<a class="card tag-button-tab" id="tag-button-tab" data-toggle="modal" href="#" data-target="#tag-modal-tabuh" data-tag-tab="{{ $drops->id_tag }}"><i class="fa fa-plus fa-4x"></i></a>
 					</div>
 				@else
 					<div class="col-lg-4" style="margin-top: 16px">
@@ -261,22 +261,23 @@ $('.tag-button').click(function(){
 });
 $('.list-tag-gam').select2();
 let id_kategoris = {!! json_encode($kategori_post->id_kategori) !!};
-let id_posts = {!! json_encode($kategori_post->id_post) !!};
-$('.tag-button-gam').click(function(){
+// let id_posts = {!! json_encode($kategori_post->id_post) !!};
+$('#tag-button-gam').click(function(){
+	let id_posts = $(this).data('tag-posts')
 	let tags = $(this).data('tag-gam');
 	$.ajax({
 		url: "/tag/dropdown_gam",
 		type: "get",
 		dataType: "json",
 		data: {
-			id_tags:tags
+			id_tags:tags,
 			id_posts:id_posts
 		} ,
 		success: function (data) {
 			console.log(data)
 			let html = '<option value="">Pilih Jenis</option>'
 			for(var i=0;i < data.length; i++){
-				html+='<option value="'+data[i].id_post+'">'+data[i].nama_post+'</option>';				
+				html+='<option value="'+data[i].id_parent_post+'">'+data[i].nama_post+'</option>';				
 			}
 			$('.list-tag-gam').html(html);
 			$('.id-tag-gam').val(tags);
