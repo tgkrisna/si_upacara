@@ -529,6 +529,50 @@ class Kategori extends Controller
             return redirect()->back()->with(compact('after_save'));
         }
     }
+
+    public function input_list_kp_gam(Request $request)
+    {
+        $cek = M_Det_Post::where('id_parent_post', $request->id_parent_post)->where('id_post', $request->id_post)
+            ->where('spesial', $request->spesial)->count();
+        if ($cek < 1) {
+            $kategori = M_Det_Post::where('id_post', $request->id_parent_post)->where('spesial', NULL)->get();
+            $data = new M_Det_Post();
+            $data->id_tag = $request->id_tag;
+            $data->id_post = $request->id_post;
+            $data->id_parent_post = $request->id_parent_post;
+            $data->spesial = $request->spesial;
+            $data->save();
+            
+            if ($data->save()) {
+                foreach ($kategori as $kat) {
+                    $kats = new M_Det_Post();
+                    $kats->id_tag = $kat->id_tag;
+                    $kats->id_post = $request->id_post;
+                    $kats->id_parent_post = $kat->id_parent_post;
+                    $kats->spesial = $request->spesial;
+                    $kats->id_root_post = $kat->id_root_post;
+                    $kats->save();
+                }
+            }
+            $after_save = [
+                'alert' => 'success',
+                'title' => 'Berhasil!',
+                'text-1' => 'Selamat',
+                'text-2' => 'Data berhasil ditambah.'
+            ];
+
+            return redirect()->back()->with(compact('after_save'));
+        } else {
+            $after_save = [
+                'alert' => 'danger',
+                'title' => 'Peringatan!',
+                'text-1' => 'Ada kesalahan',
+                'text-2' => 'Data sudah ada.'
+            ];
+            return redirect()->back()->with(compact('after_save'));
+        }
+    }
+    
     public function delete_list_kp($id_det_post)
     {
         try {

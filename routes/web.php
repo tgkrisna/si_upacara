@@ -54,6 +54,7 @@ Route::post('/kategori/input_list_prosesiku','Kategori@input_list_prosesiku');
 Route::get('/kategori/delete_list_kategoriku/{id_det_post}','Kategori@delete_list_kategoriku');
 Route::get('/kategori/delete_list_prosesiku/{id_det_post}','Kategori@delete_list_prosesiku');
 Route::post('/kategori/input_list_kp','Kategori@input_list_kp');
+Route::post('/kategori/input_list_kp_gam','Kategori@input_list_kp_gam');
 Route::get('/kategori/delete_list_kp/{id_det_post}','Kategori@delete_list_kp');
 Route::get('/kategori/reposisi_prosesiku/{id_post}/{id_status}','Kategori@drop_down_prosesi');
 Route::post('/kategori/input_reposisi_prosesiku','Kategori@input_drop_prosesi');
