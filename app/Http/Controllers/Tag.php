@@ -296,56 +296,39 @@ class Tag extends Controller
 
         $list_tag = M_Tag::whereIn('tb_detil_post.id_post',$idnya)
         ->where('tb_detil_post.id_tag',$id_tag)
-
         ->leftJoin('tb_detil_post','tb_tag.id_tag','=','tb_detil_post.id_tag')
         ->leftJoin('tb_post','tb_detil_post.id_parent_post','=','tb_post.id_post')
-        ->select('tb_tag.id_tag', 'tb_tag.nama_tag', 'tb_post.nama_post','tb_detil_post.id_post', 'tb_detil_post.id_parent_post')
+        ->select('tb_tag.id_tag', 'tb_tag.nama_tag', 'tb_post.nama_post','tb_detil_post.id_post', 'tb_detil_post.id_parent_post', 'tb_detil_post.id_root_post')
         ->get();
-        
-        // $id_gm[]=preg_replace("%2C", ",", $a);
-
-        // $arrayid = [];
-        // for($i=1;count($idnya);$i++){
-        //     $arrayid[] = $idnya;
-        // }
-        // $list_tag = M_Post::whereIn('id_post', $idnya)
-        // ->get();
-        // $det_pos = M_Tag::whereIn('tb_detil_post.id_parent_post',$idnya)
-        // ->where('tb_detil_post.id_tag',$id_tag)
-        // ->where('tb_detil_post.spesial',NULL)
-        // ->leftJoin('tb_detil_post','tb_tag.id_tag','=','tb_detil_post.id_tag')
-        // ->leftJoin('tb_post','tb_detil_post.id_parent_post','=','tb_post.id_post')
-        // ->select('tb_tag.id_tag', 'tb_tag.nama_tag', 'tb_post.nama_post', 'tb_post.gambar','tb_detil_post.id_post', 
-        // 'tb_detil_post.id_parent_post','tb_detil_post.id_det_post','tb_detil_post.id_root_post')
-        // ->get();
-        // ->leftJoin('tb_post','tb_detil_post.id_parent_post','=','tb_post.id_post')
-        // ->select('tb_post.nama_post','tb_detil_post.id_post', 'tb_detil_post.id_parent_post')
-        // ->where('tb_detil_post.id_tag',$id_tag)
         return response()->json($list_tag);
     }
 
-    public function input_list_tagku2(Request $request){
-        $cek = M_Det_Post::where('id_parent_post', $request->id_parent_post)->where('id_post', $request->id_post)->count();
+    public function input_list_tabuh(Request $request){
+        $cek = M_Det_Post::where('tb_detil_post.id_parent_post', $request->id_parent_post)
+        ->where('tb_detil_post.id_post', $request->id_post)
+        ->count();
         if($cek < 1){
-            $tag = M_Det_Post::where('id_post',$request->id_parent_post)->where('spesial',NULL)->get();
-
+            // $tag = M_Det_Post::where('id_parent_post',$request->id_parent_post)
+            // ->where('spesial',NULL)
+            // ->first();
             $data = new M_Det_Post();
             $data->id_tag = $request->id_tag;
             $data->id_post = $request->id_post;
             $data->id_parent_post = $request->id_parent_post;
+            $data->id_root_post = $request->id_root_post;
             $data->save();
-            if ($data->save()) {
-                foreach ($tag as $tg){
-                    if ($tg != '') {
-                        $tags = new M_Det_Post();
-                        $tags->id_tag = $tg->id_tag;
-                        $tags->id_post = $request->id_post;
-                        $tags->id_parent_post = $tg->id_parent_post;
-                        $tags->id_root_post = $tg->id_root_post;
-                        $tags->save();
-                    }
-                }
-            }
+            // if ($data->save()) {
+            //     foreach ($tag as $tg){
+            //         if ($tg != '') {
+            //             $tags = new M_Det_Post();
+            //             $tags->id_tag = $tg->id_tag;
+            //             $tags->id_post = $request->id_post;
+            //             $tags->id_parent_post = $tg->id_parent_post;
+            //             $tags->id_root_post = $tg->id_root_post;
+            //             $tags->save();
+            //         }
+            //     }
+            // }
             $id_postku = $request->id_post;
             $id_tagku = $request->id_tagku;
 
@@ -369,15 +352,16 @@ class Tag extends Controller
     }
     public function input_list_tagku(Request $request)
     {
-    $cek = M_Det_Post::where('id_parent_post', $request->id_parent_post)->where('id_post', $request->id_post)->count();
+    $cek = M_Det_Post::where('id_parent_post', $request->id_parent_post)
+    ->where('id_post', $request->id_post)
+    ->count();
         if($cek < 1){
             $tag = M_Det_Post::where('id_post',$request->id_parent_post)->where('spesial',NULL)->get();
-
             $data = new M_Det_Post();
             $data->id_tag = $request->id_tag;
             $data->id_post = $request->id_post;
             $data->id_parent_post = $request->id_parent_post;
-            $data->id_root_post = $request->id_post;
+            
             $data->save();
             if ($data->save()) {
                 foreach ($tag as $tg){
@@ -386,7 +370,7 @@ class Tag extends Controller
                         $tags->id_tag = $tg->id_tag;
                         $tags->id_post = $request->id_post;
                         $tags->id_parent_post = $tg->id_parent_post;
-                        $tags->id_root_post = $request->id_post;
+                        $tags->id_root_post = $tg->id_root_post;
                         $tags->save();
                     }
                 }

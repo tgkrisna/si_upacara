@@ -17,7 +17,7 @@
 					<span class="add-item-label"></span>
 				</h4>
 			</div>
-			<form class="form" action="/tag/input_list_tagku2/" method="POST">
+			<form class="form" action="/tag/input_list_tagku/" method="POST">
 				{{ csrf_field() }}
 				<div class="modal-body">
 					<div class="form-group">
@@ -53,7 +53,7 @@
 					<span class="add-item-label"></span>
 				</h4>
 			</div>
-			<form class="form" action="/tag/input_list_tagku/" method="POST">
+			<form class="form" action="/tag/input_list_tabuh/" method="POST">
 				{{ csrf_field() }}
 				<div class="modal-body">
 					<div class="form-group">
@@ -65,6 +65,7 @@
 				</div>
 					<input type="hidden" name="id_post" value="{{$tag_post->id_post}}"/>
 					<input type="hidden" name="id_tag" class="id-tag-tabuh" value=""/>
+					<input type="hidden" name="id_root_post" class="id-root-post" value=""/>
 					<input type="hidden" name="id_tagku" value="{{$tag_post->id_tag}}">
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
@@ -173,10 +174,16 @@
 					<!-- Katanya Pake EndForeach lagi -->
 					<div class="col-lg-2">
 					@if ($drop->id_tag =='5')
+					@php
+					$result = [];	
+					@endphp
 							@foreach ($drop->det_pos as $item2)
-								@php
+								{{-- @if ($item2 !='') --}}
+									@php
 									$result[] = $item2->id_root_post;
-								@endphp
+									// $result[] = $item2->id_root_post;
+									@endphp
+								{{-- @endif --}}
 							@endforeach
 							@php
 								$DAT=implode(',', array_unique($result));
@@ -288,6 +295,7 @@
 					html+='<option value="'+data[i].id_post+'">'+data[i].nama_post+'</option>';				}
 				$('.list-tag').html(html);
 				$('.id-tag').val(tag);
+				
 			},
 			error: function(jqXHR, textStatus, errorThrown) {
 				console.log(textStatus, errorThrown);
@@ -319,9 +327,12 @@
 				console.log(data);
 				let html = '<option value="">Pilih Jenis</option>';
 				for(var i=0;i < data.length; i++){
-					html+='<option value="'+data[i].id_post+'">'+data[i].nama_post+'</option>';				}
+					html+='<option value="'+data[i].id_parent_post+'">'+data[i].nama_post+'</option>';
+					let rot_post = data[i].id_root_post;
+					$('.id-root-post').val(rot_post);				
+					}
 				$('#list-tag-tabuh').html(html);
-				$('.id-tag-tabuh').val(tags);
+				$('.id-tag-tabuh').val(tags);	
 			},
 			error: function(jqXHR, textStatus, errorThrown) {
 				console.log(textStatus, errorThrown);
