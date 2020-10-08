@@ -289,10 +289,21 @@ class Tag extends Controller
     }
 
     public function list_tag_tabuh(Request $request){
-        $id_tag = $request->id_tag;
+        $id_tag = $request->id_tags;
         $a = $request->id_gambelan;
         // dd($id_tag);
         $idnya=explode(',', $a);
+
+        $list_tag = M_Tag::whereIn('tb_detil_post.id_post',$idnya)
+        ->where('tb_detil_post.id_tag',$id_tag)
+
+        ->leftJoin('tb_detil_post','tb_tag.id_tag','=','tb_detil_post.id_tag')
+        ->leftJoin('tb_post','tb_detil_post.id_parent_post','=','tb_post.id_post')
+        ->select('tb_tag.id_tag', 'tb_tag.nama_tag', 'tb_post.nama_post','tb_detil_post.id_post', 'tb_detil_post.id_parent_post')
+        ->get();
+        
+        // $id_gm[]=preg_replace("%2C", ",", $a);
+
         // $arrayid = [];
         // for($i=1;count($idnya);$i++){
         //     $arrayid[] = $idnya;
@@ -307,21 +318,14 @@ class Tag extends Controller
         // ->select('tb_tag.id_tag', 'tb_tag.nama_tag', 'tb_post.nama_post', 'tb_post.gambar','tb_detil_post.id_post', 
         // 'tb_detil_post.id_parent_post','tb_detil_post.id_det_post','tb_detil_post.id_root_post')
         // ->get();
-        $list_tag = M_Tag::whereIn('tb_detil_post.id_post',[24,25])
-        ->where('tb_detil_post.id_tag',5)
         // ->leftJoin('tb_post','tb_detil_post.id_parent_post','=','tb_post.id_post')
         // ->select('tb_post.nama_post','tb_detil_post.id_post', 'tb_detil_post.id_parent_post')
         // ->where('tb_detil_post.id_tag',$id_tag)
-        ->leftJoin('tb_detil_post','tb_tag.id_tag','=','tb_detil_post.id_tag')
-        ->leftJoin('tb_post','tb_detil_post.id_parent_post','=','tb_post.id_post')
-        ->select('tb_tag.id_tag', 'tb_tag.nama_tag', 'tb_post.nama_post','tb_detil_post.id_post', 'tb_detil_post.id_parent_post')
-        ->get();
         return response()->json($list_tag);
     }
 
-    public function input_list_tagku(Request $request)
-    {
-    $cek = M_Det_Post::where('id_parent_post', $request->id_parent_post)->where('id_post', $request->id_post)->count();
+    public function input_list_tagku2(Request $request){
+        $cek = M_Det_Post::where('id_parent_post', $request->id_parent_post)->where('id_post', $request->id_post)->count();
         if($cek < 1){
             $tag = M_Det_Post::where('id_post',$request->id_parent_post)->where('spesial',NULL)->get();
 
@@ -337,6 +341,52 @@ class Tag extends Controller
                         $tags->id_tag = $tg->id_tag;
                         $tags->id_post = $request->id_post;
                         $tags->id_parent_post = $tg->id_parent_post;
+                        $tags->id_root_post = $tg->id_root_post;
+                        $tags->save();
+                    }
+                }
+            }
+            $id_postku = $request->id_post;
+            $id_tagku = $request->id_tagku;
+
+            $after_save = [
+                'alert' => 'success',
+                'title' => 'Berhasil!',
+                'text-1' => 'Selamat',
+                'text-2' => 'Data berhasil ditambah.'
+            ];
+            
+            return redirect('/tag/detil_post_t/'.$id_tagku.'/'.$id_postku)->with(compact('after_save'));
+        }else{
+            $after_save = [
+                'alert' => 'danger',
+                'title' => 'Peringatan!',
+                'text-1' => 'Ada kesalahan',
+                'text-2' => 'Data sudah ada.'
+            ];
+            return redirect()->back()->with(compact('after_save'));
+        }
+    }
+    public function input_list_tagku(Request $request)
+    {
+    $cek = M_Det_Post::where('id_parent_post', $request->id_parent_post)->where('id_post', $request->id_post)->count();
+        if($cek < 1){
+            $tag = M_Det_Post::where('id_post',$request->id_parent_post)->where('spesial',NULL)->get();
+
+            $data = new M_Det_Post();
+            $data->id_tag = $request->id_tag;
+            $data->id_post = $request->id_post;
+            $data->id_parent_post = $request->id_parent_post;
+            $data->id_root_post = $request->id_post;
+            $data->save();
+            if ($data->save()) {
+                foreach ($tag as $tg){
+                    if ($tg != '') {
+                        $tags = new M_Det_Post();
+                        $tags->id_tag = $tg->id_tag;
+                        $tags->id_post = $request->id_post;
+                        $tags->id_parent_post = $tg->id_parent_post;
+                        $tags->id_root_post = $request->id_post;
                         $tags->save();
                     }
                 }

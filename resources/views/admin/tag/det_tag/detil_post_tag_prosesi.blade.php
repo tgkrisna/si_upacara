@@ -17,7 +17,7 @@
 					<span class="add-item-label"></span>
 				</h4>
 			</div>
-			<form class="form" action="/tag/input_list_tagku/" method="POST">
+			<form class="form" action="/tag/input_list_tagku2/" method="POST">
 				{{ csrf_field() }}
 				<div class="modal-body">
 					<div class="form-group">
