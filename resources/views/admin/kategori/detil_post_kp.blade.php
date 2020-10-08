@@ -47,6 +47,41 @@
 		</form>
 	</div>
 </div>
+<div class="modal fade" id="tag-modal-gam" tabindex="-1" role="dialog">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Tutup">
+					<span aria-hidden="true">
+						&times;
+					</span>
+				</button>
+				<h4 class="modal-title">
+					Tambah Gamelannn
+					<span class="add-item-label"></span>
+				</h4>
+			</div>
+			<form class="form" action="/kategori/input_list_kp_gam/" method="POST">
+				{{ csrf_field() }}
+				<div class="modal-body">
+					<div class="form-group">
+						<label class="control-label">
+							<span class="add-item-label"></span>
+						</label>
+						<select name="id_parent_post" style="width:100%;" class="list-tag-gam" class="form-control" required></select>
+					</div>
+				</div>
+					<input type="text" name="id_post" value="{{$kategori_post->id_post}}"/>
+					<input type="text" name="id_tag" class="id-tag-gam" value=""/>
+					<input type="text" name="spesial" value="{{Request::segment(4)}}">
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
+					<button type="submit" class="btn btn-primary">Simpan</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
 <div class="row">
 	<div class="col-lg-3">
 		<img src="/gambarku/{{$kategori_post->gambar}}" width="100%">
@@ -136,7 +171,12 @@
 				<div class="col-lg-4" style="margin-top: 16px">
 					<div class="card" style="background-image: url('/gambarku/{{$item->gambar}}')">
 						<div class="card-body">
-							{{$item->nama_post}}
+							@if ($item->nama_post2 !='')
+								{{$item->nama_post}}
+								({{$item->nama_post2}})
+							@else
+								{{$item->nama_post}}
+							@endif
 							{{-- {{$item->id_post}}
 							{{$item->id_parent_post}} --}}
 						</div>
@@ -166,16 +206,26 @@
 				</div>
 					@endif	
 				@endforeach
-					<!-- endforeach untuk nama tag tari -->
-				<div class="col-lg-4" style="margin-top: 16px">
-					<a class="card tag-button" data-toggle="modal" href="#" data-target="#tag-modal" data-tag="{{ $drops->id_tag }}"><i class="fa fa-plus fa-4x"></i></a>
-				</div>
+				@else
+				{{-- tidak ada data --}}
+				@endif
+				@if ($drops->id_tag =='1')
+					<div class="col-lg-4" style="margin-top: 16px">
+						<a class="card tag-button" data-toggle="modal" href="#" data-target="#tag-modal-gam" data-tag-gam="{{ $drops->id_tag }}"><i class="fa fa-plus fa-4x"></i></a>
+					</div>
+				@elseif ($drops->id_tag =='5')
+					<div class="col-lg-4" style="margin-top: 16px">
+						<a class="card tag-button" data-toggle="modal" href="#" data-target="#tag-modal-tabuh" data-tag-tab="{{ $drops->id_tag }}"><i class="fa fa-plus fa-4x"></i></a>
+					</div>
+				@else
+					<div class="col-lg-4" style="margin-top: 16px">
+						<a class="card tag-button" data-toggle="modal" href="#" data-target="#tag-modal" data-tag="{{ $drops->id_tag }}"><i class="fa fa-plus fa-4x"></i></a>
+					</div>
+				@endif
 			</div>
-			@else
-				<div class="col-lg-4" style="margin-top: 16px">
+				{{-- <div class="col-lg-4" style="margin-top: 16px">
 					<a class="card tag-button" data-toggle="modal" href="#" data-target="#tag-modal" data-tag="{{ $drops->id_tag }}"><i class="fa fa-plus fa-4x"></i></a>
-				</div>
-			@endif
+				</div> --}}
 		</div>
 		@endforeach
 		<!-- endforeach data tag -->
@@ -203,6 +253,33 @@ $('.tag-button').click(function(){
 			}
 			$('.list-tag').html(html);
 			$('.id-tag').val(tag);
+		},
+		error: function(jqXHR, textStatus, errorThrown) {
+			console.log(textStatus, errorThrown);
+		}
+	});
+});
+$('.list-tag-gam').select2();
+let id_kategoris = {!! json_encode($kategori_post->id_kategori) !!};
+let id_posts = {!! json_encode($kategori_post->id_post) !!};
+$('.tag-button-gam').click(function(){
+	let tags = $(this).data('tag-gam');
+	$.ajax({
+		url: "/tag/dropdown_gam",
+		type: "get",
+		dataType: "json",
+		data: {
+			id_tags:tags
+			id_posts:id_posts
+		} ,
+		success: function (data) {
+			console.log(data)
+			let html = '<option value="">Pilih Jenis</option>'
+			for(var i=0;i < data.length; i++){
+				html+='<option value="'+data[i].id_post+'">'+data[i].nama_post+'</option>';				
+			}
+			$('.list-tag-gam').html(html);
+			$('.id-tag-gam').val(tags);
 		},
 		error: function(jqXHR, textStatus, errorThrown) {
 			console.log(textStatus, errorThrown);

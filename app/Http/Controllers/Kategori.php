@@ -300,10 +300,20 @@ class Kategori extends Controller
                     'tb_detil_post.id_tag',
                     'tb_post.nama_post',
                     'tb_post.gambar',
-                    'tb_detil_post.id_det_post'
+                    'tb_detil_post.id_det_post',
+                    'tb_detil_post.id_root_post'
                 )
                 ->get();
+
             foreach ($det_tag as $dt) {
+                if ($dt->id_root_post!="") {
+                    $nama_post2 = M_Post::where('tb_post.id_post', $dt->id_root_post)
+                            ->select('nama_post')    
+                            ->first();
+                    $nama_post2= $nama_post2->nama_post;
+                }else{
+                    $nama_post2="";
+                }
                 $new_tag[] = (object) array(
                     'id_post' => $dt->id_post,
                     'id_parent_post' => $dt->id_parent_post,
@@ -311,6 +321,7 @@ class Kategori extends Controller
                     'nama_post' => $dt->nama_post,
                     'gambar' => $dt->gambar,
                     'id_det_post' => $dt->id_det_post,
+                    'nama_post2'=> $nama_post2,
                 );
             }
             $drop_tag[] = (object) array(
@@ -373,42 +384,12 @@ class Kategori extends Controller
         $cek = M_Det_Post::where('id_parent_post', $request->id_parent_post)->where('id_post', $request->id_post)
             ->where('spesial', $request->id_post)->count();
         if ($cek < 1) {
-            $id_post = $request->id_post;
-            $tag = M_Tag::where('id_tag', $request->id_tag)->first();
-            $special = 0;
-
-            if ($tag === null) {
-                return redirect()->back()
-                    ->with([
-                        'alert' => 'danger',
-                        'title' => 'Peringatan!',
-                        'text-1' => 'Terjadi kesalahan.',
-                        'text-2' => ''
-                    ]);
-            }
-
-            if (strpos($tag->nama_tag, 'Prosesi') !== false) {
-                $special = 1;
-                $prosesi = M_Post::where('id_post', $request->id_parent_post)->first();
-                $prosesiDetail = M_Det_Post::where('id_parent_post', $request->id_parent_post)->get();
-
-                // Duplicate post.
-                $newProsesi = $prosesi->replicate()->save();
-                $id_post = $newProsesi->id_post;
-
-                foreach ($prosesiDetail as $key => $detail) {
-                    // Duplicate post details.
-                    $newDetail = $detail->replicate();
-                    $newDetail->id_parent_post = $newDetail->id_post;
-                    $newDetail->save();
-                }
-            }
-
+            
             $data = new M_Det_Post();
             $data->id_tag = $request->id_tag;
-            $data->id_post = $id_post;
+            $data->id_post = $request->id_post;
             $data->id_parent_post = $request->id_parent_post;
-            $data->spesial = $special;
+            $data->spesial = $request->id_post;
             $data->save();
 
             $after_save = [
@@ -435,8 +416,6 @@ class Kategori extends Controller
             ->where('spesial', $request->id_post)->count();
         if ($cek < 1) {
             $kategori = M_Det_Post::where('id_post', $request->id_parent_post)->where('spesial', NULL)->get();
-
-            //Data sudah bisa masuk pada post kp, bagaimana cara membentuk data seperti itu?
             $data = new M_Det_Post();
             $data->id_tag = $request->id_tag;
             $data->id_post = $request->id_post;
@@ -452,6 +431,7 @@ class Kategori extends Controller
                     $kats->id_post = $request->id_parent_post;
                     $kats->id_parent_post = $kat->id_parent_post;
                     $kats->spesial = $request->id_post;
+                    $kats->id_root_post = $kat->id_root_post;
                     $kats->save();
                 }
             }
