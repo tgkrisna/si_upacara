@@ -454,6 +454,7 @@ class Kategori extends Controller
             return redirect()->back()->with(compact('after_save_pros'));
         }
     }
+
     public function delete_list_kategoriku($id_det_post)
     {
         try {
@@ -573,7 +574,42 @@ class Kategori extends Controller
             return redirect()->back()->with(compact('after_save'));
         }
     }
-    
+    public function input_list_kp_tab(Request $request){
+        $cek = M_Det_Post::where('tb_detil_post.id_parent_post', $request->id_parent_post)
+        ->where('tb_detil_post.id_post', $request->id_post)
+        ->where('tb_detil_post.spesial',$request->spesial)
+        ->count();
+        if($cek < 1){
+
+            $data = new M_Det_Post();
+            $data->id_tag = $request->id_tag;
+            $data->id_post = $request->id_post;
+            $data->id_parent_post = $request->id_parent_post;
+            $data->id_root_post = $request->id_root_post;
+            $data->spesial = $request->spesial;
+            $data->save();
+
+            $id_postku = $request->id_post;
+            $id_tagku = $request->id_tagku;
+
+            $after_save = [
+                'alert' => 'success',
+                'title' => 'Berhasil!',
+                'text-1' => 'Selamat',
+                'text-2' => 'Data berhasil ditambah.'
+            ];
+            
+            return redirect()->back()->with(compact('after_save'));
+        }else{
+            $after_save = [
+                'alert' => 'danger',
+                'title' => 'Peringatan!',
+                'text-1' => 'Ada kesalahan',
+                'text-2' => 'Data sudah ada.'
+            ];
+            return redirect()->back()->with(compact('after_save'));
+        }
+    }
     public function delete_list_kp($id_det_post)
     {
         try {

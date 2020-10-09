@@ -109,6 +109,7 @@
 					<input type="text" name="id_post" value="{{$kategori_post->id_post}}"/>
 					<input type="text" name="id_tag" class="id-tag-tab" value=""/>
 					<input type="text" name="spesial" value="{{Request::segment(4)}}">
+					<input type="text" name="id_root_post" class="id-root-post" value=""/>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
 					<button type="submit" class="btn btn-primary">Simpan</button>
