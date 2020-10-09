@@ -322,6 +322,7 @@ class Kategori extends Controller
                     'gambar' => $dt->gambar,
                     'id_det_post' => $dt->id_det_post,
                     'nama_post2'=> $nama_post2,
+                    'id_root_post'=>$dt->id_root_post
                 );
             }
             $drop_tag[] = (object) array(

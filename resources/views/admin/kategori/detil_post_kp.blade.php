@@ -82,6 +82,41 @@
 		</form>
 	</div>
 </div>
+<div class="modal fade" id="tag-modal-tab" tabindex="-1" role="dialog">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Tutup">
+					<span aria-hidden="true">
+						&times;
+					</span>
+				</button>
+				<h4 class="modal-title">
+					Tambah Tabuhhhh
+					<span class="add-item-label"></span>
+				</h4>
+			</div>
+			<form class="form" action="/kategori/input_list_kp_tab/" method="POST">
+				{{ csrf_field() }}
+				<div class="modal-body">
+					<div class="form-group">
+						<label class="control-label">
+							<span class="add-item-label"></span>
+						</label>
+						<select name="id_parent_post" style="width:100%;" id="list-tag-tab" class="list-tag-tab" class="form-control" required></select>
+					</div>
+				</div>
+					<input type="text" name="id_post" value="{{$kategori_post->id_post}}"/>
+					<input type="text" name="id_tag" class="id-tag-tab" value=""/>
+					<input type="text" name="spesial" value="{{Request::segment(4)}}">
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
+					<button type="submit" class="btn btn-primary">Simpan</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
 <div class="row">
 	<div class="col-lg-3">
 		<img src="/gambarku/{{$kategori_post->gambar}}" width="100%">
@@ -214,8 +249,22 @@
 						<a class="card tag-button-gam" id="tag-button-gam" data-toggle="modal" href="#" data-target="#tag-modal-gam" data-tag-gam="{{ $drops->id_tag }}"" data-tag-posts="{{Request::segment(4)}}"><i class="fa fa-plus fa-4x"></i></a>
 					</div>
 				@elseif ($drops->id_tag =='5')
+					@php
+					$result = [];	
+					@endphp
+						@foreach ($drops->det_tag as $item2)
+							{{-- @if ($item2 !='') --}}
+								@php
+								$result[] = $item2->id_root_post;
+								// $result[] = $item2->id_root_post;
+								@endphp
+							{{-- @endif --}}
+						@endforeach
+					@php
+						$DAT=implode(',', array_unique($result));
+					@endphp
 					<div class="col-lg-4" style="margin-top: 16px">
-						<a class="card tag-button-tab" id="tag-button-tab" data-toggle="modal" href="#" data-target="#tag-modal-tabuh" data-tag-tab="{{ $drops->id_tag }}"><i class="fa fa-plus fa-4x"></i></a>
+						<a class="card tag-button-tab" id="tag-button-tab" data-toggle="modal" href="#" data-target="#tag-modal-tab" data-tag-tab="{{ $drops->id_tag }}" data-gmbl="{{$DAT}}"><i class="fa fa-plus fa-4x"></i></a>
 					</div>
 				@else
 					<div class="col-lg-4" style="margin-top: 16px">
@@ -281,6 +330,36 @@ $('#tag-button-gam').click(function(){
 			}
 			$('.list-tag-gam').html(html);
 			$('.id-tag-gam').val(tags);
+		},
+		error: function(jqXHR, textStatus, errorThrown) {
+			console.log(textStatus, errorThrown);
+		}
+	});
+});
+$('.list-tag-tab').select2();
+	let id_tags = {!! json_encode($kategori_post->id_kategori) !!};
+	let id_posts = {!! json_encode($kategori_post->id_post) !!};
+$('#tag-button-tab').click(function(){
+	let gmbl = $(this).data('gmbl');
+	let tagk = $(this).data('tag-tab');
+	$.ajax({
+		url: "/tag/dropdown_tabuh",
+		type: "get",
+		dataType: "json",
+		data: {
+			id_tags:tagk,
+			id_gambelan:gmbl
+		},
+		success: function (data) {
+			console.log(data);
+			let html = '<option value="">Pilih Jenis</option>';
+			for(var i=0;i < data.length; i++){
+				html+='<option value="'+data[i].id_parent_post+'">'+data[i].nama_post+'</option>';
+				let rot_post = data[i].id_root_post;
+				$('.id-root-post').val(rot_post);				
+				}
+			$('#list-tag-tab').html(html);
+			$('.id-tag-tab').val(tagk);	
 		},
 		error: function(jqXHR, textStatus, errorThrown) {
 			console.log(textStatus, errorThrown);
