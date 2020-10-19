@@ -57,7 +57,7 @@
 					</span>
 				</button>
 				<h4 class="modal-title">
-					Tambah Gamelannn
+					Tambah Data
 					<span class="add-item-label"></span>
 				</h4>
 			</div>
@@ -71,9 +71,9 @@
 						<select name="id_parent_post" style="width:100%;" class="list-tag-gam" class="form-control" required></select>
 					</div>
 				</div>
-					<input type="text" name="id_post" value="{{$kategori_post->id_post}}"/>
-					<input type="text" name="id_tag" class="id-tag-gam" value=""/>
-					<input type="text" name="spesial" value="{{Request::segment(4)}}">
+					<input type="hidden" name="id_post" value="{{$kategori_post->id_post}}"/>
+					<input type="hidden" name="id_tag" class="id-tag-gam" value=""/>
+					<input type="hidden" name="spesial" value="{{Request::segment(4)}}">
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
 					<button type="submit" class="btn btn-primary">Simpan</button>
@@ -92,7 +92,7 @@
 					</span>
 				</button>
 				<h4 class="modal-title">
-					Tambah Tabuhhhh
+					Tambah Data
 					<span class="add-item-label"></span>
 				</h4>
 			</div>
@@ -106,10 +106,10 @@
 						<select name="id_parent_post" style="width:100%;" id="list-tag-tab" class="list-tag-tab" class="form-control" required></select>
 					</div>
 				</div>
-					<input type="text" name="id_post" value="{{$kategori_post->id_post}}"/>
-					<input type="text" name="id_tag" class="id-tag-tab" value=""/>
-					<input type="text" name="spesial" value="{{Request::segment(4)}}">
-					<input type="text" name="id_root_post" class="id-root-post" value=""/>
+					<input type="hidden" name="id_post" value="{{$kategori_post->id_post}}"/>
+					<input type="hidden" name="id_tag" class="id-tag-tab" value=""/>
+					<input type="hidden" name="spesial" value="{{Request::segment(4)}}">
+					<input type="hidden" name="id_root_post" class="id-root-post" value=""/>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
 					<button type="submit" class="btn btn-primary">Simpan</button>
@@ -136,15 +136,7 @@
 		</div>
 	</div>
 </div>
-{{-- <div class="clearfix" style="margin-bottom: 16px">
-	<h3 style="margin: 0" class="pull-left">
-		Tingkatan Prosesi Upacara
-	</h3>
-	<a href="#" data-toggle="modal" data-target="#detail-modal" class="btn btn-sm btn-primary pull-right" data-type="post_prosesi"><i class="fa fa-plus">Tambah Prosesi</i></a>
-</div> --}}
-	<!-- Pake If count data post prosesi ketika 0/NULL -->
 
-	<!-- Mulai Foreach untuk accordion sesuai dengan tb_status -->
 <div class="panel-group" id="accordion">
 	{{-- @foreach($drop_ting as $drop)
 	<div class="panel panel-primary">
@@ -201,50 +193,49 @@
 		<div class="col-lg-4">
 			<h3>{{$drops->nama_tag}}</h3>
 			@if (!empty($drops->det_tag))
-			<div class="row" style="margin-bottom: 16px">
+			<div class="" style="margin-bottom: 16px">
 				@foreach ($drops->det_tag as $item)
 					@if ($drops->id_tag == $item->id_tag)
-				<div class="col-lg-4" style="margin-top: 16px">
-					<div class="card" style="background-image: url('/gambarku/{{$item->gambar}}')">
-						<div class="card-body">
-							@if ($item->nama_post2 !='')
-								{{$item->nama_post}}
-								({{$item->nama_post2}})
-							@else
-								{{$item->nama_post}}
-							@endif
-							{{-- {{$item->id_post}}
-							{{$item->id_parent_post}} --}}
-						</div>
-						<!-- Pakai if untuk deleteable -->
-						<button data-id="#" class="btn btn-delete btn-sm btn-danger btn-card" data-toggle="modal" data-target="#exampleModal{{$item->id_det_post}}">Hapus</button>
-						<div class="modal fade" id="exampleModal{{$item->id_det_post}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-							<div class="modal-dialog" role="document">
-								<div class="modal-content">
-								<div class="modal-header">
-									<h5 class="modal-title" id="exampleModalLabel">Peringatan</h5>
-									<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-									<span aria-hidden="true">&times;</span>
-									</button>
-								</div>
-								<div class="modal-body">
-									Apakah anda yakin ingin menghapus data ini ?
-								</div>
-								<div class="modal-footer">
-									<button type="button" class="btn btn-secondary" data-dismiss="modal">Kembali</button>
-									<a data-id="#/{{$item->id_post}}" href="/kategori/delete_list_kp/{{$item->id_det_post}}" type="button" class="btn btn-primary">Hapus</a>
-								</div>
+					<div class="col-lg-4" style="margin-top: 16px">
+						<div class="card" style="background-image: url('/gambarku/{{$item->gambar}}')">
+							<div class="card-body">
+								@if ($item->nama_post2 !='')
+									{{$item->nama_post}}
+									({{$item->nama_post2}})
+								@else
+									{{$item->nama_post}}
+								@endif
+								{{-- {{$item->id_post}}
+								{{$item->id_parent_post}} --}}
+							</div>
+							<!-- Pakai if untuk deleteable -->
+							<button data-id="#" class="btn btn-delete btn-sm btn-danger btn-card" data-toggle="modal" data-target="#exampleModal{{$item->id_det_post}}">Hapus</button>
+							<div class="modal fade" id="exampleModal{{$item->id_det_post}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+								<div class="modal-dialog" role="document">
+									<div class="modal-content">
+									<div class="modal-header">
+										<h5 class="modal-title" id="exampleModalLabel">Peringatan</h5>
+										<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+										<span aria-hidden="true">&times;</span>
+										</button>
+									</div>
+									<div class="modal-body">
+										Apakah anda yakin ingin menghapus data ini ?
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-secondary" data-dismiss="modal">Kembali</button>
+										<a data-id="#/{{$item->id_post}}" href="/kategori/delete_list_kp/{{$item->id_det_post}}" type="button" class="btn btn-primary">Hapus</a>
+									</div>
+									</div>
 								</div>
 							</div>
+							<!-- Pakai endif deleteable -->
 						</div>
-						<!-- Pakai endif deleteable -->
 					</div>
-				</div>
 					@endif	
 				@endforeach
-				@else
-				{{-- tidak ada data --}}
-				@endif
+			</div>
+			@endif
 				@if ($drops->id_tag =='1')
 					<div class="col-lg-4" style="margin-top: 16px">
 						<a class="card tag-button-gam" id="tag-button-gam" data-toggle="modal" href="#" data-target="#tag-modal-gam" data-tag-gam="{{ $drops->id_tag }}"" data-tag-posts="{{Request::segment(4)}}"><i class="fa fa-plus fa-4x"></i></a>
@@ -272,7 +263,7 @@
 						<a class="card tag-button" data-toggle="modal" href="#" data-target="#tag-modal" data-tag="{{ $drops->id_tag }}"><i class="fa fa-plus fa-4x"></i></a>
 					</div>
 				@endif
-			</div>
+			
 				{{-- <div class="col-lg-4" style="margin-top: 16px">
 					<a class="card tag-button" data-toggle="modal" href="#" data-target="#tag-modal" data-tag="{{ $drops->id_tag }}"><i class="fa fa-plus fa-4x"></i></a>
 				</div> --}}
