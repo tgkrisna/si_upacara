@@ -182,9 +182,6 @@
                             <img src="/gambarku/{{$item->gambar}}" width="100%" />
                             <div class="panel-body">
                                 <p class="prosesi-title">{{$item->nama_post}}</p>
-                                {{-- {{$item->nama_status}} --}}
-								{{-- {{$item->id_post}} --}}
-								{{-- {{$item->id_det_post}} --}}
 								<a href="/kategori/detil_post_kp/{{$item->id_parent_post}}/{{$item->id_post}}/{{$item->id_tag}}" class="btn btn-primary btn-sm">Lihat</a>
 								<a href="/kategori/delete_list_prosesiku/{{$item->id_det_post}}" onclick="return confirm('Delete ?')" class="btn btn-danger btn-delete btn-sm" data-id="#">Hapus</a>
                             </div>
@@ -192,8 +189,6 @@
 					</div>
                     		@endif
 						@endforeach
-					@else
-						{{-- tidak ada data --}}
 					@endif
         		</div>
         	</div>

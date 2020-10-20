@@ -28,12 +28,12 @@
                             <a href="/tag_pengguna/detil/{{$tg->id_post}}/{{$tg->id_tag}}" class="card-link stretched-link"></a>
                             {{$tg->nama_post}}
                         </h4>
-                        <div class="row">
+                        {{-- <div class="row">
                             <div class="col-lg-3">
                                 <i class="fa fa-file mr-1"></i>
                                 <small>Golongan {{$tg->nama_tag}}</small>
                             </div>
-                        </div>
+                        </div> --}}
                         <p>
                             @if (strlen($tg['deskripsi']) > 250)
                                 {!! substr($tg['deskripsi'],0,200) !!}...

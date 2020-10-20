@@ -21,12 +21,12 @@
         </div>
         <div class="col-9">
             <h1 class="mb-3">{{$tag_post->nama_post}}</h1>
-            <table width="100%" class="mb-3">
+            {{-- <table width="100%" class="mb-3">
                 <tr>
                     <td width="100"><strong>Jenis</strong></td>
                     <td>{{$tag_post->nama_tag}}</td>
                 </tr>
-            </table>
+            </table> --}}
             <p>{!!$tag_post->deskripsi!!}</p>
             <div class="container_youtube">
                 <iframe width="640" height="360" src="https://www.youtube.com/embed/{{ $tag_post->video }}" class="video" allowfullscreen></iframe>
