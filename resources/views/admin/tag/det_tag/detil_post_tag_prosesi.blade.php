@@ -13,7 +13,7 @@
 					</span>
 				</button>
 				<h4 class="modal-title">
-					Tambah
+					Tambah Data
 					<span class="add-item-label"></span>
 				</h4>
 			</div>
@@ -49,7 +49,7 @@
 					</span>
 				</button>
 				<h4 class="modal-title">
-					Tambah tabuhhhh
+					Tambah Data
 					<span class="add-item-label"></span>
 				</h4>
 			</div>
