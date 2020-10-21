@@ -414,7 +414,7 @@ class Kategori extends Controller
     public function input_list_prosesiku(Request $request)
     {
         $cek = M_Det_Post::where('id_parent_post', $request->id_parent_post)->where('id_post', $request->id_post)
-            ->where('spesial', $request->id_post)->count();
+            ->where('spesial', $request->id_post)->where('id_status',NULL)->count();
         if ($cek < 1) {
             $kategori = M_Det_Post::where('id_post', $request->id_parent_post)->where('spesial', NULL)->get();
             $data = new M_Det_Post();
