@@ -308,16 +308,21 @@ class Tag extends Controller
     public function list_tag_tabuh(Request $request){
         $id_tag = $request->id_tags;
         $a = $request->id_gambelan;
-        // dd($id_tag);
         $idnya=explode(',', $a);
-
-        $list_tag = M_Tag::whereIn('tb_detil_post.id_post',$idnya)
-        ->where('tb_detil_post.id_tag',$id_tag)
-        ->leftJoin('tb_detil_post','tb_tag.id_tag','=','tb_detil_post.id_tag')
-        ->leftJoin('tb_post','tb_detil_post.id_parent_post','=','tb_post.id_post')
-        ->select('tb_tag.id_tag', 'tb_tag.nama_tag', 'tb_post.nama_post','tb_detil_post.id_post', 'tb_detil_post.id_parent_post', 'tb_detil_post.id_root_post')
-        ->get();
-        return response()->json($list_tag);
+        
+        if ($a != '') {
+            $list_tag = M_Tag::whereIn('tb_detil_post.id_post',$idnya)
+            ->where('tb_detil_post.id_tag',$id_tag)
+            ->leftJoin('tb_detil_post','tb_tag.id_tag','=','tb_detil_post.id_tag')
+            ->leftJoin('tb_post','tb_detil_post.id_parent_post','=','tb_post.id_post')
+            ->select('tb_tag.id_tag', 'tb_tag.nama_tag', 'tb_post.nama_post','tb_detil_post.id_post', 'tb_detil_post.id_parent_post', 'tb_detil_post.id_root_post')
+            ->get();
+            return response()->json($list_tag);
+        } else {
+            $list_tag = M_Post::where('id_tag', $id_tag)->get();
+            return response()->json($list_tag);
+        }
+        
     }
 
     public function input_list_tabuh(Request $request){
