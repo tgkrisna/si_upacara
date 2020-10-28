@@ -248,45 +248,42 @@ class Kategori extends Controller
     public function detil_post_kp($id_parent_post, $id_post, $id_tag)
     {
         $kategori_post = M_Post::where('tb_post.id_post', $id_parent_post)->first();
-        // $data_tingkatanku = M_Post::where('tb_post.id_post',$id_parent_post)
-        // ->where('tb_detil_post.spesial',$id_post)
-        // ->leftJoin('tb_detil_post','tb_post.id_post','=','tb_detil_post.id_post')
-        // ->leftJoin('tb_tingkatan','tb_detil_post.id_tingkatan','=','tb_tingkatan.id_tingkatan')
-        // ->select()
-        // $data_tingkatan = M_Tingkatan::all();
+        $data_tag_pros = M_Tag::where('tb_tag.id_tag',3)
+        ->select('id_tag', 'nama_tag')
+        ->get();
         $data_tag = M_Tag::where('tb_tag.id_tag', '!=', $id_tag)
             ->select('id_tag', 'nama_tag')
             ->get();
-        // $drop_ting = [];
-        // $new_ting = [];
+        $drop_ting = [];
+        $new_ting = [];
         $drop_tag = [];
         $new_tag = [];
-
-        // foreach ($data_tingkatan as $d_ting) {
-        //     $id_tingkatan = $d_ting->id_tingkatan;
-        //     $nama_tingkatan = $d_ting->nama_tingkatan;
-        //     $det_post = M_Post::where('tb_post.id_post',$id_parent_post)
-        //     ->where('tb_detil_post.spesial',$id_post)
-        //     ->leftJoin('tb_detil_post','tb_post.id_post','=','tb_detil_post.id_post')
-        //     ->leftJoin('tb_tingkatan','tb_detil_post.id_tingkatan','=','tb_tingkatan.id_tingkatan')
-        //     ->select('tb_post.nama_post','tb_post.gambar'
-        //             ,'tb_detil_post.id_tingkatan','tb_detil_post.id_post','tb_detil_post.id_parent_post')
-        //     ->get();
-        //     foreach ($det_post as $dt) {
-        //         $new_ting[]=(object)array(
-        //             'id_post' => $dt->id_post,
-        //             'nama_post' => $dt->nama_post,
-        //             'gambar' => $dt->gambar,
-        //             'id_tingkatan' => $dt->id_tingkatan,
-        //             'id_parent_post' => $dt->id_parent_post,
-        //         ); 
-        //     }
-        //     $drop_ting[]=(object)array(
-        //         'id_tingkatan' => $id_tingkatan,
-        //         'nama_tingkatan' => $nama_tingkatan,
-        //         'det_post' => $new_ting,
-        //     );
-        // }
+        foreach ($data_tag_pros as $dt_p) {
+            $id_tag = $dt_p->id_tag;
+            $nama_tag = $dt_p->nama_tag;
+                $data_det_pros = M_Det_Post::where('tb_detil_post.id_post', $id_parent_post)
+                    ->where('tb_detil_post.id_tag',3)
+                    ->where('tb_detil_post.spesial',$id_post)
+                    ->leftJoin('tb_tag', 'tb_detil_post.id_tag', '=', 'tb_tag.id_tag')
+                    ->leftJoin('tb_post', 'tb_detil_post.id_parent_post', '=', 'tb_post.id_post')
+                    ->select('tb_detil_post.id_det_post', 'tb_post.nama_post', 
+                    'tb_post.gambar', 'tb_detil_post.id_post', 'tb_detil_post.id_parent_post', 'tb_detil_post.id_tag')
+                    ->get();
+            foreach ($data_det_pros as $dp) {
+                $new_ting[] = (object) array(
+                    'id_det_post' => $dp->id_det_post,
+                    'nama_post' => $dp->nama_post,
+                    'gambar' => $dp->gambar,
+                    'id_post' => $dp->id_post,
+                    'id_parent_post' => $dp->id_parent_post,
+                    'id_tag' => $dp->id_tag,
+                );
+            }
+            $drop_ting[] = (object) array(
+                'data_det_pros' => $new_ting,
+            );
+        }
+        // dd($drop_ting);
         foreach ($data_tag as $tag) {
             $id_tagku = $tag->id_tag;
             $nama_tag = $tag->nama_tag;
@@ -332,7 +329,7 @@ class Kategori extends Controller
             );
             $new_tag = [];
         }
-        return view('admin/kategori/detil_post_kp', compact('kategori_post', 'drop_tag'));
+        return view('admin/kategori/detil_post_kp', compact('kategori_post', 'drop_tag', 'drop_ting'));
     }
     public function list_tag(Request $request)
     {

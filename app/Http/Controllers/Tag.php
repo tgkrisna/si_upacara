@@ -307,21 +307,36 @@ class Tag extends Controller
 
     public function list_tag_tabuh(Request $request){
         $id_tag = $request->id_tags;
-        $a = $request->id_gambelan;
-        $idnya=explode(',', $a);
+        // $a = $request->id_gambelan;
+        // $idnya=explode(',', $a);
         
-        if ($a != '') {
-            $list_tag = M_Tag::whereIn('tb_detil_post.id_post',$idnya)
-            ->where('tb_detil_post.id_tag',$id_tag)
+        // if ($a != '') {
+        //     $list_tag = M_Tag::whereIn('tb_detil_post.id_post',$idnya)
+        //     ->where('tb_detil_post.id_tag',$id_tag)
+        //     ->leftJoin('tb_detil_post','tb_tag.id_tag','=','tb_detil_post.id_tag')
+        //     ->leftJoin('tb_post','tb_detil_post.id_parent_post','=','tb_post.id_post')
+        //     ->select('tb_tag.id_tag', 'tb_tag.nama_tag', 'tb_post.nama_post','tb_detil_post.id_post', 'tb_detil_post.id_parent_post', 'tb_detil_post.id_root_post')
+        //     ->get();
+        //     return response()->json($list_tag);
+        // } else {
+            $list_tab = M_Tag::where('tb_detil_post.id_tag', $id_tag)
             ->leftJoin('tb_detil_post','tb_tag.id_tag','=','tb_detil_post.id_tag')
             ->leftJoin('tb_post','tb_detil_post.id_parent_post','=','tb_post.id_post')
-            ->select('tb_tag.id_tag', 'tb_tag.nama_tag', 'tb_post.nama_post','tb_detil_post.id_post', 'tb_detil_post.id_parent_post', 'tb_detil_post.id_root_post')
+            ->select('tb_tag.id_tag', 'tb_tag.nama_tag', 'tb_post.nama_post', 
+            'tb_detil_post.id_post', 'tb_detil_post.id_parent_post', 'tb_detil_post.id_root_post')
             ->get();
-            return response()->json($list_tag);
-        } else {
-            $list_tag = M_Post::where('id_tag', $id_tag)->get();
-            return response()->json($list_tag);
-        }
+            return response()->json($list_tab);
+        // }
+        
+    }
+
+    public function list_tag_tabuh_select(Request $request){
+        $selectid = M_Det_Post::where('tb_detil_post.id_parent_post', $request->selectid)
+        ->where('tb_detil_post.id_tag','=','5')
+        ->first();
+        return response()->json([
+            'selectd' => $selectid->id_root_post
+        ]);
         
     }
 
@@ -336,7 +351,22 @@ class Tag extends Controller
             $data->id_post = $request->id_post;
             $data->id_parent_post = $request->id_parent_post;
             $data->id_root_post = $request->id_root_post;
-            $data->save();
+            $data->spesial = $request->spesial;
+            $cek_gam = M_Det_Post::where('tb_detil_post.id_post',$request->id_post)
+            ->where('tb_detil_post.id_parent_post',$request->id_root_post)
+            ->where('tb_detil_post.spesial',$request->spesial)
+            ->count();
+            if ($cek_gam<1) {
+                $gam = new M_Det_Post();
+                $gam->id_tag = $request->id_tag_gamelan;
+                $gam->id_post = $request->id_post;
+                $gam->id_parent_post = $request->id_root_post;
+            } else {
+                $data->save();
+            }
+            
+
+            // $data->save();
 
             $id_postku = $request->id_post;
             $id_tagku = $request->id_tagku;

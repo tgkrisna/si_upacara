@@ -103,13 +103,14 @@
 						<label class="control-label">
 							<span class="add-item-label"></span>
 						</label>
-						<select name="id_parent_post" style="width:100%;" id="list-tag-tab" class="list-tag-tab" class="form-control" required></select>
+						<select name="id_parent_post" style="width:100%;" id="list-tag-tab" class="list-tag-tab selectlist" class="form-control" required></select>
 					</div>
 				</div>
-					<input type="hidden" name="id_post" value="{{$kategori_post->id_post}}"/>
-					<input type="hidden" name="id_tag" class="id-tag-tab" value=""/>
-					<input type="hidden" name="spesial" value="{{Request::segment(4)}}">
-					<input type="hidden" name="id_root_post" class="id-root-post" value=""/>
+					<input type="text" name="id_post" value="{{$kategori_post->id_post}}"/>
+					<input type="text" name="id_tag" class="id-tag-tab" value=""/>
+					<input type="text" name="spesial" value="{{Request::segment(4)}}">
+					<input type="text" name="id_tag_gamelan" value="1"/>
+					<input type="text" name="id_root_post" id="selectlistid" class="id-gam-root" value=""/>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
 					<button type="submit" class="btn btn-primary">Simpan</button>
@@ -136,46 +137,35 @@
 		</div>
 	</div>
 </div>
-
+<div class="clearfix" style="margin-bottom: 16px">
+	<h3 style="margin: 0" class="pull-left">
+		Prosesi Upacara
+	</h3>
+	<a href="#" data-toggle="modal" data-target="#detail-modal" id="prosesi-button" class="btn btn-sm btn-primary pull-right"><i class="fa fa-plus">Tambah Prosesi</i></a>
+</div>
 <div class="panel-group" id="accordion">
-	{{-- @foreach($drop_ting as $drop)
 	<div class="panel panel-primary">
-		<div class="panel-heading" role="tab" id="headingOne">
-            <a style="text-decoration: none; color: #ffffff;" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                {{$drop->nama_tingkatan}}
-            </a>
-        </div>
-        <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
-        	<div class="panel-body">
-        		<div class="row"> --}}
-        			<!-- Memulai foreach untuk data post prosesi -->
-					<!-- Pakai if untuk melakukan foreach dengan status awal -->
-					{{-- @if (!empty($drop->det_pos))
-						@foreach ($drop->det_pos as $item)
-							@if ($drop->id_tingkatan == $item->id_tingkatan)
-        			<div class="col-lg-2">
-                        <div class="panel panel-default" style="border: 1px solid #efeef4; margin-bottom: 1em">
-                            <img src="/gambarku/{{$item->gambar}}" width="100%" />
-                            <div class="panel-body">
-                                <p class="prosesi-title">{{$item->nama_post}}</p>
-                                {{$item->nama_tingkatan}}
-								{{$item->id_post}}
-								{{$item->id_parent_post}}
-							<a href="#" class="btn btn-primary btn-sm">Lihat</a>
-                            	<a href="#" class="btn btn-danger btn-delete btn-sm" data-id="#">Hapus</a>
-                            </div>
+		<div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+			<div class="panel-body">
+				<div class="row">
+					@if (!@empty($drop_ting->data_det_pros))
+						@foreach ($drop_ting->data_det_pros as $item)
+						<div class="col-lg-2">
+							<div class="panel panel-default" style="border: 1px solid #efeef4; margin-bottom: 1em">
+								<img src="/gambarku/{{$item->gambar}}" width="100%" />
+								<div class="panel-body">
+									<p class="prosesi-title">{{$item->nama_post}}</p>
+									<a href="/#/{{$item->id_parent_post}}/{{$item->id_post}}/{{$item->id_tag}}" class="btn btn-primary btn-sm">Lihat</a>
+									<a href="/#/{{$item->id_det_post}}" onclick="return confirm('Delete ?')" class="btn btn-danger btn-delete btn-sm" data-id="#">Hapus</a>
+								</div>
+							</div>
 						</div>
-					</div>
-                    		@endif
 						@endforeach
-					@else --}}
-						{{-- tidak ada data --}}
-					{{-- @endif
-        		</div>
-        	</div>
-        </div>
+					@endif
+				</div>
+			</div>
+		</div>
 	</div>
-	@endforeach --}}
 	<hr>
 	@if (Session::has('after_save'))
 	<div class="row">
@@ -241,22 +231,22 @@
 						<a class="card tag-button-gam" id="tag-button-gam" data-toggle="modal" href="#" data-target="#tag-modal-gam" data-tag-gam="{{ $drops->id_tag }}"" data-tag-posts="{{Request::segment(4)}}"><i class="fa fa-plus fa-4x"></i></a>
 					</div>
 				@elseif ($drops->id_tag =='5')
-					@php
+					{{-- @php
 					$result = [];	
 					@endphp
 						@foreach ($drops->det_tag as $item2)
-							{{-- @if ($item2 !='') --}}
-								@php
-								$result[] = $item2->id_root_post;
-								// $result[] = $item2->id_root_post;
-								@endphp
-							{{-- @endif --}}
+							@php
+							$result[] = $item2->id_root_post;
+							@endphp
 						@endforeach
 					@php
 						$DAT=implode(',', array_unique($result));
-					@endphp
+						//Taruh di a class dibawah
+						data-gmbl="{{$drops->id_root_post}}"
+					@endphp --}}
+
 					<div class="col-lg-4" style="margin-top: 16px">
-						<a class="card tag-button-tab" id="tag-button-tab" data-toggle="modal" href="#" data-target="#tag-modal-tab" data-tag-tab="{{ $drops->id_tag }}" data-gmbl="{{$DAT}}"><i class="fa fa-plus fa-4x"></i></a>
+						<a class="card tag-button-tab" id="tag-button-tab" data-toggle="modal" href="#" data-target="#tag-modal-tab" data-tag-tab="{{ $drops->id_tag }}" ><i class="fa fa-plus fa-4x"></i></a>
 					</div>
 				@else
 					<div class="col-lg-4" style="margin-top: 16px">
@@ -332,7 +322,7 @@ $('.list-tag-tab').select2();
 	let id_tags = {!! json_encode($kategori_post->id_kategori) !!};
 	let id_posts = {!! json_encode($kategori_post->id_post) !!};
 $('#tag-button-tab').click(function(){
-	let gmbl = $(this).data('gmbl');
+	// let gmbl = $(this).data('gmbl');
 	let tagk = $(this).data('tag-tab');
 	$.ajax({
 		url: "/tag/dropdown_tabuh",
@@ -340,22 +330,41 @@ $('#tag-button-tab').click(function(){
 		dataType: "json",
 		data: {
 			id_tags:tagk,
-			id_gambelan:gmbl
+			// id_gambelan:gmbl
 		},
 		success: function (data) {
 			console.log(data);
 			let html = '<option value="">Pilih Jenis</option>';
 			for(var i=0;i < data.length; i++){
-				html+='<option value="'+data[i].id_parent_post+'">'+data[i].nama_post+'</option>';
-				let rot_post = data[i].id_root_post;
-				$('.id-root-post').val(rot_post);				
-				}
+				html+='<option value="'+data[i].id_parent_post+'">'+data[i].nama_post+'</option>'; //Sudah benar
+				//Kenapa dia tetap?
+				var root_post = data[i].id_root_post;
+				$('.id-gam-root').val(root_post);				
+			}
 			$('#list-tag-tab').html(html);
 			$('.id-tag-tab').val(tagk);	
 		},
 		error: function(jqXHR, textStatus, errorThrown) {
 			console.log(textStatus, errorThrown);
 		}
+	});
+});
+
+$( ".selectlist" ).change(function() {
+	let e = document.getElementById("list-tag-tab");
+	let selectid = e.value;
+	$.ajax({
+		url: "/tag/dropdown_tabuh/select",
+		type: "get",
+		dataType: "json",
+		data: {
+			selectid:selectid,
+		},
+		success: function (data) {
+			// alert(data.selectd);
+			$('#selectlistid').val(data.selectd);
+		}
+	
 	});
 });
 </script>

@@ -82,6 +82,7 @@ Route::get('/tag/drop_down_t/{id}','Tag@drop_down_tag');
 Route::get('/tag/dropdown', 'Tag@list_tag');
 Route::get('/tag/dropdown_gam', 'Tag@list_tag_gamelan');
 Route::get('/tag/dropdown_tabuh', 'Tag@list_tag_tabuh');
+Route::get('/tag/dropdown_tabuh/select', 'Tag@list_tag_tabuh_select');
 Route::post('/tag/input_list_tagku','Tag@input_list_tagku');
 Route::post('/tag/input_list_tabuh','Tag@input_list_tabuh');
 Route::post('/tag/input_list_gamelan','Tag@input_list_gamelan');
