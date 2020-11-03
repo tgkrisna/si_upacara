@@ -319,7 +319,10 @@ class Tag extends Controller
         //     ->get();
         //     return response()->json($list_tag);
         // } else {
+        //Logic Error, data select berulang
             $list_tab = M_Tag::where('tb_detil_post.id_tag', $id_tag)
+            ->where('tb_detil_post.spesial',NULL)
+            ->whereNotNull('tb_detil_post.id_root_post')
             ->leftJoin('tb_detil_post','tb_tag.id_tag','=','tb_detil_post.id_tag')
             ->leftJoin('tb_post','tb_detil_post.id_parent_post','=','tb_post.id_post')
             ->select('tb_tag.id_tag', 'tb_tag.nama_tag', 'tb_post.nama_post', 
@@ -345,29 +348,13 @@ class Tag extends Controller
         ->where('tb_detil_post.id_post', $request->id_post)
         ->count();
         if($cek < 1){
-
             $data = new M_Det_Post();
             $data->id_tag = $request->id_tag;
             $data->id_post = $request->id_post;
             $data->id_parent_post = $request->id_parent_post;
             $data->id_root_post = $request->id_root_post;
             $data->spesial = $request->spesial;
-            $cek_gam = M_Det_Post::where('tb_detil_post.id_post',$request->id_post)
-            ->where('tb_detil_post.id_parent_post',$request->id_root_post)
-            ->where('tb_detil_post.spesial',$request->spesial)
-            ->count();
-            if ($cek_gam<1) {
-                $gam = new M_Det_Post();
-                $gam->id_tag = $request->id_tag_gamelan;
-                $gam->id_post = $request->id_post;
-                $gam->id_parent_post = $request->id_root_post;
-            } else {
-                $data->save();
-            }
-            
-
-            // $data->save();
-
+            $data->save();
             $id_postku = $request->id_post;
             $id_tagku = $request->id_tagku;
 

@@ -585,7 +585,19 @@ class Kategori extends Controller
             $data->id_root_post = $request->id_root_post;
             $data->spesial = $request->spesial;
             $data->save();
-
+            $cek_gam = M_Det_Post::where('tb_detil_post.id_post',$request->id_post)
+            ->where('tb_detil_post.id_parent_post',$request->id_root_post)
+            ->where('tb_detil_post.spesial',$request->spesial)
+            ->count();
+            //Error logic
+            if ($cek_gam < 1) {
+                $gam = new M_Det_Post();
+                $gam->id_tag = $request->id_tag_gamelan;
+                $gam->id_post = $request->id_post;
+                $gam->id_parent_post = $request->id_root_post;
+                $gam->spesial = $request->spesial;
+                $gam->save();
+            }
             $id_postku = $request->id_post;
             $id_tagku = $request->id_tagku;
 
