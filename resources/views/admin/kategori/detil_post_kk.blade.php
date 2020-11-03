@@ -61,7 +61,7 @@
 					<span class="add-item-label"></span>
 				</h4>
 			</div>
-			<form class="form" action="/kategori/input_list_kp_gam/" method="POST">
+			<form class="form" action="/kategori/input_list_kk_gam/" method="POST">
 				{{ csrf_field() }}
 				<div class="modal-body">
 					<div class="form-group">
@@ -71,9 +71,10 @@
 						<select name="id_parent_post" style="width:100%;" class="list-tag-gam" class="form-control" required></select>
 					</div>
 				</div>
-					<input type="hidden" name="id_post" value="{{$kategori_post->id_post}}"/>
-					<input type="hidden" name="id_tag" class="id-tag-gam" value=""/>
-					<input type="hidden" name="spesial" value="{{Request::segment(4)}}">
+					<input type="text" name="id_post" value="{{$kategori_post->id_post}}"/>
+					<input type="text" name="id_tag" class="id-tag-gam" value=""/>
+					<input type="text" name="spesial" value="{{$spesialku}}">
+					<input type="text" name="id_root_prosesi" value="{{Request::segment(4)}}">
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
 					<button type="submit" class="btn btn-primary">Simpan</button>
@@ -108,7 +109,7 @@
 				</div>
 					<input type="text" name="id_post" value="{{$kategori_post->id_post}}"/>
 					<input type="text" name="id_tag" class="id-tag-tab" value=""/>
-					<input type="text" name="spesial" value="{{Request::segment(4)}}">
+					<input type="text" name="spesial" value="{{$spesialku}}">
 					<input type="text" name="id_tag_gamelan" value="1"/>
 					<input type="text" name="id_root_post" id="selectlistid" class="id-gam-root" value=""/>
 				<div class="modal-footer">
@@ -198,7 +199,7 @@
 			@endif
 				@if ($drops->id_tag =='1')
 					<div class="col-lg-4" style="margin-top: 16px">
-						<a class="card tag-button-gam" id="tag-button-gam" data-toggle="modal" href="#" data-target="#tag-modal-gam" data-tag-gam="{{ $drops->id_tag }}"" data-tag-posts="{{Request::segment(4)}}"><i class="fa fa-plus fa-4x"></i></a>
+						<a class="card tag-button-gam" id="tag-button-gam" data-toggle="modal" href="#" data-target="#tag-modal-gam" data-tag-gam="{{ $drops->id_tag }}"" data-tag-posts="{{$spesialku}}"><i class="fa fa-plus fa-4x"></i></a>
 					</div>
 				@elseif ($drops->id_tag =='5')
 					<div class="col-lg-4" style="margin-top: 16px">

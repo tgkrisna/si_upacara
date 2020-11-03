@@ -330,8 +330,9 @@ class Kategori extends Controller
         }
         return view('admin/kategori/detil_post_kp', compact('kategori_post', 'drop_tag', 'drop_ting'));
     }
-    public function detil_post_kk($id_parent_post, $id_post, $id_tag)
+    public function detil_post_kk($id_parent_post, $id_post, $id_tag, $spesial)
     {
+        $spesialku = $spesial;
         $kategori_post = M_Post::where('tb_post.id_post', $id_parent_post)->first();
         $data_tag = M_Tag::where('tb_tag.id_tag', '!=', $id_tag)
         ->select('id_tag', 'nama_tag')
@@ -343,6 +344,7 @@ class Kategori extends Controller
             $nama_tag = $tag->nama_tag;
             $det_tag = M_Det_Post::where('tb_detil_post.id_post', $id_parent_post)
                 ->where('tb_detil_post.id_root_prosesi', $id_post)
+                ->where('tb_detil_post.spesial',$spesialku)
                 ->leftJoin('tb_post', 'tb_detil_post.id_parent_post', '=', 'tb_post.id_post')
                 ->leftJoin('tb_tag', 'tb_detil_post.id_tag', '=', 'tb_tag.id_tag')
                 ->select(
@@ -384,7 +386,7 @@ class Kategori extends Controller
             // dd($drop_tag);
             $new_tag = [];
         }
-        return view('admin/kategori/detil_post_kk', compact('kategori_post', 'drop_tag'));
+        return view('admin/kategori/detil_post_kk', compact('kategori_post', 'drop_tag', 'spesialku'));
 
     }
     public function list_tag(Request $request)
@@ -507,6 +509,50 @@ class Kategori extends Controller
             return redirect()->back()->with(compact('after_save_pros'));
         }
     }
+    public function input_list_kp_pros(Request $request)
+    {
+        $cek = M_Det_Post::where('id_parent_post', $request->id_parent_post)->where('id_post', $request->id_post)
+            ->where('spesial', $request->spesial)->where('id_status',NULL)->count();
+        if ($cek < 1) {
+            $kategori = M_Det_Post::where('id_post', $request->id_parent_post)->where('spesial', NULL)->get();
+            $data = new M_Det_Post();
+            $data->id_tag = $request->id_tag;
+            $data->id_post = $request->id_post;
+            $data->id_parent_post = $request->id_parent_post;
+            $data->id_root_prosesi = $request->id_post;
+            $data->spesial = $request->spesial;
+            $data->save();
+
+            if ($data->save()) {
+                foreach ($kategori as $kat) {
+                    $kats = new M_Det_Post();
+                    $kats->id_tag = $kat->id_tag;
+                    $kats->id_post = $request->id_parent_post;
+                    $kats->id_parent_post = $kat->id_parent_post;
+                    $kats->spesial = $request->spesial;
+                    $kats->id_root_post = $kat->id_root_post;
+                    $kats->id_root_prosesi = $request->id_post;
+                    $kats->save();
+                }
+            }
+            $after_save_pros = [
+                'alert' => 'success',
+                'title' => 'Berhasil!',
+                'text-1' => 'Selamat',
+                'text-2' => 'Data berhasil ditambah.'
+            ];
+
+            return redirect()->back()->with(compact('after_save_pros'));
+        } else {
+            $after_save_pros = [
+                'alert' => 'danger',
+                'title' => 'Peringatan!',
+                'text-1' => 'Ada kesalahan',
+                'text-2' => 'Data sudah ada.'
+            ];
+            return redirect()->back()->with(compact('after_save_pros'));
+        }
+    }
 
     public function delete_list_kategoriku($id_det_post)
     {
@@ -606,6 +652,50 @@ class Kategori extends Controller
                     $kats->id_parent_post = $kat->id_parent_post;
                     $kats->spesial = $request->spesial;
                     $kats->id_root_post = $kat->id_root_post;
+                    $kats->save();
+                }
+            }
+            $after_save = [
+                'alert' => 'success',
+                'title' => 'Berhasil!',
+                'text-1' => 'Selamat',
+                'text-2' => 'Data berhasil ditambah.'
+            ];
+
+            return redirect()->back()->with(compact('after_save'));
+        } else {
+            $after_save = [
+                'alert' => 'danger',
+                'title' => 'Peringatan!',
+                'text-1' => 'Ada kesalahan',
+                'text-2' => 'Data sudah ada.'
+            ];
+            return redirect()->back()->with(compact('after_save'));
+        }
+    }
+    public function input_list_kk_gam(Request $request)
+    {
+        $cek = M_Det_Post::where('id_parent_post', $request->id_parent_post)->where('id_post', $request->id_post)
+            ->where('spesial', $request->spesial)->count();
+        if ($cek < 1) {
+            $kategori = M_Det_Post::where('id_post', $request->id_parent_post)->where('spesial', NULL)->get();
+            $data = new M_Det_Post();
+            $data->id_tag = $request->id_tag;
+            $data->id_post = $request->id_post;
+            $data->id_parent_post = $request->id_parent_post;
+            $data->spesial = $request->spesial;
+            $data->id_root_prosesi = $request->id_root_prosesi;
+            $data->save();
+            
+            if ($data->save()) {
+                foreach ($kategori as $kat) {
+                    $kats = new M_Det_Post();
+                    $kats->id_tag = $kat->id_tag;
+                    $kats->id_post = $request->id_post;
+                    $kats->id_parent_post = $kat->id_parent_post;
+                    $kats->spesial = $request->spesial;
+                    $kats->id_root_post = $kat->id_root_post;
+                    $kats->id_root_prosesi = $request->id_root_prosesi;
                     $kats->save();
                 }
             }

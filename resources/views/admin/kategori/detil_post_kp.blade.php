@@ -12,6 +12,42 @@
         text-overflow: ellipsis;
 	}
 </style>
+<div class="modal fade" id="detail-modal" tabindex="-1" role="dialog">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Tutup">
+					<span aria-hidden="true">
+						&times;
+					</span>
+				</button>
+				<h4 class="modal-title">
+					Tambah Data
+					<span class="add-item-label"></span>
+				</h4>
+			</div>
+			<form class="form" action="/kategori/input_list_kp_pros/" method="POST">
+				{{ csrf_field() }}
+				<input type="hidden" name="type">
+				<div class="modal-body">
+					<div class="form-group">
+						<label class="control-label">
+							<span class="add-item-label"></span>
+						</label>
+						<select name="id_parent_post" style="width:100%;" class="list-prosesi" class="form-control" required></select>
+					</div>
+				</div>
+				<input type="hidden" name="id_post" value="{{$kategori_post->id_post}}"/>
+				<input type="hidden" name="id_tag" value="3"/>
+				<input type="hidden" name="spesial" value="{{Request::segment(4)}}"/>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
+					<button type="submit" class="btn btn-primary">Simpan</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
 <div class="modal fade" id="tag-modal" tabindex="-1" role="dialog">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
@@ -155,12 +191,8 @@
 									<img src="/gambarku/{{$d->gambar}}" width="100%" />
 									<div class="panel-body">
 										<p class="prosesi-title">{{$d->nama_post}}</p>
-										{{-- {{$d->id_parent_post}}
-										{{$d->id_post}}
-										{{$d->id_tag}}
-										{{$d->id_det_post}} --}}
-										<a href="/kategori/detil_post_kk/{{$d->id_parent_post}}/{{$d->id_post}}/{{$d->id_tag}}" class="btn btn-primary btn-sm">Lihat</a>
-										<a href="/#/{{$d->id_det_post}}" onclick="return confirm('Delete ?')" class="btn btn-danger btn-delete btn-sm" data-id="#">Hapus</a>
+										<a href="/kategori/detil_post_kk/{{$d->id_parent_post}}/{{$d->id_post}}/{{$d->id_tag}}/{{Request::segment(4)}}" class="btn btn-primary btn-sm">Lihat</a>
+										<a href="/kategori/delete_list_prosesiku/{{$d->id_det_post}}" onclick="return confirm('Delete ?')" class="btn btn-danger btn-delete btn-sm" data-id="#">Hapus</a>
 									</div>
 								</div>
 							</div>
@@ -371,5 +403,30 @@ $( ".selectlist" ).change(function() {
 	
 	});
 });
+</script>
+<script>
+	$('.list-prosesi').select2();
+	let id_kategoriku = {!! json_encode($kategori_post->id_kategori) !!};
+	let id_post1 = {!! json_encode($kategori_post->id_post) !!};
+	$('#prosesi-button').click(function(){
+		let prosesi = $(this).data('prosesi');
+		$.ajax({
+			url: "/kategori/list_prosesi/"+id_kategoriku,
+			type: "get",
+			dataType: "json",
+			success: function (data) {
+				console.log(data)
+				let html = '<option value="">Pilih Prosesi</option>'
+				for(var i=0;i < data.length; i++){
+					html+='<option value="'+data[i].id_post+'">'+data[i].nama_post+'</option>';				
+				}
+				$('.list-prosesi').html(html);
+				$('.id-tag-prosesi').val(tag);
+			},
+			error: function(jqXHR, textStatus, errorThrown) {
+				console.log(textStatus, errorThrown);
+			}
+		});
+	});
 </script>
 @endsection
