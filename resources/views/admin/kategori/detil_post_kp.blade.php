@@ -148,18 +148,18 @@
 		<div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
 			<div class="panel-body">
 				<div class="row">
-					@if (!@empty($drop_ting->data_det_pros))
-						@foreach ($drop_ting->data_det_pros as $item)
-						<div class="col-lg-2">
-							<div class="panel panel-default" style="border: 1px solid #efeef4; margin-bottom: 1em">
-								<img src="/gambarku/{{$item->gambar}}" width="100%" />
-								<div class="panel-body">
-									<p class="prosesi-title">{{$item->nama_post}}</p>
-									<a href="/#/{{$item->id_parent_post}}/{{$item->id_post}}/{{$item->id_tag}}" class="btn btn-primary btn-sm">Lihat</a>
-									<a href="/#/{{$item->id_det_post}}" onclick="return confirm('Delete ?')" class="btn btn-danger btn-delete btn-sm" data-id="#">Hapus</a>
+					@if(count($drop_ting) != 0)
+						@foreach ($drop_ting['data_det_pros'] as $d)
+							<div class="col-lg-2">
+								<div class="panel panel-default" style="border: 1px solid #efeef4; margin-bottom: 1em">
+									<img src="/gambarku/{{$d->gambar}}" width="100%" />
+									<div class="panel-body">
+										<p class="prosesi-title">{{$d->nama_post}}</p>
+										<a href="/#/{{$d->id_parent_post}}/{{$d->id_post}}/{{$d->id_tag}}" class="btn btn-primary btn-sm">Lihat</a>
+										<a href="/#/{{$d->id_det_post}}" onclick="return confirm('Delete ?')" class="btn btn-danger btn-delete btn-sm" data-id="#">Hapus</a>
+									</div>
 								</div>
 							</div>
-						</div>
 						@endforeach
 					@endif
 				</div>

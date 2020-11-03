@@ -279,11 +279,16 @@ class Kategori extends Controller
                     'id_tag' => $dp->id_tag,
                 );
             }
-            $drop_ting[] = (object) array(
+            // $drop_ting[] = (object) array(
+            //     'data_det_pros' => $new_ting,
+            //     'id_tag' => $id_tag,
+            //     'nama_tag' => $nama_tag,
+            // );
+            $drop_ting = array(
                 'data_det_pros' => $new_ting,
             );
         }
-        // dd($drop_ting);
+        // dd($drop_ting['data_det_pros']);
         foreach ($data_tag as $tag) {
             $id_tagku = $tag->id_tag;
             $nama_tag = $tag->nama_tag;
