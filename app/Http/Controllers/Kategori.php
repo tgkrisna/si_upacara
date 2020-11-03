@@ -279,16 +279,10 @@ class Kategori extends Controller
                     'id_tag' => $dp->id_tag,
                 );
             }
-            // $drop_ting[] = (object) array(
-            //     'data_det_pros' => $new_ting,
-            //     'id_tag' => $id_tag,
-            //     'nama_tag' => $nama_tag,
-            // );
             $drop_ting = array(
                 'data_det_pros' => $new_ting,
             );
         }
-        // dd($drop_ting['data_det_pros']);
         foreach ($data_tag as $tag) {
             $id_tagku = $tag->id_tag;
             $nama_tag = $tag->nama_tag;
@@ -335,6 +329,63 @@ class Kategori extends Controller
             $new_tag = [];
         }
         return view('admin/kategori/detil_post_kp', compact('kategori_post', 'drop_tag', 'drop_ting'));
+    }
+    public function detil_post_kk($id_parent_post, $id_post, $id_tag)
+    {
+        $kategori_post = M_Post::where('tb_post.id_post', $id_parent_post)->first();
+        $data_tag = M_Tag::where('tb_tag.id_tag', '!=', $id_tag)
+        ->select('id_tag', 'nama_tag')
+        ->get();
+        $drop_tag = [];
+        $new_tag = [];
+        foreach ($data_tag as $tag) {
+            $id_tagku = $tag->id_tag;
+            $nama_tag = $tag->nama_tag;
+            $det_tag = M_Det_Post::where('tb_detil_post.id_post', $id_parent_post)
+                ->where('tb_detil_post.id_root_prosesi', $id_post)
+                ->leftJoin('tb_post', 'tb_detil_post.id_parent_post', '=', 'tb_post.id_post')
+                ->leftJoin('tb_tag', 'tb_detil_post.id_tag', '=', 'tb_tag.id_tag')
+                ->select(
+                    'tb_detil_post.id_post',
+                    'tb_detil_post.id_parent_post',
+                    'tb_detil_post.id_tag',
+                    'tb_post.nama_post',
+                    'tb_post.gambar',
+                    'tb_detil_post.id_det_post',
+                    'tb_detil_post.id_root_post'
+                )
+                ->get();
+
+            foreach ($det_tag as $dt) {
+                if ($dt->id_root_post!="") {
+                    $nama_post2 = M_Post::where('tb_post.id_post', $dt->id_root_post)
+                            ->select('nama_post')    
+                            ->first();
+                    $nama_post2= $nama_post2->nama_post;
+                }else{
+                    $nama_post2="";
+                }
+                $new_tag[] = (object) array(
+                    'id_post' => $dt->id_post,
+                    'id_parent_post' => $dt->id_parent_post,
+                    'id_tag' => $dt->id_tag,
+                    'nama_post' => $dt->nama_post,
+                    'gambar' => $dt->gambar,
+                    'id_det_post' => $dt->id_det_post,
+                    'nama_post2'=> $nama_post2,
+                    'id_root_post'=>$dt->id_root_post
+                );
+            }
+            $drop_tag[] = (object) array(
+                'id_tag' => $id_tagku,
+                'nama_tag' => $nama_tag,
+                'det_tag' => $new_tag,
+            );
+            // dd($drop_tag);
+            $new_tag = [];
+        }
+        return view('admin/kategori/detil_post_kk', compact('kategori_post', 'drop_tag'));
+
     }
     public function list_tag(Request $request)
     {

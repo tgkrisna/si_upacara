@@ -137,39 +137,7 @@
 		</div>
 	</div>
 </div>
-<div class="clearfix" style="margin-bottom: 16px">
-	<h3 style="margin: 0" class="pull-left">
-		Prosesi Upacara
-	</h3>
-	<a href="#" data-toggle="modal" data-target="#detail-modal" id="prosesi-button" class="btn btn-sm btn-primary pull-right"><i class="fa fa-plus">Tambah Prosesi</i></a>
-</div>
 <div class="panel-group" id="accordion">
-	<div class="panel panel-primary">
-		<div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
-			<div class="panel-body">
-				<div class="row">
-					@if(count($drop_ting) != 0)
-						@foreach ($drop_ting['data_det_pros'] as $d)
-							<div class="col-lg-2">
-								<div class="panel panel-default" style="border: 1px solid #efeef4; margin-bottom: 1em">
-									<img src="/gambarku/{{$d->gambar}}" width="100%" />
-									<div class="panel-body">
-										<p class="prosesi-title">{{$d->nama_post}}</p>
-										{{-- {{$d->id_parent_post}}
-										{{$d->id_post}}
-										{{$d->id_tag}}
-										{{$d->id_det_post}} --}}
-										<a href="/kategori/detil_post_kk/{{$d->id_parent_post}}/{{$d->id_post}}/{{$d->id_tag}}" class="btn btn-primary btn-sm">Lihat</a>
-										<a href="/#/{{$d->id_det_post}}" onclick="return confirm('Delete ?')" class="btn btn-danger btn-delete btn-sm" data-id="#">Hapus</a>
-									</div>
-								</div>
-							</div>
-						@endforeach
-					@endif
-				</div>
-			</div>
-		</div>
-	</div>
 	<hr>
 	@if (Session::has('after_save'))
 	<div class="row">
@@ -199,8 +167,6 @@
 								@else
 									{{$item->nama_post}}
 								@endif
-								{{-- {{$item->id_post}}
-								{{$item->id_parent_post}} --}}
 							</div>
 							<!-- Pakai if untuk deleteable -->
 							<button data-id="#" class="btn btn-delete btn-sm btn-danger btn-card" data-toggle="modal" data-target="#exampleModal{{$item->id_det_post}}">Hapus</button>
@@ -235,20 +201,6 @@
 						<a class="card tag-button-gam" id="tag-button-gam" data-toggle="modal" href="#" data-target="#tag-modal-gam" data-tag-gam="{{ $drops->id_tag }}"" data-tag-posts="{{Request::segment(4)}}"><i class="fa fa-plus fa-4x"></i></a>
 					</div>
 				@elseif ($drops->id_tag =='5')
-					{{-- @php
-					$result = [];	
-					@endphp
-						@foreach ($drops->det_tag as $item2)
-							@php
-							$result[] = $item2->id_root_post;
-							@endphp
-						@endforeach
-					@php
-						$DAT=implode(',', array_unique($result));
-						//Taruh di a class dibawah
-						data-gmbl="{{$drops->id_root_post}}"
-					@endphp --}}
-
 					<div class="col-lg-4" style="margin-top: 16px">
 						<a class="card tag-button-tab" id="tag-button-tab" data-toggle="modal" href="#" data-target="#tag-modal-tab" data-tag-tab="{{ $drops->id_tag }}" ><i class="fa fa-plus fa-4x"></i></a>
 					</div>
@@ -257,10 +209,6 @@
 						<a class="card tag-button" data-toggle="modal" href="#" data-target="#tag-modal" data-tag="{{ $drops->id_tag }}"><i class="fa fa-plus fa-4x"></i></a>
 					</div>
 				@endif
-			
-				{{-- <div class="col-lg-4" style="margin-top: 16px">
-					<a class="card tag-button" data-toggle="modal" href="#" data-target="#tag-modal" data-tag="{{ $drops->id_tag }}"><i class="fa fa-plus fa-4x"></i></a>
-				</div> --}}
 		</div>
 		@endforeach
 		<!-- endforeach data tag -->
