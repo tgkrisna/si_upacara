@@ -142,11 +142,11 @@
 						<select name="id_parent_post" style="width:100%;" id="list-tag-tab" class="list-tag-tab selectlist" class="form-control" required></select>
 					</div>
 				</div>
-					<input type="text" name="id_post" value="{{$kategori_post->id_post}}"/>
-					<input type="text" name="id_tag" class="id-tag-tab" value=""/>
-					<input type="text" name="spesial" value="{{Request::segment(4)}}">
-					<input type="text" name="id_tag_gamelan" value="1"/>
-					<input type="text" name="id_root_post" id="selectlistid" class="id-gam-root" value=""/>
+					<input type="hidden" name="id_post" value="{{$kategori_post->id_post}}"/>
+					<input type="hidden" name="id_tag" class="id-tag-tab" value=""/>
+					<input type="hidden" name="spesial" value="{{Request::segment(4)}}">
+					<input type="hidden" name="id_tag_gamelan" value="1"/>
+					<input type="hidden" name="id_root_post" id="selectlistid" class="id-gam-root" value=""/>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
 					<button type="submit" class="btn btn-primary">Simpan</button>
