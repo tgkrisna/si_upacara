@@ -111,16 +111,42 @@ class Kategori_P extends Controller
     public function detail_prosesi_k($id_post,$id_parent_post)
     {
         $id_tag = 3;
-
         $tag_post = M_Post::where('tb_post.id_post',$id_parent_post)->first();
-
         $data = M_Tag::where('tb_tag.id_tag','!=',$id_tag)
         ->select('tb_tag.id_tag','tb_tag.nama_tag')
         ->get();
-
+        $data_tag_pros = M_Tag::where('tb_tag.id_tag',3)
+        ->select('id_tag', 'nama_tag')
+        ->get();
+        $drop_ting = [];
+        $new_ting = [];
         $tag_all = [];
         $new_det = [];
-
+        foreach ($data_tag_pros as $dt_p) {
+            $id_tag = $dt_p->id_tag;
+            $nama_tag = $dt_p->nama_tag;
+                $data_det_pros = M_Det_Post::where('tb_detil_post.id_post', $id_parent_post)
+                    ->where('tb_detil_post.id_tag',3)
+                    ->where('tb_detil_post.spesial',$id_post)
+                    ->leftJoin('tb_tag', 'tb_detil_post.id_tag', '=', 'tb_tag.id_tag')
+                    ->leftJoin('tb_post', 'tb_detil_post.id_parent_post', '=', 'tb_post.id_post')
+                    ->select('tb_detil_post.id_det_post', 'tb_post.nama_post', 
+                    'tb_post.gambar', 'tb_detil_post.id_post', 'tb_detil_post.id_parent_post', 'tb_detil_post.id_tag')
+                    ->get();
+            foreach ($data_det_pros as $dp) {
+                $new_ting[] = (object) array(
+                    'id_det_post' => $dp->id_det_post,
+                    'nama_post' => $dp->nama_post,
+                    'gambar' => $dp->gambar,
+                    'id_post' => $dp->id_post,
+                    'id_parent_post' => $dp->id_parent_post,
+                    'id_tag' => $dp->id_tag,
+                );
+            }
+            $drop_ting = array(
+                'data_det_pros' => $new_ting,
+            );
+        }
         foreach ($data as $kategori) {
             $id_tagku = $kategori->id_tag;
             $nama_tag = $kategori->nama_tag;
@@ -146,6 +172,6 @@ class Kategori_P extends Controller
             );
             $new_det = [];
         }
-        return view('pengguna/kategori/detail_post_prosesi',compact('tag_post','tag_all'));
+        return view('pengguna/kategori/detail_post_prosesi',compact('tag_post','tag_all','drop_ting'));
     }
 }
