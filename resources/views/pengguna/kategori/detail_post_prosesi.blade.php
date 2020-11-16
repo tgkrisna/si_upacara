@@ -67,23 +67,19 @@
             </div>
         </div>
         <div class="col-4">
-            <!-- If count data ada atau tidak -->
-            {{-- @foreach ($drop_pros as $pros_al) --}}
-                @if (count($drop_ting) != 0)
-                    @foreach ($drop_ting['data_det_pros'] as $d)
-                            <ul class="timeline mb-5">
-                                <li>
-                                    <a href="/prosesi_pengguna_kk/{{}}">{{$d->nama_post}}</a>
-                                </li>
-                            </ul>
-                    @endforeach
-                @else
-                    <div class="text-muted mb-5">
-                        <em>Tidak ada prosesi.</em>
-                    </div>
-                @endif
-                <!-- Else count kosong -->
-            {{-- @endforeach --}}
+            @if (count($drop_ting) != 0)
+                @foreach ($drop_ting['data_det_pros'] as $d)
+                        <ul class="timeline mb-5">
+                            <li>
+                                <a href="/kategori_pengguna/detil_kk/{{$d->id_parent_post}}/{{$d->id_post}}/{{$d->id_tag}}/{{Request::segment(3)}}">{{$d->nama_post}}</a>
+                            </li>
+                        </ul>
+                @endforeach
+            @else
+                <div class="text-muted mb-5">
+                    <em>Tidak ada prosesi.</em>
+                </div>
+            @endif
         </div>
     </div>
 </div>
