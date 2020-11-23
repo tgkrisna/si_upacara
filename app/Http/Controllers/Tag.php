@@ -119,6 +119,8 @@ class Tag extends Controller
         $data->deskripsi = $request->deskripsi;
         $data->video = $new_key;
         $data->gambar = $nama_file;
+        $data->sumber_gambar = $request->s_gambar;
+        $data->sumber_video = $request->s_video;
         $data->save();
         $id_tagku = $request->id_tag;
         return redirect('/tags/'.$id_tagku);
@@ -139,6 +141,8 @@ class Tag extends Controller
         $data->nama_post = $request->nama_post;
         // $data->id_kategori = $request->id_kategori;
         $data->deskripsi = $request->deskripsi;
+        $data->sumber_gambar = $request->s_gambar;
+        $data->sumber_video = $request->s_video;
         if ($request->has('video')) {
             $youtube = $request->video;
             $new_key = preg_replace("#.*youtube\.com/watch\?v=#", "", $youtube);
@@ -183,7 +187,8 @@ class Tag extends Controller
     {
         $tag_post = M_Post::where('tb_post.id_post',$id_post)
                             ->leftJoin('tb_tag','tb_post.id_tag','=','tb_tag.id_tag')
-                            ->select('tb_post.id_post','tb_post.nama_post','tb_post.deskripsi','tb_post.gambar','tb_post.video','tb_tag.id_tag','tb_tag.nama_tag')    
+                            ->select('tb_post.id_post','tb_post.nama_post','tb_post.deskripsi','tb_post.gambar',
+                            'tb_post.video','tb_tag.id_tag','tb_tag.nama_tag','tb_post.sumber_gambar','tb_post.sumber_video')    
                             ->first();
         // dd($tag_post);
         $data = M_Tag::where('tb_tag.id_tag','!=',$id_tag)

@@ -39,6 +39,10 @@
 								<input type="text" name="video" class="form-control" required>
 							</div>
 							<div class="form-group">
+								<label class="control-label">Sumber Video</label>
+								<input type="text" name="s_video" class="form-control">
+							</div>
+							<div class="form-group">
 								<label class="control-label">Deskripsi<span class="text-danger">*</span></label>
 								<textarea name="deskripsi" class="form-control"></textarea>
 								@if($errors->has('deskripsi'))
@@ -54,6 +58,10 @@
 								<img src="{{asset('/assets/images/placeholder.png')}}" id="photo" height="240"><br>
 								<input type="file" name="gambar" class="hidden" accept="{{asset('/gambarku/*')}}" id="photo-input"/>
 								<button type="button" onclick="document.getElementById('photo-input').click()" style="margin-top: 8px" class="btn btn-info"><i class="fa fa-folder-open" style="margin-right: 4px"></i>Browse...</button>
+							</div>
+							<div class="form-group">
+								<label class="control-label">Sumber Gambar</label>
+								<input type="text" name="s_gambar" class="form-control">
 							</div>
 						</div>
 					</div>
