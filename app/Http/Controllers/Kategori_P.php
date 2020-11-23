@@ -42,7 +42,8 @@ class Kategori_P extends Controller
         $id_tag3=6;
         $kategori_post = M_Post::where('tb_post.id_post',$id_post)
         ->leftJoin('tb_kategori','tb_post.id_kategori','=','tb_kategori.id_kategori')
-        ->select('tb_post.id_post','tb_post.nama_post','tb_post.video','tb_post.gambar','tb_post.deskripsi','tb_kategori.nama_kategori')
+        ->select('tb_post.id_post','tb_post.nama_post','tb_post.video','tb_post.gambar','tb_post.deskripsi',
+        'tb_kategori.nama_kategori','tb_post.sumber_video','tb_post.sumber_gambar')
         ->first();
         $data = M_Tag::where('tb_tag.id_tag','!=',$id_tag)
                         ->where('tb_tag.id_tag','!=',$id_tag2)

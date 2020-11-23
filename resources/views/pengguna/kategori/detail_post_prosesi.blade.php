@@ -33,11 +33,13 @@
                     <img src="/assets/images/placeholder.png" alt="..." width="240" class="mb-3 mr-3" style="float: left">
                 @endif
                 {!!$tag_post->deskripsi!!}
+                <p class="font-italic">Sumber Gambar: {{$tag_post->sumber_gambar}}</p>
             </div>
             <div class="mb-3">
                 <div class="container_youtube">
                     <iframe width="640" height="360" src="https://www.youtube.com/embed/{{ $tag_post->video }}" class="video" allowfullscreen></iframe>
                 </div>
+                <p class="font-italic">Sumber Video: {{$tag_post->sumber_video}}</p>
             </div>
             <hr>
             <div class="row">

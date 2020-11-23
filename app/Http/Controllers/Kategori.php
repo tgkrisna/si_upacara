@@ -102,6 +102,8 @@ class Kategori extends Controller
         $data->deskripsi = $request->deskripsi;
         $data->video = $new_key;
         $data->gambar = $nama_file;
+        $data->sumber_gambar = $request->s_gambar;
+        $data->sumber_video = $request->s_video;
         $data->save();
         $id_kategoriku = $request->id_kategori;
         return redirect('/category/' . $id_kategoriku);
@@ -121,6 +123,8 @@ class Kategori extends Controller
         $data = M_Post::where('tb_post.id_post', $id_post)->first();
         $data->nama_post = $request->nama_post;
         $data->deskripsi = $request->deskripsi;
+        $data->sumber_gambar = $request->s_gambar;
+        $data->sumber_video = $request->s_video;
         if ($request->has('video')) {
             $youtube = $request->video;
             $new_key = preg_replace("#.*youtube\.com/watch\?v=#", "", $youtube);

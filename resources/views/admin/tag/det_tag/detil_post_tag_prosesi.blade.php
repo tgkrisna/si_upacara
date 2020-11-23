@@ -83,6 +83,7 @@
 		@else
 		<img src="/assets/images/placeholder.png" width="100%">
 		@endif
+		<p class="font-italic">Sumber Gambar: {{$tag_post->sumber_gambar}}</p>
 	</div>
 	<div class="col-lg-9">
 		<h1 class="page-header" style="margin: 0">
@@ -99,6 +100,7 @@
 				</style>
 			</div>
 		</div>
+		<p class="font-italic">Sumber Video: {{$tag_post->sumber_video}}</p>
 	</div>
 </div>
 <hr>

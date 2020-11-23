@@ -18,6 +18,7 @@
             @else
                 <img src="/assets/images/placeholder.png" alt="..." class="card-img-top">
             @endif
+            <p class="font-italic">Sumber Gambar: {{$tag_post->sumber_gambar}}</p>
         </div>
         <div class="col-9">
             <h1 class="mb-3">{{$tag_post->nama_post}}</h1>
@@ -31,6 +32,7 @@
             <div class="container_youtube">
                 <iframe width="640" height="360" src="https://www.youtube.com/embed/{{ $tag_post->video }}" class="video" allowfullscreen></iframe>
             </div>
+            <p class="font-italic">Sumber Video: {{$tag_post->sumber_video}}</p>
         </div>
     </div>
     <hr>

@@ -158,6 +158,7 @@
 <div class="row">
 	<div class="col-lg-3">
 		<img src="/gambarku/{{$kategori_post->gambar}}" width="100%">
+		<p class="font-italic">Sumber Gambar: {{$kategori_post->sumber_gambar}}</p>
 	</div>
 	<div class="col-lg-9">
 		<h1 class="page-header" style="margin: 0">
@@ -170,6 +171,7 @@
 		<div>{!!$kategori_post->deskripsi!!}</div>
 		<div class="container_youtube">
 			<iframe width="640" height="360" src="https://www.youtube.com/embed/{{ $kategori_post->video }}" class="video" allowfullscreen></iframe>
+			<p class="font-italic">Sumber Video: {{$kategori_post->sumber_video}}</p>
 		</div>
 	</div>
 </div>
