@@ -594,7 +594,7 @@ class Kategori extends Controller
                 'text-2' => 'Data berhasil dihapus.'
             ];
             return redirect()->back()->with(compact('after_save_pros'));
-        } catch (\execption $e) {
+        } catch (\exception $e) {
             $after_save_pros = [
                 'alert' => 'danger',
                 'title' => 'Peringatan!',
